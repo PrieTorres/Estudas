@@ -9,6 +9,7 @@ export const Section = ({ children }: { children: ReactNode | ReactElement | str
         <TranslatedSpan>{children}</TranslatedSpan>
         : children
       }
+      
     </Styled.Container>
   )
 }
