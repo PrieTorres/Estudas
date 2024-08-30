@@ -6,7 +6,7 @@ export default function Home() {
     <div>
       <Section>
         aqui ficam os cursos
-        curso 1
+        
       </Section>
     </div>
   );
