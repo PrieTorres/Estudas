@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div>
       <Section>
-        aqui ficam os cursossssssss
+        aqui ficam os cursosss
       </Section>
     </div>
   );
