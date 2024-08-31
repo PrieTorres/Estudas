@@ -3,18 +3,15 @@ import { courses } from "@/app/courses/metadata";
 import { Course } from "@/components/Course";
 
 const CoursesPage = () => {
-  function openCourse(id: string | number) {
-    
-  }
 
   return (
     <div>
       <Section>
         {courses.map((courseMetadata) =>
           <Course
+            course={courseMetadata}
             title={courseMetadata.title}
             progress={courseMetadata.progress}
-            //onClick={() => openCourse(courseMetadata.id)}
           />)
         }
       </Section>
