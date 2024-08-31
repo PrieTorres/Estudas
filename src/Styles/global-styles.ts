@@ -33,6 +33,12 @@ export const GlobalStyles = createGlobalStyle`
     `}
   }
 
+  *{
+    ${({ theme }) => css`
+    color: ${theme.colors.secondaryColor}
+    `}
+  }
+
   h1, h2, h3, h4, h5, h6{
     font-family: ${({ theme }) => theme.font.family.secondary}
   }
