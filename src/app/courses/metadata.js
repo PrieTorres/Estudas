@@ -10,5 +10,18 @@ export const courses = [
                 Principios C e etc
             </div>
         </div>
+    }, 
+    {
+        title: "Lógica de Programação",
+        id: "Lógica_c_01",
+        progress: 0,
+        content: <div>
+            <h1>Lógica de Programação</h1>
+            <hr/>
+            <div>
+                Os principios da Lógica de Programação
+            </div>
+        </div>
     }
+    
 ];
