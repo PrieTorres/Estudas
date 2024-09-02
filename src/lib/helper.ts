@@ -8,4 +8,12 @@ export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K)
     }
     return acc;
   }, {} as Record<T[K] & (string | number | symbol), T>);
+};
+
+export function isProd() {
+  return process.env.ENVIRONMENT == "production"
+};
+
+export function getApiURL(){
+  return (isProd() ? process.env.PROD_URL : process.env.DEV_URL) ?? "https://localhost:3000"
 }
