@@ -5,29 +5,25 @@ import { useSearchParams } from "next/navigation";
 import { ReactElement } from 'react';
 import { Container } from './styles';
 
-export const CoursePage = ({ params }): ReactElement => {
-  const searchParams = useSearchParams();
-  const userName = searchParams.get("name");
+const CoursePage = ({ params }): ReactElement => {
   const [courseData, setCourseData] = useState({});
-
-  console.log("CoursePage  --> ",params)
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const response = await fetch(`/api/courses/${params?.id}`);
+      const response = await fetch(`/api/courses/${params?.courseId}`);
       const data = await response.json();
-
-      console.log("dtattattatata --> ",data)
 
       setCourseData(data);
     };
 
-    if (params?.id) fetchCourses();
-  }, [params.id]);
+    if (params?.courseId) fetchCourses();
+  }, [params.courseId]);
 
-  return(
-    <Container>
-      {courseData?.content}
-    </Container>
-  )
+  return (
+    <Container
+      dangerouslySetInnerHTML={{ __html: (courseData?.html ?? "") }}
+    />
+  );
 };
+
+export default CoursePage;

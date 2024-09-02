@@ -29,7 +29,7 @@ export const Course = ({ title, progress, course }: CourseProps) => {
     //if (course._id === session?.user.id) return router.push("/profile");
 
    // router.push(`/course/${course._id}?title=${course.title}`);
-    router.push(`/course/${course._id}`);
+    router.push(`/courses/${course._id}`);
   };
 
   return (
