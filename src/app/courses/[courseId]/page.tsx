@@ -1,26 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ReactElement } from 'react';
 import { Container } from './styles';
+import { Course } from "@/types/course";
 
-const CoursePage = ({ params }): ReactElement => {
-  const [courseData, setCourseData] = useState({});
+const CoursePage = async ({ params }: { params: { courseId: string | number } }) => {
+  const data = await fetch(`/api/courses/${params?.courseId}`);
+  const course: Course = await data.json();
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      const response = await fetch(`/api/courses/${params?.courseId}`);
-      const data = await response.json();
-
-      setCourseData(data);
-    };
-
-    if (params?.courseId) fetchCourses();
-  }, [params.courseId]);
+  /**
+   * Courses page precisa ser client component para lidar com possíveis
+   * eventos onclick que podem estar inclusos no html herdado 
+   */
 
   return (
     <Container
-      dangerouslySetInnerHTML={{ __html: (courseData?.html ?? "") }}
+      dangerouslySetInnerHTML={{ __html: (course?.html ?? "") }}
     />
   );
 };

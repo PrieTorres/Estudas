@@ -1,7 +1,7 @@
 import { Section } from "@/components/Section";
-//import { courses } from "@/app/courses/metadata";
-import { Course } from "@/components/Course";
+import { CourseCard } from "@/components/Course";
 import { getApiURL } from "@/lib/helper";
+import { Course } from "@/types/course";
 
 const CoursesPage = async () => {
   const data = await fetch(getApiURL() + "/api/courses/"); // http://localhost:3000
@@ -9,9 +9,9 @@ const CoursesPage = async () => {
   return (
     <div>
       <Section>
-        {courses.map((courseMetadata, i) =>
+        {courses.map((courseMetadata: Course, i:number) =>
           <div key={`${courseMetadata.id ?? courseMetadata._id}_${i}`}>
-            <Course
+            <CourseCard
               course={courseMetadata}
               title={courseMetadata.title}
               progress={courseMetadata.progress}

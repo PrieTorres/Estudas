@@ -1,34 +1,22 @@
 "use client";
 
-import { ReactElement, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import * as Styled from './styles';
-import { useState } from "react";
-import { useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
+import { Course } from '@/types/course';
 
 
 interface CourseProps {
   title: string;
   progress: number;
-  //onClick: CallableFunction;
-  course: {
-    _id: string | number;
-    title: string;
-    content: ReactNode | Element | string;
-  };
+  course: Course
 };
 
-export const Course = ({ title, progress, course }: CourseProps) => {
-  const { data: session } = useSession();
-  const pathName = usePathname();
+export const CourseCard = ({ title, progress, course }: CourseProps): ReactNode => {
   const router = useRouter();
 
 
   const handleCourseClick = () => {
-
-    //if (course._id === session?.user.id) return router.push("/profile");
-
-   // router.push(`/course/${course._id}?title=${course.title}`);
     router.push(`/courses/${course._id}`);
   };
 
