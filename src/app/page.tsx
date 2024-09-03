@@ -6,7 +6,7 @@ export default function Home() {
     <div>
       <Section>
         aqui ficam os cursos
-        hvhszughfzusdhg
+      
       </Section>
     </div>
   );
