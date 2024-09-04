@@ -1,5 +1,7 @@
+Alguns materiais importantes para saber o que ta acontecendo --> 
 
 https://www.youtube.com/watch?v=wm5gMKuwSYk
 
-to do: 
-*implement multiple language
+https://mongoosejs.com/docs/queries.html
+
+https://nextjs.org/docs
