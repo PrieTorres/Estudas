@@ -15,5 +15,5 @@ export function isProd() {
 };
 
 export function getApiURL(){
-  return (isProd() ? process.env.PROD_URL : process.env.DEV_URL) ?? "https://localhost:3000"
+  return (isProd() ? process.env.PROD_URL : process.env.DEV_URL) ?? "http://localhost:3000"
 }

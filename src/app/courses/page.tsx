@@ -4,7 +4,8 @@ import { getApiURL } from "@/lib/helper";
 import { Course } from "@/types/course";
 
 const CoursesPage = async () => {
-  const data = await fetch(getApiURL() + "/api/courses/"); // http://localhost:3000
+  const url = getApiURL() + "/api/courses/";
+  const data = await fetch(url); // http://localhost:3000
   const courses = await data.json();
   return (
     <div>
