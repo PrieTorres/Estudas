@@ -1,12 +1,12 @@
 "use client";
 
-import { Carousel } from "@/components/Carousel";
 import { Section } from "@/components/Section";
-import { getApiURL } from "@/lib/helper";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { LoadingSection } from "@/components/LoadingSection";
+import { CourseCard } from "@/components/Course";
+import { Course } from "@/types/course";
+import { ProgressCourse } from "@/types/progressCourse";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -15,17 +15,22 @@ export default function Home() {
 
   useEffect(() => {
     const fetchProgress = async () => {
+      setLoading(true);
       const data = await fetch(`/api/progressCourse/${session?.user?.id}`);
       const savedProgress = await data.json();
 
-      console.log(savedProgress);
       if (Array.isArray(savedProgress)) {
         setCoursesInProgress(savedProgress);
       } else setCoursesInProgress([]);
+
       setLoading(false);
     };
 
-    if (session?.user?.id) fetchProgress();
+    if (session?.user?.id) {
+      fetchProgress();
+    } else {
+      setLoading(false);
+    }
   }, [session?.user?.id]);
 
   return (
@@ -36,7 +41,21 @@ export default function Home() {
           :
           <Section>
             <div>
-              cursos em andamento
+              {
+                !session?.user?.id?
+                "faça login para salvar seu progresso": "cursos em andamento"
+              }
+              {
+                coursesInProgress.map((progressData: ProgressCourse, i) => (
+                  <div key={`${progressData?._id}_${i}`}>
+                    <CourseCard
+                      title={progressData.courseId?.title}
+                      progress={progressData.progress}
+                      course={progressData.courseId}
+                    />
+                  </div>
+                ))
+              }
             </div>
           </Section>
       }

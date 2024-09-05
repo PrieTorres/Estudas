@@ -10,6 +10,9 @@ export async function POST(req: Request) {
 
   try {
     await connectToDB();
+    const progress = await ProgressCourse.findOne({ userId, courseId });
+    if (progress) return new Response("Already saved " + JSON.stringify(progress), { status: 201 });
+
     const saveProgress = new ProgressCourse({ userId, courseId, progress: progress ?? 0 });
 
     await saveProgress.save();
