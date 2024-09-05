@@ -14,6 +14,63 @@ export function isProd() {
   return process.env.ENVIRONMENT == "production"
 };
 
-export function getApiURL(){
+export function getApiURL() {
   return (isProd() ? process.env.PROD_URL : process.env.DEV_URL) ?? "http://localhost:3000"
+}
+
+export async function saveCourseProgress({ userId, courseId, progress }: { userId: number | string, courseId: number | string, progress: number }) {
+  try {
+    const courseProgress = {
+      userId, courseId, progress
+    }
+
+    const res = await fetch(`${getApiURL()}/api/progressCourse/`, {
+      body: JSON.stringify(courseProgress),
+      method: "POST"
+    });
+
+    return res;
+
+  } catch (error) {
+    console.error("unable to save progress", error);
+    throw error;
+  }
+}
+
+export async function updateCourseProgress({ id, progress }: { id: number | string, progress: number }) {
+  try {
+
+    const res = await fetch(`${getApiURL()}/api/progressCourse/`, {
+      body: JSON.stringify({ id, progress }),
+      method: "POST"
+    });
+
+    return res;
+
+  } catch (error) {
+    console.error("unable to update progress", error);
+    throw error;
+  }
+}
+
+export async function saveUpdateCourseProgress({ userId, courseId, progress }: { userId: number | string, courseId: number | string, progress: number }) {
+  if (!userId || !courseId || !progress) throw new Error(
+    "missing params to save/update progress"
+    + JSON.stringify({ userId: userId, courseId: courseId, progress: progress })
+  );
+
+  try {
+    const data = await fetch(`${getApiURL()}/api/progressCourse/${userId}/${courseId}`);
+    const savedProgress = await data?.json();
+    if (!savedProgress?._id) {
+      return await saveCourseProgress({ userId, courseId, progress });
+    } else {
+      return await updateCourseProgress({ id: savedProgress?.id, progress });
+    }
+  } catch(error){
+    if(error){
+      console.error(error);
+      return await saveCourseProgress({ userId, courseId, progress });
+    }
+  }
 }
