@@ -1,3 +1,5 @@
+import { Course } from "@/types/course";
+
 export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K): Record<T[K] & (string | number | symbol), T> {
   return array.reduce<Record<T[K] & (string | number | symbol), T>>((acc, item) => {
     const keyValue = item[key];
@@ -11,18 +13,18 @@ export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K)
 };
 
 export function isProd() {
-  return process.env.ENVIRONMENT == "production"
+  return process.env.ENVIRONMENT == "production";
 };
 
 export function getApiURL() {
-  return (isProd() ? process.env.PROD_URL : process.env.DEV_URL) ?? "http://localhost:3000"
+  return (isProd() ? process.env.PROD_URL : process.env.DEV_URL) ?? "http://localhost:3000";
 }
 
-export async function saveCourseProgress({ userId, courseId, progress }: { userId: number | string, courseId: number | string, progress: number }) {
+export async function saveCourseProgress({ userId, courseId, progress }: { userId: number | string, courseId: number | string, progress: number; }) {
   try {
     const courseProgress = {
       userId, courseId, progress
-    }
+    };
 
     const res = await fetch(`${getApiURL()}/api/progressCourse/`, {
       body: JSON.stringify(courseProgress),
@@ -37,7 +39,7 @@ export async function saveCourseProgress({ userId, courseId, progress }: { userI
   }
 }
 
-export async function updateCourseProgress({ id, progress }: { id: number | string, progress: number }) {
+export async function updateCourseProgress({ id, progress }: { id: number | string, progress: number; }) {
   try {
 
     const res = await fetch(`${getApiURL()}/api/progressCourse/`, {
@@ -53,7 +55,7 @@ export async function updateCourseProgress({ id, progress }: { id: number | stri
   }
 }
 
-export async function saveUpdateCourseProgress({ userId, courseId, progress }: { userId: number | string, courseId: number | string, progress: number }) {
+export async function saveUpdateCourseProgress({ userId, courseId, progress }: { userId: number | string, courseId: number | string, progress: number; }) {
   if (!userId || !courseId || !progress) throw new Error(
     "missing params to save/update progress"
     + JSON.stringify({ userId: userId, courseId: courseId, progress: progress })
@@ -67,10 +69,17 @@ export async function saveUpdateCourseProgress({ userId, courseId, progress }: {
     } else {
       return await updateCourseProgress({ id: savedProgress?.id, progress });
     }
-  } catch(error){
-    if(error){
+  } catch (error) {
+    if (error) {
       console.error(error);
       return await saveCourseProgress({ userId, courseId, progress });
     }
   }
 }
+
+export async function getDataCourse({ courseId }: { courseId: number | string; }){
+  const data = await fetch(`/api/courses/${courseId}`);
+  const course: Course = await data.json();
+
+  const courseSteps
+};

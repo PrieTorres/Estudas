@@ -7,7 +7,7 @@ const CourseSchema = new Schema({
   },
   html: {
     type: String,
-    required: [true, 'HTML is required.'],
+    //required: [true, 'HTML is required.'],
   }
 });
 
