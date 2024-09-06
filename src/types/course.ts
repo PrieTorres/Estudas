@@ -1,7 +1,12 @@
+import { StepCourse } from "./stepCourse";
+
 export interface Course {
     _id: string | number;
-    id: string | number;
     title: string;
-    html: string;
-    progress: number;
+}
+
+export interface LoadedDataCourse{
+    _id: string | number
+    title: string;
+    steps: Array<StepCourse>
 }

@@ -1,13 +1,64 @@
-import { Carousel } from "@/components/Carousel";
+"use client";
+
 import { Section } from "@/components/Section";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { LoadingSection } from "@/components/LoadingSection";
+import { CourseCard } from "@/components/Course";
+import { Course } from "@/types/course";
+import { ProgressCourse } from "@/types/progressCourse";
 
 export default function Home() {
+  const { data: session } = useSession();
+  const [loading, setLoading] = useState(true);
+  const [coursesInProgress, setCoursesInProgress] = useState([]);
+
+  useEffect(() => {
+    const fetchProgress = async () => {
+      setLoading(true);
+      const data = await fetch(`/api/progressCourse/${session?.user?.id}`);
+      const savedProgress = await data.json();
+
+      if (Array.isArray(savedProgress)) {
+        setCoursesInProgress(savedProgress);
+      } else setCoursesInProgress([]);
+
+      setLoading(false);
+    };
+
+    if (session?.user?.id) {
+      fetchProgress();
+    } else {
+      setLoading(false);
+    }
+  }, [session?.user?.id]);
+
   return (
     <div>
-      <Section>
-        aqui ficam os cursos
-        
-      </Section>
+      {
+        loading ?
+          <LoadingSection />
+          :
+          <Section>
+            <div>
+              {
+                !session?.user?.id?
+                "faça login para salvar seu progresso": "cursos em andamento"
+              }
+              {
+                coursesInProgress.map((progressData: ProgressCourse, i) => (
+                  <div key={`${progressData?._id}_${i}`}>
+                    <CourseCard
+                      title={progressData.courseId?.title}
+                      progress={progressData.progress}
+                      course={progressData.courseId}
+                    />
+                  </div>
+                ))
+              }
+            </div>
+          </Section>
+      }
     </div>
   );
 }

@@ -7,11 +7,12 @@ const CoursesPage = async () => {
   const url = getApiURL() + "/api/courses/";
   const data = await fetch(url); // http://localhost:3000
   const courses = await data.json();
+  
   return (
     <div>
       <Section>
         {courses.map((courseMetadata: Course, i:number) =>
-          <div key={`${courseMetadata.id ?? courseMetadata._id}_${i}`}>
+          <div key={`${courseMetadata._id ?? courseMetadata.id}_${i}`}>
             <CourseCard
               course={courseMetadata}
               title={courseMetadata.title}
