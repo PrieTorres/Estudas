@@ -7,6 +7,7 @@ const CoursesPage = async () => {
   const url = getApiURL() + "/api/courses/";
   const data = await fetch(url); // http://localhost:3000
   const courses = await data.json();
+  
   return (
     <div>
       <Section>

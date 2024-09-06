@@ -5,7 +5,7 @@ export async function GET(req: Request, { params }: { params: { courseId: number
   try {
     await connectToDB();
 
-    const steps = await StepCourse.find({ courseId: params.courseId });
+    const steps = await StepCourse.find({ });
     if (!steps) return new Response("no steps found for this course", { status: 404 });
 
     return new Response(JSON.stringify(steps), { status: 200 });

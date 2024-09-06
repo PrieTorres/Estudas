@@ -1,8 +1,6 @@
 export const courses = [
     {
         title: "Fundamentos C",
-        id: "fundamentos_c_01",
-        _id: "fundamentos_c_01",
         progress: null,
         html: `
         <div>
