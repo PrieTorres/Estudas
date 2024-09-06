@@ -11,7 +11,7 @@ const CoursesPage = async () => {
     <div>
       <Section>
         {courses.map((courseMetadata: Course, i:number) =>
-          <div key={`${courseMetadata.id ?? courseMetadata._id}_${i}`}>
+          <div key={`${courseMetadata._id ?? courseMetadata.id}_${i}`}>
             <CourseCard
               course={courseMetadata}
               title={courseMetadata.title}

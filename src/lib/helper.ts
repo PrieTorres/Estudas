@@ -1,4 +1,4 @@
-import { Course } from "@/types/course";
+import { Course, LoadedDataCourse } from "@/types/course";
 
 export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K): Record<T[K] & (string | number | symbol), T> {
   return array.reduce<Record<T[K] & (string | number | symbol), T>>((acc, item) => {
@@ -77,9 +77,25 @@ export async function saveUpdateCourseProgress({ userId, courseId, progress }: {
   }
 }
 
-export async function getDataCourse({ courseId }: { courseId: number | string; }){
-  const data = await fetch(`/api/courses/${courseId}`);
-  const course: Course = await data.json();
+export async function getDataCourse({ courseId }: { courseId: number | string; }): Promise<LoadedDataCourse> {
+  try {
+    const data = await fetch(`/api/courses/${courseId}`);
+    const course: LoadedDataCourse = await data.json();
 
-  const courseSteps
+    try {
+      const courseSteps = await (await fetch(`/api/stepCourse/${courseId}`)).json();
+      course.steps = courseSteps;
+    } catch (err) {
+      console.error("unable to find course data", err);
+    }
+
+    return course;
+  } catch (err) {
+    console.error("some error ocurred");
+    return ({
+      title: "",
+      _id: "",
+      steps:[]
+    })
+  }
 };
