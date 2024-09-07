@@ -4,7 +4,8 @@ import { StepCourse } from "./stepCourse";
 export interface ActivityStepCourse {
   courseId: number | string | Course;
   stepId: number | string | StepCourse;
-  type: string;
+  type: 'quiz';
   question: string;
   response: string;
+  options: Array<string>;
 }
