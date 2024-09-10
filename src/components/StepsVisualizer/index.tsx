@@ -15,7 +15,7 @@ export const StepsVisualizer = ({ stepQuantity, currentStep, onClickStep }: Step
     <Container >
       {steps.map((step, i) =>
         <div key={`step_${i}`} style={{
-          flexGrow: (i <= currentStep && i < stepQuantity - 1) ? 2 : 0,
+          flexGrow: ( i < stepQuantity - 1) ? 2 : 0,
           display: "flex",
           alignItems: "center",
           alignContent: "center",
@@ -26,7 +26,7 @@ export const StepsVisualizer = ({ stepQuantity, currentStep, onClickStep }: Step
             onClick={() => onClickStep(i)}
           />
           {
-            (i <= currentStep && i < stepQuantity - 1) ?
+            (i < stepQuantity - 1) ?
               <div className={`line ${i < currentStep ? "active" : ""}`} ></div>
               : undefined
           }
