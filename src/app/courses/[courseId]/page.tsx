@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { StepsVisualizer } from '@/components/StepsVisualizer';
 import { IconButton } from '@/components/IconButton';
 import { Section } from '@/components/Section';
+import { QuestionsContainer } from '@/components/QuestionsContainer';
 
 const CoursePage = async ({ params }: { params: { courseId: string | number; }; }) => {
   const [course, setCourse] = useState<LoadedDataCourse>({
@@ -29,6 +30,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
 
   const fillingDiv = () => <div style={{ display: 'block', width: 40, height: 40, opacity: 0 }}></div>;
 
+  console.log(course?.steps[step]?.questions);
   return (
     <div style={{ padding: 10 }}>
       <Section>
@@ -40,9 +42,17 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
           />
           : undefined
         }
-        <Container
-          dangerouslySetInnerHTML={{ __html: (course?.steps[step]?.content ?? "") }}
-        />
+        {
+          course?.steps[step]?.content ? <Container
+            dangerouslySetInnerHTML={{ __html: (course?.steps[step]?.content ?? "") }}
+          /> : undefined
+        }
+        {
+           course?.steps[step]?.questions?.length &&
+           <QuestionsContainer
+             questions={course?.steps[step]?.questions}
+           />
+        }
         <div style={{ display: "flex", justifyContent: "space-between", padding: "0px 40px" }}>
           {
             step > 0 && steps.length > 1 ?

@@ -6,25 +6,26 @@ export async function GET(req: Request, { params }: { params: { courseId: number
   try {
     await connectToDB();
 
-    const steps = await StepCourse.find({});
-    if (!steps) return new Response("no steps found for this course", { status: 404 });
+    const steps = await StepCourse.find({}).lean();
+    if (!steps || steps.length === 0) {
+      return new Response("No steps found for this course", { status: 404 });
+    }
 
-    const promiseQuestions = steps.map((step) => new Promise(async (res) => {
+    const loadedSteps = await Promise.all(steps.map(async (step) => {
       try {
-        const questions = await ActivityStepCourse.find({ courseId: params.courseId, stepId: step._id });
-        step.questions = questions ?? [];
-        res(step);
+        const questions = await ActivityStepCourse.find({ courseId: params.courseId, stepId: step._id }).lean();
+        
+        return { ...step, questions: questions ?? [] };
       } catch (err) {
-        console.error("some error occurred on load questions from step", err);
-        res(step);
+        console.error(`Error loading questions for step ${step._id}:`, err);
+        return { ...step, questions: [] }; 
       }
     }));
-
-    const loadedSteps = await Promise.all(promiseQuestions);
 
     return new Response(JSON.stringify(loadedSteps), { status: 200 });
 
   } catch (error) {
+    console.error("Internal Server Error:", error);
     return new Response("Internal Server Error", { status: 500 });
   }
 };

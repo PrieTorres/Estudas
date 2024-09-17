@@ -7,6 +7,6 @@ export interface StepCourse {
   courseId: Course | string | number;
   order: number;
   type?: 'blog' | 'video' | 'activity';
-  activities?: Array<ActivityStepCourse>;
+  questions?: Array<ActivityStepCourse>;
 }
 
