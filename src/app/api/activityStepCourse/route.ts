@@ -16,19 +16,19 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { courseId, content, type, order } = await req.json();
+    const { courseId, stepId, type, question, answer, options } = await req.json();
 
-    if (!courseId || !content || !type || order == undefined) {
+    if (!courseId || !stepId || !type || !question || !answer) {
       return new Response("Missing required params", { status: 400 });
     }
 
     await connectToDB();
 
-    const saveStep = new ActivityStepCourse({ courseId, content, type, order });
+    const saveStep = new ActivityStepCourse({ courseId, stepId, type, question, answer, options });
     await saveStep.save();
     return new Response(JSON.stringify(saveStep), { status: 201 });
 
   } catch (error) {
-    return new Response("Failed to create a new step", { status: 500 });
+    return new Response("Failed to create a new question", { status: 500 });
   }
 }

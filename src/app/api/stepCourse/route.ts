@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   try {
     const { courseId, content, type, order } = await req.json();
 
-    if (!courseId || !content || !type || order == undefined) {
+    if (!courseId || content == undefined || !type || order == undefined) {
       return new Response("Missing required params", { status: 400 });
     }
 
@@ -34,6 +34,7 @@ export async function POST(req: Request) {
     return new Response(JSON.stringify(saveStep), { status: 201 });
 
   } catch (error) {
-    return new Response("Failed to create a new step", { status: 500 });
+    console.error(error);
+    return new Response("Failed to create a new step " + error?.message, { status: 500 });
   }
 }

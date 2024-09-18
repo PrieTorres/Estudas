@@ -8,7 +8,6 @@ const StepCourseSchema = new Schema({
   },
   content: {
     type: Schema.Types.String,
-    required: [true, 'Content is required.'],
   }, 
   type: { // não tem utilidade agora mas futuramente pode ter
     type: Schema.Types.String
