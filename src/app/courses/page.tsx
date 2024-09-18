@@ -10,7 +10,7 @@ const CoursesPage = async () => {
   
   return (
     <div>
-      <Section>
+      <Section type="flex-list">
         {courses.map((courseMetadata: Course, i:number) =>
           <div key={`${courseMetadata._id ?? courseMetadata.id}_${i}`}>
             <CourseCard

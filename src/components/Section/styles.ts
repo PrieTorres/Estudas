@@ -19,5 +19,13 @@ export const Container = styled.section<ContainerProps>`
         justify-content: center;
         align-items: center;
       ` : ""}
+
+      ${type == "flex-list" ? css`
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-content: flex-start;
+      ` : ""}
   `}
 `;

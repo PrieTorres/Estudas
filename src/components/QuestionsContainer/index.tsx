@@ -50,8 +50,8 @@ export const QuestionsContainer = ({ questions }: QuestionsContainerProps): Reac
       return 0;
     }
 
-    const dec = questions.length / quantCorrect;
-    const percent = dec * 10;
+    const dec = quantCorrect / questions.length;
+    const percent = dec * 100;
     return percent.toFixed(2);
   }
 

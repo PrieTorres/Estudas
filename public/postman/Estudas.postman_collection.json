@@ -1,0 +1,241 @@
+{
+	"info": {
+		"_postman_id": "6aaba6e9-c702-4711-8d1e-c011d6c9b961",
+		"name": "Estudas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38042289"
+	},
+	"item": [
+		{
+			"name": "POST",
+			"item": [
+				{
+					"name": "addCourse",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": " ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Fundamentos C parte 2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/courses",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCourseCompleteData",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": " ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Fundamentos C parte 3\",\r\n    \"steps\": [\r\n        {\r\n            \"content\": \"<h1>Funções avançadas e Recursividade</h1><p>Agora que você já entende o básico de funções em C, vamos explorar funções mais avançadas, como funções recursivas e a passagem de parâmetros por referência.</p><h2>Funções Recursivas</h2><p>Uma função recursiva é uma função que chama a si mesma. Elas são úteis quando uma tarefa pode ser dividida em subtarefas semelhantes. Um exemplo clássico de recursividade é o cálculo do fatorial de um número.</p><pre><code>#include &lt;stdio.h&gt;<br>int fatorial(int n) {<br>  if (n == 0) {<br>    return 1;<br>  } else {<br>    return n * fatorial(n - 1);<br>  }<br>}<br>int main() {<br>  int num = 5;<br>  printf(\\\"Fatorial de %d é %d\\\", num, fatorial(num));<br>  return 0;<br>}</code></pre><p>No exemplo acima, a função <code>fatorial</code> chama a si mesma até que a condição base seja atingida (<code>n == 0</code>), parando a recursão. A recursividade é poderosa, mas pode causar problemas se não houver uma condição de parada bem definida.</p><h2>Passagem de parâmetros por referência</h2><p>Em C, você pode passar parâmetros por valor ou por referência. Passar por valor significa que o valor da variável é copiado para a função, enquanto passar por referência significa que a função manipula o endereço da variável original. Para passar por referência, usamos ponteiros.</p><pre><code>#include &lt;stdio.h&gt;<br>void dobrarValor(int *n) {<br>  *n = *n * 2;<br>}<br>int main() {<br>  int num = 10;<br>  dobrarValor(&num);<br>  printf(\\\"Valor dobrado: %d\\\", num);<br>  return 0;<br>}</code></pre><p>No exemplo acima, o valor de <code>num</code> é dobrado diretamente dentro da função, pois estamos passando o endereço de <code>num</code> e manipulando seu valor com o operador de deferência (<code>*</code>).</p>\",\r\n            \"type\": \"blog\",\r\n            \"order\": 0\r\n        },\r\n        {\r\n            \"content\": \"<iframe width=\\\"1280\\\" height=\\\"720\\\" src=\\\"https://www.youtube.com/embed/hEHAKk-bs54\\\" title=\\\"Curso de Programação C | Funções e procedimentos recursivos com a linguagem C | Aula 153\\\" frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\\" referrerpolicy=\\\"strict-origin-when-cross-origin\\\" allowfullscreen></iframe>\", \r\n            \"type\": \"video\", \r\n            \"order\": 1\r\n        },\r\n        {\r\n            \"content\": \"\", \r\n            \"type\": \"quiz\", \r\n            \"order\": 2,\r\n            \"questions\": [\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"O que é uma função recursiva em C?\",\r\n                    \"answer\": \"Uma função que chama a si mesma.\",\r\n                    \"options\": [\r\n                        \"Uma função que é chamada dentro de um loop.\",\r\n                        \"Uma função que chama a si mesma.\",\r\n                        \"Uma função que recebe um ponteiro como argumento.\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"Qual a condição necessária para evitar uma recursão infinita?\",\r\n                    \"answer\": \"Uma condição de parada bem definida.\",\r\n                    \"options\": [\r\n                        \"O uso de ponteiros.\",\r\n                        \"Uma condição de parada bem definida.\",\r\n                        \"A utilização de variáveis globais.\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"Como passamos um parâmetro por referência em C?\",\r\n                    \"answer\": \"Usando ponteiros.\",\r\n                    \"options\": [\r\n                        \"Usando variáveis globais.\",\r\n                        \"Usando ponteiros.\",\r\n                        \"Usando funções recursivas.\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"Qual operador é usado para acessar o valor de um ponteiro?\",\r\n                    \"answer\": \"O operador * (asterisco).\",\r\n                    \"options\": [\r\n                        \"O operador & (e comercial).\",\r\n                        \"O operador * (asterisco).\",\r\n                        \"O operador % (porcentagem).\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"O que acontece quando passamos uma variável por valor para uma função?\",\r\n                    \"answer\": \"A função recebe uma cópia do valor da variável.\",\r\n                    \"options\": [\r\n                        \"A função recebe uma cópia do valor da variável.\",\r\n                        \"A função recebe o endereço de memória da variável.\",\r\n                        \"A função altera diretamente o valor original da variável.\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/courses",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCouseSteps",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": " ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseId\": \"66eafd59003c294edf8872e0\",\r\n    \"content\": \"a\",\r\n    \"type\": \"questions\",\r\n    \"order\": 2\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/stepCourse",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stepCourse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addStepActivity",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": " ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseId\": \"66eafd59003c294edf8872e0\", \r\n    \"stepId\": \"66eb026af09cc8aefb3c3d62\", \r\n    \"type\": \"quiz\", \r\n    \"question\": \"Qual das opções a seguir descreve corretamente um ponteiro?\", \r\n    \"answer\": \"Uma variável que armazena o endereço de memória de outra variável.\", \r\n    \"options\": [\r\n        \"Um tipo de variável que armazena caracteres.\",\r\n        \"Um tipo de função que faz a soma de dois números.\",\r\n        \"Uma variável que armazena o endereço de memória de outra variável.\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/activityStepCourse",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"activityStepCourse"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get courses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/courses",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"courses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get course id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/courses/66d8efad20d70e8e540010b3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"courses",
+						"66d8efad20d70e8e540010b3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get course progress",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get course steps",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/stepCourse/66d8efad20d70e8e540010b3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"stepCourse",
+						"66d8efad20d70e8e540010b3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
