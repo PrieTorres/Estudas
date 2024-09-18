@@ -29,6 +29,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # Define variável para ignorar pacotes de SWC que não suportam a plataforma
+    - name: Set environment variables
+      run: |
+        echo "NODE_OPTIONS=--no-experimental-fetch" >> $GITHUB_ENV
+        echo "NEXT_DISABLE_SWCPACKAGES=true" >> $GITHUB_ENV
+
     # Adiciona o passo de build da aplicação
     - name: Build application
       run: |
