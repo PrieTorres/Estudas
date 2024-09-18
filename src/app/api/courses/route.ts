@@ -16,3 +16,39 @@ export async function GET(req: Request) {
     return new Response("Unable to get courses", { status: 500 })
   }
 }
+
+export async function POST(req: Request) {
+  const TOKEN = process.env.AUTH_TOKEN;
+
+  if (!TOKEN) {
+    return new Response("Server configuration error: AUTH_TOKEN is not set", { status: 500 });
+  }
+
+  const authHeader = req.headers.get("Authorization");
+  const token = authHeader?.split(" ")[1];
+
+  if (token !== TOKEN) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  try {
+    const { title } = await req.json();
+
+    if (!title) {
+      return new Response("Missing param title", { status: 400 });
+    }
+
+    await connectToDB();
+    const course = await Course.findOne({ title });
+    if (course) {
+      return new Response("This course already exists " + JSON.stringify(course), { status: 200 });
+    }
+
+    const saveCourse = new Course({ title });
+    await saveCourse.save();
+    return new Response(JSON.stringify(saveCourse), { status: 201 });
+
+  } catch (error) {
+    return new Response("Failed to create a new course", { status: 500 });
+  }
+}
