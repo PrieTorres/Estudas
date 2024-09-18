@@ -1,3 +1,4 @@
+import { ActivityStepCourse } from "./activityStepCourse";
 import { Course } from "./course";
 
 export interface StepCourse {
@@ -5,7 +6,7 @@ export interface StepCourse {
   content: string;
   courseId: Course | string | number;
   order: number;
-  type?: string;
-  activities?: Array;
+  type?: 'blog' | 'video' | 'activity';
+  questions?: Array<ActivityStepCourse>;
 }
 

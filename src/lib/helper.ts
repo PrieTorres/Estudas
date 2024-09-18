@@ -83,7 +83,9 @@ export async function getDataCourse({ courseId }: { courseId: number | string; }
     const course: LoadedDataCourse = await data.json();
 
     try {
-      const courseSteps = await (await fetch(`/api/stepCourse/${courseId}`)).json();
+      const data = await fetch(`/api/stepCourse/${courseId}`)
+      const courseSteps = await data.json();
+      
       course.steps = courseSteps;
     } catch (err) {
       console.error("unable to find course data", err);
