@@ -2,17 +2,20 @@
 import { ReactElement } from 'react';
 import { Container } from './styles';
 
-interface LabelButtonProps {
+export interface LabelButtonProps {
   label: string;
   onClick: CallableFunction;
-  className: string;
+  className?: string;
+  width?: string | number;
+  disabled?: boolean;
 }
 
-export const LabelButton = ({ label, onClick, className }: LabelButtonProps): ReactElement => {
+export const LabelButton = ({ label, onClick, className, width, disabled }: LabelButtonProps): ReactElement => {
 
   return (
-    <Container onClick={onClick} className={className}>
+    <Container onClick={!disabled? onClick : undefined} className={className} width={width} disabled={disabled}>
       {label}
+      <div className="disabled-cover"></div>
     </Container>
   );
 };

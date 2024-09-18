@@ -8,6 +8,8 @@ import { StepsVisualizer } from '@/components/StepsVisualizer';
 import { IconButton } from '@/components/IconButton';
 import { Section } from '@/components/Section';
 import { QuestionsContainer } from '@/components/QuestionsContainer';
+import { FillingDiv } from "@/components/FillingDiv";
+import { ActivityStepCourse } from '@/types/activityStepCourse';
 
 const CoursePage = async ({ params }: { params: { courseId: string | number; }; }) => {
   const [course, setCourse] = useState<LoadedDataCourse>({
@@ -28,9 +30,6 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
 
   const steps = course?.steps?.sort((a, b) => a?.order - b?.order);
 
-  const fillingDiv = () => <div style={{ display: 'block', width: 40, height: 40, opacity: 0 }}></div>;
-
-  console.log(course?.steps[step]?.questions);
   return (
     <div style={{ padding: 10 }}>
       <Section>
@@ -48,10 +47,14 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
           /> : undefined
         }
         {
-           course?.steps[step]?.questions?.length &&
-           <QuestionsContainer
-             questions={course?.steps[step]?.questions}
-           />
+          Array.isArray(course?.steps[step]?.questions) && course?.steps[step]?.questions?.length ?
+          <Section>
+            <h1>Hora de praticar!</h1>
+            <QuestionsContainer
+              questions={course?.steps[step]?.questions as ActivityStepCourse[]}
+            />
+          </Section>
+          : undefined
         }
         <div style={{ display: "flex", justifyContent: "space-between", padding: "0px 40px" }}>
           {
@@ -60,7 +63,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
                 icon="arrow_back"
                 onClick={() => setStep(prev => prev - 1)}
               />
-              : fillingDiv()
+              : <FillingDiv />
           }
           {
             step < (steps.length - 1) && steps.length > 1 ?
@@ -68,7 +71,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
                 icon="arrow_forward"
                 onClick={() => setStep(prev => prev + 1)}
               />
-              : fillingDiv()
+              : <FillingDiv />
           }
         </div>
       </Section>

@@ -87,12 +87,9 @@ export async function getDataCourse({ courseId }: { courseId: number | string; }
       const courseSteps = await data.json();
       
       course.steps = courseSteps;
-      console.log("coursesteps", courseSteps);
     } catch (err) {
       console.error("unable to find course data", err);
     }
-
-  console.log("data course", course)
 
     return course;
   } catch (err) {

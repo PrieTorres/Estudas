@@ -7,6 +7,6 @@ export interface ActivityStepCourse {
   stepId: number | string | StepCourse;
   type: 'quiz';
   question: string;
-  response: string;
+  answer: string;
   options: Array<string>;
 }

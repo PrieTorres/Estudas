@@ -16,6 +16,7 @@ export enum Colors {
   lightBlue = "#4ca0e0",
   successfulGreen = "#1bba06",
   dangerRed = "#d62e2e",
+  darkerDangerRed = "#b75555",
   midBrown = "#a77237",
   darkBrown = "#7b5223",
   darkerBrown = "#4d3110",

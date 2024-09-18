@@ -2,21 +2,36 @@ import { ReactElement } from 'react';
 import { Container } from './styles';
 import { LabelButton } from '../LabelButton';
 
-interface QuestionBoxProps {
+export interface AnsweredMetadata {
+  clicked?: string;
+  answer?: string;
+  isCorrect?: boolean;
+}
+
+export interface QuestionBoxProps {
   question: string;
   response: string;
   options: Array<string>;
   type: string;
   onClickOpt: CallableFunction;
-  answeredMetadata?: {
-    clicked: string;
-    answer: string;
-    isCorrect: boolean;
-  }
+  answeredMetadata?: AnsweredMetadata | null | undefined;
+  disabled?: boolean;
 }
 
-export const QuestionBox = ({ question, response, options, onClickOpt, answeredMetadata = {} }: QuestionBoxProps): ReactElement => {
-  const {clicked, answer, isCorrect} = answeredMetadata;
+export const QuestionBox = ({ question, response, options, onClickOpt, answeredMetadata = {}, disabled }: QuestionBoxProps): ReactElement => {
+  function answerClassNames(opt: string, answeredMetadata: AnsweredMetadata) {
+    const { clicked, answer } = answeredMetadata;
+
+    if (clicked == opt) {
+      if (clicked == answer) {
+        return "correct";
+      } else {
+        return "wrong";
+      }
+    }
+
+    return "";
+  }
 
   return (
     <Container>
@@ -24,10 +39,11 @@ export const QuestionBox = ({ question, response, options, onClickOpt, answeredM
       <div>
         {options.map((opt) => (
           <div>
-            <LabelButton 
-              label={opt} 
-              onClick={() => onClickOpt(opt)} 
-              classname={opt === answer && opt === clicked ? "correct" : opt === clicked ? "wrong" : ""}
+            <LabelButton
+              label={opt}
+              onClick={() => onClickOpt(opt)}
+              className={answerClassNames(opt, (answeredMetadata ?? {}))}
+              disabled={answeredMetadata?.clicked != undefined || disabled}
             />
           </div>
         ))}

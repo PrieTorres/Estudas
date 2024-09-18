@@ -1,11 +1,23 @@
 "use client";
 
 import styled, { DefaultTheme, css } from 'styled-components';
+import { SectionTypes } from '.';
 
-export const Container = styled.section`
-  ${({ theme }: { theme: DefaultTheme, height?: number }) => css`
+interface ContainerProps {
+  theme: DefaultTheme;
+  type?: SectionTypes; // Type should be optional if not always provided
+}
+
+export const Container = styled.section<ContainerProps>`
+  ${({ theme, type }: ContainerProps) => css`
       min-height: ${theme.height.sectionHeight};
       padding: ${theme.spacings.huge};
       
+      ${type == "centered" ? css`
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+      ` : ""}
   `}
 `;
