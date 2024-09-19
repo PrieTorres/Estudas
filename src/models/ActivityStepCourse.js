@@ -28,6 +28,6 @@ const ActivityStepCourseSchema = new Schema({
   },
 });
 
-const ActivityStepCourse = models.ActivityStepCourse || model('ActivityStepCourse', ActivityStepCourseSchema);
+const ActivityStepCourse = models?.ActivityStepCourse || model('ActivityStepCourse', ActivityStepCourseSchema);
 
 export default ActivityStepCourse;

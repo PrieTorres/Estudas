@@ -6,7 +6,8 @@ export interface Course {
 }
 
 export interface LoadedDataCourse{
-    _id: string | number
+    _id: string | number;
     title: string;
-    steps: Array<StepCourse>
+    steps: Array<StepCourse>;
+    progress?: number;
 }

@@ -18,6 +18,6 @@ const ProgressCourseSchema = new Schema({
   }
 });
 
-const ProgressCourse = models.ProgressCourse || model('ProgressCourse', ProgressCourseSchema);
+const ProgressCourse = models?.ProgressCourse || model('ProgressCourse', ProgressCourseSchema);
 
 export default ProgressCourse;

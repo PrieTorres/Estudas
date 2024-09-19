@@ -37,8 +37,8 @@ export const QuestionBox = ({ question, response, options, onClickOpt, answeredM
     <Container>
       <h2>{question}</h2>
       <div>
-        {options.map((opt) => (
-          <div>
+        {options.map((opt, i) => (
+          <div key={`opcao-${i}`}>
             <LabelButton
               label={opt}
               onClick={() => onClickOpt(opt)}

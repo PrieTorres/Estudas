@@ -1,8 +1,12 @@
 "use client";
 import styled, { DefaultTheme, css } from 'styled-components';
 
-export const Container = styled.div`
-  ${({ theme, height }: { theme: DefaultTheme; height?: number; }) => css`
+interface ContainerProps {
+  height?: number;
+}
+
+export const Container = styled.div<ContainerProps>`
+  ${({ theme, height }) => css`
     background: inherit;
     width: 100%;
     height: 100%;

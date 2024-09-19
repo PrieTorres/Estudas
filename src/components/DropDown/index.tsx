@@ -103,7 +103,7 @@ export const DropDown = ({ children, dropDownId, toggleId, items, height }: Drop
         width: containerRef.current.clientWidth,
         background: window.getComputedStyle(containerRef.current).background,
         padding: window.getComputedStyle(containerRef.current).padding,
-        outline: window.getComputedStyle(containerRef.current.parentElement ?? {}).border,
+        outline: window.getComputedStyle(containerRef.current?.parentElement as Element)?.border,
         boxShadow: "0px 0px 8px 0px #000000d8 inset"
       };
 
