@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { LoadingSection } from "@/components/LoadingSection";
 import { CourseCard } from "@/components/Course";
-import { Course } from "@/types/course";
 import { ProgressCourse } from "@/types/progressCourse";
+import { UserSession } from "@/types/userSession";
+import { LoadedDataCourse } from "@/types/course";
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session } = useSession() as { data: UserSession | null; };
   const [loading, setLoading] = useState(true);
   const [coursesInProgress, setCoursesInProgress] = useState([]);
 
@@ -20,7 +21,7 @@ export default function Home() {
       const savedProgress = await data.json();
 
       if (Array.isArray(savedProgress)) {
-        setCoursesInProgress(savedProgress);
+        setCoursesInProgress(savedProgress as Array<never>);
       } else setCoursesInProgress([]);
 
       setLoading(false);
@@ -42,17 +43,19 @@ export default function Home() {
           <Section>
             <div>
               {
-                !session?.user?.id?
-                "faça login para salvar seu progresso": "cursos em andamento"
+                !session?.user?.id ?
+                  "faça login para salvar seu progresso" : "cursos em andamento"
               }
               {
                 coursesInProgress.map((progressData: ProgressCourse, i) => (
                   <div key={`${progressData?._id}_${i}`}>
-                    <CourseCard
-                      title={progressData.courseId?.title}
-                      progress={progressData.progress}
-                      course={progressData.courseId}
-                    />
+                    {typeof progressData.courseId === 'object' && (
+                      <CourseCard
+                        title={progressData.courseId?.title}
+                        progress={progressData.progress}
+                        course={progressData.courseId as LoadedDataCourse}
+                      />
+                    )}
                   </div>
                 ))
               }

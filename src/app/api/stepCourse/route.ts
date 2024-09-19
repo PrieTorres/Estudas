@@ -1,51 +1,10 @@
-import StepCourse from "@/models/stepCourse";
-import { connectToDB } from "@/utils/database";
+import { createStep } from "@/lib/helper";
 import { StepCourse as StepCourseType } from "@/types/stepCourse";
-import { ActivityStepCourse as ActivityStepCourseType } from "@/types/activityStepCourse";
-import { createQuestions } from "../activityStepCourse/route";
+import { connectToDB } from "@/utils/database";
 
 export async function GET(req: Request) {
   return new Response("Need to pass courseId", { status: 500 });
 };
-
-interface StepCourseCreateType extends StepCourseType {
-  questions: Array<ActivityStepCourseType>
-}
-
-export async function createStep(step: StepCourseCreateType, courseId: number | string) {
-  const { content, type, order, questions } = step;
-
-  if (!courseId || content == undefined || !type || order == undefined)
-    throw new Error("Missing params to create step " + "step received -> " + JSON.stringify(step, 2));
-
-  try {
-    const saveStep = new StepCourse({ courseId, content, type, order });
-    await saveStep.save();
-
-    //console.log(step, questions)
-    const savedQuestions = await createQuestions(questions, saveStep._id, courseId);
-
-    return { ...saveStep.toObject(), questions: savedQuestions };
-  } catch (err) {
-    console.error(`There was some error while creating step \nmessage:${err?.message ?? ""} \ncode:${err?.code}`);
-    throw err;
-  }
-}
-
-export async function createSteps(steps: StepCourseCreateType[], courseId: string | number) {
-  if (!Array.isArray(steps) || !steps?.length) return [];
-
-  const stepsPromises = steps.map((step, i) => new Promise(async (res, rej) => {
-    try {
-      const newStep = await createStep(step, courseId);
-      res(newStep);
-    } catch (err) {
-      rej(err);
-    }
-  }));
-
-  return await Promise.all(stepsPromises);
-}
 
 export async function POST(req: Request) {
   const TOKEN = process.env.AUTH_TOKEN;
@@ -62,7 +21,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { courseId, content, type, order } = await req.json();
+    const { courseId, content, type, order, questions } = await req.json();
 
     if (!courseId || content == undefined || !type || order == undefined) {
       return new Response("Missing required params", { status: 400 });
@@ -70,11 +29,10 @@ export async function POST(req: Request) {
 
     await connectToDB();
 
-    const saveStep = new StepCourse({ courseId, content, type, order });
-    await saveStep.save();
+    const saveStep = await createStep({ content, type, order, questions } as StepCourseType, courseId);
     return new Response(JSON.stringify(saveStep), { status: 201 });
 
-  } catch (error) {
+  } catch (error: Error | any) {
     console.error(error);
     return new Response("Failed to create a new step " + error?.message, { status: 500 });
   }

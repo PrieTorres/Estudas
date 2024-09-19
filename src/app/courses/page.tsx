@@ -1,7 +1,7 @@
 import { Section } from "@/components/Section";
 import { CourseCard } from "@/components/Course";
 import { getApiURL } from "@/lib/helper";
-import { Course } from "@/types/course";
+import { LoadedDataCourse } from "@/types/course";
 
 const CoursesPage = async () => {
   const url = getApiURL() + "/api/courses/";
@@ -11,8 +11,8 @@ const CoursesPage = async () => {
   return (
     <div>
       <Section type="flex-list">
-        {courses.map((courseMetadata: Course, i:number) =>
-          <div key={`${courseMetadata._id ?? courseMetadata.id}_${i}`}>
+        {courses.map((courseMetadata: LoadedDataCourse, i:number) =>
+          <div key={`${courseMetadata._id}_${i}`}>
             <CourseCard
               course={courseMetadata}
               title={courseMetadata.title}

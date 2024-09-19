@@ -1,34 +1,6 @@
-import ActivityStepCourse from "@/models/ActivityStepCourse";
+import { createQuestion } from "@/lib/helper";
 import { ActivityStepCourse as ActivityStepCourseType } from "@/types/activityStepCourse";
 import { connectToDB } from "@/utils/database";
-
-export async function createQuestion(quest: ActivityStepCourseType, stepId: number | string, courseId: string | number) {
-  try {
-    const { type, question, answer, options } = quest;
-    const savedQuestion = new ActivityStepCourse({ courseId, stepId, type, question, answer, options });
-    await savedQuestion.save();
-
-    return savedQuestion.toObject();
-  } catch (err) {
-    console.error(`there was some error saving question \nmessage:${err?.message ?? ""} \ncode:${err?.code ?? ""}`);
-    throw err;
-  }
-}
-
-export async function createQuestions(questions: ActivityStepCourseType[], stepId: number | string, courseId: string | number){
-  if(!Array.isArray(questions) || !questions?.length) return [];
-
-  const questPromises = questions.map(quest => new Promise(async (res, rej) => {
-    try{
-      const savedQuest = await createQuestion(quest, stepId, courseId);
-      res(savedQuest);
-    } catch (err){
-      rej(err);
-    }
-  }))
-
-  return await Promise.all(questPromises);
-}
 
 export async function POST(req: Request) {
   const TOKEN = process.env.AUTH_TOKEN;
@@ -53,7 +25,7 @@ export async function POST(req: Request) {
 
     await connectToDB();
 
-    const saveStep = await createQuestion({ courseId, stepId, type, question, answer, options } as ActivityStepCourseType);
+    const saveStep = await createQuestion({ type, question, answer, options } as ActivityStepCourseType, stepId, courseId);
     return new Response(JSON.stringify(saveStep), { status: 201 });
 
   } catch (error) {

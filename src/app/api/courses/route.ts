@@ -1,7 +1,7 @@
 import { connectToDB } from "@/utils/database";
 import Course from "@/models/course";
-import { createSteps } from "../stepCourse/route";
 import { LoadedDataCourse } from "@/types/course";
+import { createCourse } from "@/lib/helper";
 
 export async function GET(req: Request) {
   try {
@@ -16,20 +16,6 @@ export async function GET(req: Request) {
   } catch (err) {
     console.error("unable to get courses", err);
     return new Response("Unable to get courses", { status: 500 })
-  }
-}
-
-export async function createCourse(course: LoadedDataCourse) {
-  try {
-    const { title, steps } = course;
-    const saveCourse = new Course({ title });
-    await saveCourse.save();
-
-    const savedSteps = await createSteps(steps, saveCourse._id);
-
-    return { ...saveCourse.toObject(), steps: savedSteps };
-  } catch (error) {
-    console.error(`There was some error while creating course \nmessage:${err?.message ?? ""} \ncode:${err?.code}`)
   }
 }
 

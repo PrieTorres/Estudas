@@ -2,7 +2,7 @@ import styled, { DefaultTheme, css } from 'styled-components';
 import { LabelButtonProps } from '.';
 
 interface ContainerProps extends LabelButtonProps {
-  theme: DefaultTheme
+  theme: DefaultTheme;
 }
 
 export const Container = styled.div<LabelButtonProps>`
