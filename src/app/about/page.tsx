@@ -1,8 +1,11 @@
+import { Section } from "@/components/Section";
+
 const AboutPage = () => {
     return (
-      <div className='w-full flex-center'>
-        
-      </div>
+      <Section>
+        <h1>Um pouco sobre nós</h1>
+        <div></div>
+      </Section>
     );
   };
   
