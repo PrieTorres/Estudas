@@ -1,0 +1,12 @@
+{
+  "hosting": {
+    "source": ".next",
+    "public": ".next",
+    "rewrites": [
+      {
+        "source": "**/**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
