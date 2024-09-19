@@ -5,6 +5,7 @@
   "engines": {
     "node": "20.14.0"
   },
+  "main": ".next/server/app/page.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
