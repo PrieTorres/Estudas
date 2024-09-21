@@ -4,7 +4,7 @@ import { ReactElement } from 'react';
 import { Container } from './styles';
 
 export interface StepButtonProps {
-  onClick: CallableFunction;
+  onClick:  (event: React.MouseEvent<HTMLButtonElement>) => void;
   step: number;
   active: boolean;
 }

@@ -3,6 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { AdapterUser } from "next-auth/adapters";
 import { connectToDB } from "@/utils/database";
 import User from "@/models/user";
+import { UserSession } from "@/types/userSession";
 
 const clientId = process.env.GCLOUD_CLIENT_ID as string;
 const clientSecret = process.env.GCLOUD_CLIENT_SECRET as string;
@@ -15,7 +16,7 @@ const handler = NextAuth({
     })
   ],
   callbacks: {
-    async session({ session }: { session: Session }) {
+    async session({ session }: { session: UserSession }) {
       try {
         // Aqui você pode modificar o objeto session antes de retorná-lo, se necessário
         const sessionUser = await User.findOne({

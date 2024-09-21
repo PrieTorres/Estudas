@@ -3,19 +3,20 @@
 import { ReactNode } from 'react';
 import * as Styled from './styles';
 import { useRouter } from "next/navigation";
-import { Course } from '@/types/course';
+import { LoadedDataCourse } from '@/types/course';
 import { saveUpdateCourseProgress } from '@/lib/helper';
 import { useSession } from "next-auth/react";
+import { UserSession } from '@/types/userSession';
 
 interface CourseProps {
   title: string;
-  progress: number;
-  course: Course
+  progress?: number;
+  course: LoadedDataCourse
 };
 
 export const CourseCard = ({ title, progress, course }: CourseProps): ReactNode => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session } = useSession() as { data: UserSession | null };
 
   const handleCourseClick = () => {
     if ((!course.progress || course.progress == 0) && session?.user?.id) {

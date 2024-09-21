@@ -8,7 +8,10 @@ https://nextjs.org/docs
 
 https://kentcdodds.com/blog/using-fetch-with-type-script
 
-A fazer:
 
-Precisa pensar em como vai funcionar a lógica de exercícios
-Precisa conferir se vale a pena separar cursos em "steps"
+deploy steps -> 
+npm install -g firebase-tools
+firebase login
+npm run build
+firebase experiments:enable webframeworks
+firebase deploy

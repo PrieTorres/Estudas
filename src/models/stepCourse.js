@@ -18,6 +18,6 @@ const StepCourseSchema = new Schema({
   }
 });
 
-const StepCourse = models.StepCourse || model('StepCourse', StepCourseSchema);
+const StepCourse = models?.StepCourse || model('StepCourse', StepCourseSchema);
 
 export default StepCourse;

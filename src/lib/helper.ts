@@ -1,6 +1,12 @@
-import { Course, LoadedDataCourse } from "@/types/course";
+import StepCourse from "@/models/stepCourse";
+import Course from "@/models/course";
+import { LoadedDataCourse } from "@/types/course";
+import { StepCourse as StepCourseType } from "@/types/stepCourse";
+import { ActivityStepCourse as ActivityStepCourseType } from "@/types/activityStepCourse";
+import ActivityStepCourse from "@/models/ActivityStepCourse";
 
-export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K): Record<T[K] & (string | number | symbol), T> {
+type keyType = string | number | symbol;
+export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K): Record<T[K] & (keyType), T> {
   return array.reduce<Record<T[K] & (string | number | symbol), T>>((acc, item) => {
     const keyValue = item[key];
     if (typeof keyValue === 'string' || typeof keyValue === 'number') {
@@ -83,9 +89,9 @@ export async function getDataCourse({ courseId }: { courseId: number | string; }
     const course: LoadedDataCourse = await data.json();
 
     try {
-      const data = await fetch(`/api/stepCourse/${courseId}`)
+      const data = await fetch(`/api/stepCourse/${courseId}`);
       const courseSteps = await data.json();
-      
+
       course.steps = courseSteps;
     } catch (err) {
       console.error("unable to find course data", err);
@@ -97,7 +103,84 @@ export async function getDataCourse({ courseId }: { courseId: number | string; }
     return ({
       title: "",
       _id: "",
-      steps:[]
-    })
+      steps: []
+    });
   }
 };
+
+
+export async function createCourse(course: LoadedDataCourse) {
+  try {
+    const { title, steps } = course;
+    const saveCourse = new Course({ title });
+    await saveCourse.save();
+
+    const savedSteps = await createSteps(steps, saveCourse._id);
+
+    return { ...saveCourse.toObject(), steps: savedSteps };
+  } catch (error: Error | any) {
+    console.error(`There was some error while creating course \nmessage:${error?.message ?? ""} \ncode:${error?.code}`);
+  }
+}
+
+export async function createStep(step: StepCourseType, courseId: number | string) {
+  const { content, type, order, questions } = step;
+
+  if (!courseId || content == undefined || !type || order == undefined)
+    throw new Error("Missing params to create step " + "step received -> " + JSON.stringify(step, undefined, 2));
+
+  try {
+    const saveStep = new StepCourse({ courseId, content, type, order });
+    await saveStep.save();
+
+    const savedQuestions = await createQuestions(questions, saveStep._id, courseId);
+
+    return { ...saveStep.toObject(), questions: savedQuestions };
+  } catch (err: Error | any) {
+    console.error(`There was some error while creating step \nmessage:${err?.message ?? ""} \ncode:${err?.code}`);
+    throw err;
+  }
+}
+
+export async function createSteps(steps: StepCourseType[], courseId: string | number) {
+  if (!Array.isArray(steps) || !steps?.length) return [];
+
+  const stepsPromises = steps.map((step, i) => new Promise(async (res, rej) => {
+    try {
+      const newStep = await createStep(step, courseId);
+      res(newStep);
+    } catch (err) {
+      rej(err);
+    }
+  }));
+
+  return await Promise.all(stepsPromises);
+}
+
+export async function createQuestion(quest: ActivityStepCourseType, stepId: number | string, courseId: string | number) {
+  try {
+    const { type, question, answer, options } = quest;
+    const savedQuestion = new ActivityStepCourse({ courseId, stepId, type, question, answer, options });
+    await savedQuestion.save();
+
+    return savedQuestion.toObject();
+  } catch (err: Error | any) {
+    console.error(`there was some error saving question \nmessage:${err?.message ?? ""} \ncode:${err?.code ?? ""}`);
+    throw err;
+  }
+}
+
+export async function createQuestions(questions: ActivityStepCourseType[] | undefined, stepId: number | string, courseId: string | number) {
+  if (!Array.isArray(questions) || !questions?.length) return [];
+
+  const questPromises = questions.map(quest => new Promise(async (res, rej) => {
+    try {
+      const savedQuest = await createQuestion(quest, stepId, courseId);
+      res(savedQuest);
+    } catch (err) {
+      rej(err);
+    }
+  }));
+
+  return await Promise.all(questPromises);
+}
