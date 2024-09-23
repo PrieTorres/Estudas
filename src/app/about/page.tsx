@@ -8,7 +8,8 @@ const AboutPage = () => {
         <h1>Um pouco sobre o projeto</h1>
         <p style={{ marginBottom: 20 }}>
           O projeto tem o objetivo de trazer conhecimentos básicos sobre programação a qualquer um que tenha o interesse de aprender
-          montamos o conteúdo com base em como aprendemos e nossa maneira de explicar a iniciantes, o site foi desenvolvido em sala
+          de maneira gratuita e fácil, pelo seu principal objetivo ser algo que ajude a comunidade.
+          Montamos o conteúdo com base em como aprendemos e nossa maneira de explicar a iniciantes, o site foi desenvolvido em sala
           pensando no propósito de ensinar a comunidade, todo o conteúdo está sempre apto a atualizações e complementações.
         </p>
         <p>
