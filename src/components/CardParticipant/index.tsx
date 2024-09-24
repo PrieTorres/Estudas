@@ -1,20 +1,26 @@
 import { ReactElement } from 'react';
 import { Container } from './styles';
-import { SafeImage } from '../SafeImage';
+import { SafeImage, SafeImageProps } from '../SafeImage';
+import profileImg from "@/assets/img/gato_dando_joia.jpg";
 
 interface CardParticipantProps {
-
+  name: string;
+  description: string;
+  imgProps?: SafeImageProps;
 }
 
-export const CardParticipant = ({ }: CardParticipantProps): ReactElement => {
+const defaultImg = {
+  text: "profile image",
+  src: profileImg
+}
+
+export const CardParticipant = ({ name, description, imgProps = defaultImg }: CardParticipantProps): ReactElement => {
 
   return (
     <Container>
-      <SafeImage />
-      <h2>Priscila Torres</h2>
-      <p>
-        Desenvolvedora do site, estudante no 1 semestre de engenharia de software, responsável por todo e qualquer possível bug no site (foi mal)
-      </p>
+      <SafeImage {...imgProps} />
+      <h2>{name}</h2>
+      <p>{description}</p>
     </Container>
   );
 };

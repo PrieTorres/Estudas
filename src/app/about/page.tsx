@@ -1,5 +1,12 @@
-import { SafeImage } from "@/components/SafeImage";
+import { CardParticipant } from "@/components/CardParticipant";
 import { Section } from "@/components/Section";
+
+const members = [
+  {
+    name: "Priscila Torres",
+    description: "Desenvolvedora do site, estudante no 1 semestre de engenharia de software, responsável por todo e qualquer possível bug no site (foi mal)"
+  }
+]
 
 const AboutPage = () => {
   return (
@@ -16,16 +23,16 @@ const AboutPage = () => {
           Esperamos que tenham um bom aprendizado {"<3"}
         </p>
       </article>
-      <article>
+      <article style={{ padding: 12 }}>
         <h1>Um pouco sobre nós</h1>
         <div>
-          <article>
-            <SafeImage />
-            <h2>Priscila Torres</h2>
-            <p>
-              Desenvolvedora do site, estudante no 1 semestre de engenharia de software, responsável por todo e qualquer possível bug no site (foi mal)
-            </p>
-          </article>
+          {members.map((member, i) => 
+          <div key={`member_${i}`}>
+            <CardParticipant
+              name={member.name}
+              description={member.description}
+            />
+          </div>)}
         </div>
       </article>
     </Section>
