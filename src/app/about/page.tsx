@@ -3,10 +3,27 @@ import { Section } from "@/components/Section";
 
 const members = [
   {
+    name: "Gabriel Tissi",
+    description: "Responsável por montar o conteúdo de comandos de entrada e saída e laços de repetição"
+  },
+  {
+    name: "Bruno Schimiguel",
+    description: "Responsável por montar o conteúdo de Lógica de programação e Linguagem de programaçao em C"
+  },
+  {
+    name: "Renan",
+    description: "Responsável por montar o conteúdo de Bibliotecas básicas em C e Declaração de variáveis"
+  },
+  {
+    name: "Erick Andreas Ponticelli",
+    description: "Responsável por montar o conteúdo de Condicionais"
+  },
+  {
     name: "Priscila Torres",
-    description: "Desenvolvedora do site, estudante no 1 semestre de engenharia de software, responsável por todo e qualquer possível bug no site (foi mal)"
-  }
-]
+    description: "Desenvolvedora do site, estudante no 1 semestre de engenharia de software, responsável por todo e qualquer possível bug no site"
+  },
+
+];
 
 const AboutPage = () => {
   return (
@@ -23,18 +40,18 @@ const AboutPage = () => {
           Esperamos que tenham um bom aprendizado {"<3"}
         </p>
       </article>
-      <article style={{ padding: 12 }}>
+      <section style={{ padding: 12 }}>
         <h1>Um pouco sobre nós</h1>
-        <div>
-          {members.map((member, i) => 
-          <div key={`member_${i}`}>
-            <CardParticipant
-              name={member.name}
-              description={member.description}
-            />
-          </div>)}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+          {members.map((member, i) =>
+            <div key={`member_${i}`}>
+              <CardParticipant
+                name={member.name}
+                description={member.description}
+              />
+            </div>)}
         </div>
-      </article>
+      </section>
     </Section>
   );
 };

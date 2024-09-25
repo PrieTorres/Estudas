@@ -9,6 +9,9 @@ https://nextjs.org/docs
 https://kentcdodds.com/blog/using-fetch-with-type-script
 
 
+https://github.com/zBlasius/PhysiLab2d/blob/main/client/src/utils/Crud.js
+
+
 deploy steps -> 
 npm install -g firebase-tools
 firebase login
