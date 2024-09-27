@@ -1,10 +1,7 @@
 "use client";
-
 import { FormEvent, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "../../../firebase";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,23 +13,16 @@ export default function Login() {
     event.preventDefault();
     setError("");
 
-    try {
-      const credential = await signInWithEmailAndPassword(
-        getAuth(app),
-        email,
-        password
-      );
-      const idToken = await credential.user.getIdToken();
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
 
-      await fetch("/api/login", {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      });
-
+    if (result?.error) {
+      setError(result.error);
+    } else {
       router.push("/");
-    } catch (e) {
-      setError((e as Error).message);
     }
   }
 
@@ -43,11 +33,7 @@ export default function Login() {
           <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
             Speak thy secret word!
           </h1>
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-4 md:space-y-6"
-            action="#"
-          >
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6" action="#">
             <div>
               <label
                 htmlFor="email"
@@ -85,10 +71,7 @@ export default function Login() {
               />
             </div>
             {error && (
-              <div
-                className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                role="alert"
-              >
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                 <span className="block sm:inline">{error}</span>
               </div>
             )}
@@ -98,15 +81,6 @@ export default function Login() {
             >
               Enter
             </button>
-            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/register"
-                className="font-medium text-gray-600 hover:underline dark:text-gray-500"
-              >
-                Register here
-              </Link>
-            </p>
           </form>
         </div>
       </div>

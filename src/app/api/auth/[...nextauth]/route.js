@@ -1,47 +1,56 @@
-import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-
-import User from '@/models/user';
-import { connectToDB } from '@/utils/database';
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { getAuth } from "firebase/auth";
+import { app } from "../../../../../firebase";
 
 const handler = NextAuth({
-  secret: process.env.SECRET,
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    })
-  ],
-  callbacks: {
-    async session({ session }) {
-      // store the user id from MongoDB to session
-      const sessionUser = await User.findOne({ email: session.user.email });
-      session.user.id = sessionUser._id.toString();
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        try {
+          const auth = getAuth(app);
+          const userCredential = await auth.signInWithEmailAndPassword(
+            credentials.email,
+            credentials.password
+          );
+          const user = userCredential.user;
 
+          if (user) {
+            const token = await user.getIdToken();
+            return { id: user.uid, email: user.email, token };
+          }
+          return null;
+        } catch (error) {
+          return null;
+        }
+      },
+    }),
+  ],
+  session: {
+    strategy: "jwt",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.uid = user.id;
+        token.email = user.email;
+        token.accessToken = user.token;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.uid = token.uid;
+      session.user.email = token.email;
+      session.accessToken = token.accessToken;
       return session;
     },
-    async signIn({ account, profile, user, credentials }) {
-      try {
-        await connectToDB();
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+});
 
-        // check if user already exists
-        const userExists = await User.findOne({ email: profile.email });
-
-        // if not, create a new document and save user in MongoDB
-        if (!userExists) {
-          await User.create({
-            email: profile.email,
-            name: profile.name.toLowerCase(),
-          });
-        }
-
-        return true
-      } catch (error) {
-        console.error("Error checking if user exists: ", error.message);
-        return false
-      }
-    },
-  }
-})
-
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };
