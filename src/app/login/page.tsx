@@ -2,9 +2,8 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "../../../firebase";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,23 +15,17 @@ export default function Login() {
     event.preventDefault();
     setError("");
 
-    try {
-      const credential = await signInWithEmailAndPassword(
-        getAuth(app),
-        email,
-        password
-      );
-      const idToken = await credential.user.getIdToken();
+    const res = await signIn("firebase-email-password", {
+      redirect: false,
+      email,
+      password,
+    });
 
-      await fetch("/api/login", {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      });
-
-      router.push("/");
-    } catch (e) {
-      setError((e as Error).message);
+    console.log(res)
+    if (res?.error) {
+      setError(res.error);
+    } else {
+      router.push("/"); // Redireciona após login bem-sucedido
     }
   }
 

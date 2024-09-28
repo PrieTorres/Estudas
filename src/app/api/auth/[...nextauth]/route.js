@@ -3,6 +3,9 @@ import GoogleProvider from 'next-auth/providers/google';
 
 import User from '@/models/user';
 import { connectToDB } from '@/utils/database';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth as getAdminAuth } from "firebase-admin/auth";
+import { app } from '../../../../../firebase';
 
 const handler = NextAuth({
   secret: process.env.SECRET,
@@ -10,13 +13,64 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    })
+    }),
+    {
+      id: 'firebase-email-password',
+      name: 'Email and Password',
+      type: 'credentials',
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" }
+      },
+      authorize: async (credentials) => {
+        console.log(credentials)
+        const auth = getAuth(app);
+        try {
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            credentials.email,
+            credentials.password
+          );
+          const user = userCredential.user;
+
+          console.log(user);
+          return {
+            id: user.uid,
+            email: user.email,
+          };
+        } catch (error) {
+          console.error(error);
+          return null;
+        }
+      }
+    }
   ],
   callbacks: {
-    async session({ session }) {
-      // store the user id from MongoDB to session
+    async jwt({ token, account }) {
+      console.log("toke", token);
+
+      if (account?.provider === 'firebase') {
+        const firebaseToken = account.id_token;
+
+        try {
+          const decodedToken = await getAdminAuth().verifyIdToken(firebaseToken);
+          token.uid = decodedToken.uid;
+          token.email = decodedToken.email;
+        } catch (error) {
+          console.error('Erro ao verificar o token do Firebase', error);
+        }
+      }
+
+      console.log("toke", token);
+      return token;
+    },
+    async session({ session, token }) {
       const sessionUser = await User.findOne({ email: session.user.email });
       session.user.id = sessionUser._id.toString();
+      session.user.anotherId = token.uid;
+      session.user.email = token.email;
+
+      console.log("session _----.>", session);
 
       return session;
     },
@@ -24,10 +78,9 @@ const handler = NextAuth({
       try {
         await connectToDB();
 
-        // check if user already exists
         const userExists = await User.findOne({ email: profile.email });
 
-        // if not, create a new document and save user in MongoDB
+        console.log({ account, profile, user, credentials });
         if (!userExists) {
           await User.create({
             email: profile.email,
