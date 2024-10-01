@@ -1,8 +1,15 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-
+import { FirebaseAdapter } from "@next-auth/firebase-adapter"
+import firebase from "firebase/app"
+import "firebase/firestore";
 import User from '@/models/user';
 import { connectToDB } from '@/utils/database';
+import {clientConfig, serverConfig} from "../../../../config";
+
+const firestore = (
+  firebase?.apps?.[0] ?? firebase.initializeApp({...clientConfig, ...serverConfig})
+).firestore();
 
 const handler = NextAuth({
   secret: process.env.SECRET,
@@ -12,6 +19,7 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     })
   ],
+  adapter: FirebaseAdapter(firestore),
   callbacks: {
     async session({ session }) {
       // store the user id from MongoDB to session
