@@ -1,9 +1,19 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { FirebaseAdapter, FirestoreAdapter } from "@next-auth/firebase-adapter";
-import { firestore } from '@/firebaseAdmin'; // Use the Firebase Admin firestore
+import { FirestoreAdapter } from "@next-auth/firebase-adapter";
 import User from '@/models/user';
 import { connectToDB } from '@/utils/database';
+import { admin } from '@/firebaseAdmin';
+
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: serverConfig.serviceAccount.projectId,
+      clientEmail: serverConfig.serviceAccount.clientEmail,
+      privateKey: serverConfig.serviceAccount.privateKey,
+    }), 
+  });
+}
 
 const handler = NextAuth({
   secret: process.env.SECRET,
@@ -20,7 +30,7 @@ const handler = NextAuth({
     storageBucket: process.env.STORAGE_BUCKET,
     messagingSenderId: process.env.MESSAGING_SENDER_ID,
     appId: process.env.APP_ID,
-  }), // FirebaseAdapter uses the firestore instance from admin SDK
+  }), 
   callbacks: {
     async session({ session }) {
       const sessionUser = await User.findOne({ email: session.user.email });
@@ -31,7 +41,6 @@ const handler = NextAuth({
       try {
         await connectToDB();
 
-        // Check if user exists
         const userExists = await User.findOne({ email: profile.email });
 
         if (!userExists) {
