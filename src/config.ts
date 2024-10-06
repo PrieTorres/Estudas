@@ -1,6 +1,9 @@
 export const serverConfig = {
   cookieName: process.env.AUTH_COOKIE_NAME!,
-  cookieSignatureKeys: [process.env.AUTH_COOKIE_SIGNATURE_KEY_CURRENT!, process.env.AUTH_COOKIE_SIGNATURE_KEY_PREVIOUS!],
+  cookieSignatureKeys: [
+    process.env.AUTH_COOKIE_SIGNATURE_KEY_CURRENT!,
+    process.env.AUTH_COOKIE_SIGNATURE_KEY_PREVIOUS!,
+  ],
   cookieSerializeOptions: {
     path: "/",
     httpOnly: true,
@@ -9,11 +12,13 @@ export const serverConfig = {
     maxAge: 12 * 60 * 60 * 24,
   },
   serviceAccount: {
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!,
+    projectId: process.env.FIREBASE_PROJECT_ID!, 
     clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL!,
     privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n")!,
   }
 };
+
+console.log("serverConfig", serverConfig);
 
 export const clientConfig = {
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
@@ -22,3 +27,5 @@ export const clientConfig = {
   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
 };
+
+console.log("clientConfig", clientConfig);

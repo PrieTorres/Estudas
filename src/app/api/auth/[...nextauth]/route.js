@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { FirebaseAdapter } from "@next-auth/firebase-adapter";
+import { FirebaseAdapter, FirestoreAdapter } from "@next-auth/firebase-adapter";
 import { firestore } from '@/firebaseAdmin'; // Use the Firebase Admin firestore
 import User from '@/models/user';
 import { connectToDB } from '@/utils/database';
@@ -13,7 +13,14 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
-  adapter: FirebaseAdapter(firestore), // FirebaseAdapter uses the firestore instance from admin SDK
+  adapter: FirestoreAdapter({
+    apiKey: process.env.FIREBASE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID,
+  }), // FirebaseAdapter uses the firestore instance from admin SDK
   callbacks: {
     async session({ session }) {
       const sessionUser = await User.findOne({ email: session.user.email });

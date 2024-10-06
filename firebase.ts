@@ -3,7 +3,6 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { clientConfig } from '@/config';
 
-// Verifica se o app já foi inicializado para evitar múltiplas inicializações
 let app: FirebaseApp;
 if (!getApps().length) {
   app = initializeApp(clientConfig);
@@ -11,7 +10,6 @@ if (!getApps().length) {
   app = getApps()[0];
 }
 
-// Exporta os módulos que você precisa
 export const auth = getAuth(app);
 export const firestore = getFirestore(app);
 export { app };
