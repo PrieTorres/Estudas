@@ -1,5 +1,5 @@
 import { AppProps } from 'next/app';
-import Layout from './layout'; // Ajuste o caminho conforme necessário
+import Layout from './layout';
 import { clientConfig, serverConfig } from "@/config";
 import { notFound } from "next/navigation";
 import { getTokens } from "next-firebase-auth-edge";

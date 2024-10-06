@@ -18,7 +18,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/Translation/*": ["./src/Translation/*"],
+      "@/i18n": ["./src/i18n.ts"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "**/*.jsx", "src/app/api/auth/[...nextauth]/route.ts", "src/app/models/user.js"],

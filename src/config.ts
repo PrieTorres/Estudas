@@ -12,9 +12,9 @@ export const serverConfig = {
     maxAge: 12 * 60 * 60 * 24,
   },
   serviceAccount: {
-    projectId: process.env.FIREBASE_PROJECT_ID!, 
-    clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL!,
-    privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n")!,
+    projectId: process.env.PROJECT_ID!, 
+    clientEmail: process.env.ADMIN_CLIENT_EMAIL!,
+    privateKey: process.env.ADMIN_PRIVATE_KEY?.replace(/\\n/g, "\n")!,
   }
 };
 
