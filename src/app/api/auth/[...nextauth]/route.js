@@ -1,28 +1,13 @@
 import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
 import { FirestoreAdapter } from "@next-auth/firebase-adapter";
+import { auth } from '@/firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import User from '@/models/user';
 import { connectToDB } from '@/utils/database';
-import { admin } from '@/firebaseAdmin';
-
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: serverConfig.serviceAccount.projectId,
-      clientEmail: serverConfig.serviceAccount.clientEmail,
-      privateKey: serverConfig.serviceAccount.privateKey,
-    }), 
-  });
-}
 
 const handler = NextAuth({
   secret: process.env.SECRET,
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
-  ],
+  providers: [],
   adapter: FirestoreAdapter({
     apiKey: process.env.API_KEY,
     authDomain: process.env.AUTH_DOMAIN,
@@ -30,29 +15,47 @@ const handler = NextAuth({
     storageBucket: process.env.STORAGE_BUCKET,
     messagingSenderId: process.env.MESSAGING_SENDER_ID,
     appId: process.env.APP_ID,
-  }), 
+  }),
   callbacks: {
     async session({ session }) {
       const sessionUser = await User.findOne({ email: session.user.email });
       session.user.id = sessionUser._id.toString();
       return session;
     },
-    async signIn({ account, profile }) {
+    async signIn({ user, credentials }) {
       try {
         await connectToDB();
 
-        const userExists = await User.findOne({ email: profile.email });
+        const userCredential = await signInWithEmailAndPassword(auth, user.email, credentials.password);
+        const userExists = await User.findOne({ email: userCredential.user.email });
 
         if (!userExists) {
           await User.create({
-            email: profile.email,
-            name: profile.name.toLowerCase(),
+            email: userCredential.user.email,
+            name: userCredential.user.displayName.toLowerCase(),
           });
         }
 
         return true;
       } catch (error) {
-        console.error('Error checking user existence: ', error.message);
+        console.error('Error signing in: ', error.message);
+        return false;
+      }
+    },
+    async signUp({ user, credentials }) {
+      try {
+        await connectToDB();
+
+        const userCredential = await createUserWithEmailAndPassword(auth, user.email, credentials.password);
+
+        await User.create({
+          email: userCredential.user.email,
+          name: userCredential.user.displayName.toLowerCase(),
+        });
+
+        return true;
+      } catch (error) {
+        console.error('Error signing up: ', error.message);
         return false;
       }
     },
