@@ -4,6 +4,7 @@ import { LoadedDataCourse } from "@/types/course";
 import { StepCourse as StepCourseType } from "@/types/stepCourse";
 import { ActivityStepCourse as ActivityStepCourseType } from "@/types/activityStepCourse";
 import ActivityStepCourse from "@/models/ActivityStepCourse";
+import { User } from "firebase/auth";
 
 type keyType = string | number | symbol;
 export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K): Record<T[K] & (keyType), T> {
@@ -24,6 +25,37 @@ export function isProd() {
 
 export function getApiURL() {
   return (isProd() ? process.env.PROD_URL : process.env.DEV_URL) ?? "http://localhost:3000";
+}
+
+
+export async function getUserByFirebaseUserId({ firebaseUserId, createUser, userData }: { firebaseUserId: string, createUser?: boolean, userData?: User | null; }) {
+  try {
+    const data = await fetch(`${getApiURL()}/api/user/${firebaseUserId}`);
+    const user = await data.json();
+
+    if (!user._id) {
+      if (createUser) {
+        const res = await fetch(`${getApiURL()}/api/user/`, {
+          body: JSON.stringify({ 
+            firebaseUserId, 
+            email: userData?.email, 
+            image: userData?.photoURL, 
+            name: userData?.displayName 
+          }),
+          method: "POST"
+        });
+
+        return await res.json();
+      }
+
+      console.error("no user found getUserByFirebaseUserId", user);
+    }
+
+    return user;
+  } catch (error) {
+    console.error("unable to get user by firebase id", error);
+    throw error;
+  }
 }
 
 export async function saveCourseProgress({ userId, courseId, progress }: { userId: number | string, courseId: number | string, progress: number; }) {
@@ -107,6 +139,8 @@ export async function getDataCourse({ courseId }: { courseId: number | string; }
     });
   }
 };
+
+
 
 
 export async function createCourse(course: LoadedDataCourse) {

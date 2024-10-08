@@ -11,10 +11,10 @@ export const SignButtons = () => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [user] = useAuthState(auth);
 
-  return(
+  return (
     <Container>
       {/* Desktop Navigation */}
-      <div className='sm:flex hidden'>
+      <div className='sm:flex hidden' style={{ alignContent: "center", alignItems: "center" }}>
         {user ? (
           <div className='flex gap-3 md:gap-5'>
             <button
@@ -25,7 +25,7 @@ export const SignButtons = () => {
               Sign Out
             </button>
 
-            <Link href='/profile'>
+            <Link href='/profile' className='sm:flex hidden' style={{ alignContent: "center", alignItems: "center" }} >
               <Image
                 src={user.photoURL}
                 width={37}

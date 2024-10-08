@@ -6,14 +6,14 @@ export function GET(req: Request) {
 };
 
 export async function POST(req: Request) {
-  const { userId, courseId, progress } = await req.json();
+  const { userId, courseId, progressPercent } = await req.json();
 
   try {
     await connectToDB();
     const progress = await ProgressCourse.findOne({ userId, courseId });
     if (progress) return new Response("Already saved " + JSON.stringify(progress), { status: 201 });
 
-    const saveProgress = new ProgressCourse({ userId, courseId, progress: progress ?? 0 });
+    const saveProgress = new ProgressCourse({ userId, courseId, progress: progressPercent ?? 0 });
 
     await saveProgress.save();
     return new Response(JSON.stringify(saveProgress), { status: 201 });
