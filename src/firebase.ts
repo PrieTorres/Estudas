@@ -5,6 +5,7 @@ import { clientConfig } from '@/config';
 import User from './models/user';
 import { connectToDB } from './utils/database';
 import { mongo } from 'mongoose';
+import { randomBytes } from 'crypto';
 
 let app: FirebaseApp;
 if (!getApps().length) {
@@ -29,7 +30,7 @@ const signInWithGoogle = async () => {
         const { email, photoURL: image, displayName: name, uid: firebaseUserId  } = user;
 
         await connectToDB();
-        const generateUser = () => ((name?.replace(/\s/g, "")?.toLowerCase() ?? "") + `${Math.floor(Math.random() * 10000000000000000)}`).substring(0, 20);
+        const generateUser = () => ((name?.replace(/\s/g, "")?.toLowerCase() ?? "") + `${parseInt(randomBytes(8).toString('hex'), 16)}`).substring(0, 20);
         let userName = generateUser();
 
         const existingUser = await User.findOne({ $or: [{ email }, { firebaseUserId }] });
