@@ -28,6 +28,20 @@ export function getApiURL() {
 }
 
 
+export async function createUserDb({ firebaseUserId, email, image, name }: { firebaseUserId: string, email: string, image: string, name: string }) {
+  try {
+    const res = await fetch(`${getApiURL()}/api/user/`, {
+      body: JSON.stringify({ firebaseUserId, email, image, name }),
+      method: "POST"
+    });
+
+    return await res.json();
+  } catch (error) {
+    console.error("unable to create user", error);
+    throw error;
+  }
+}
+
 export async function getUserByFirebaseUserId({ firebaseUserId, createUser, userData }: { firebaseUserId: string, createUser?: boolean, userData?: User | null; }) {
   try {
     const data = await fetch(`${getApiURL()}/api/user/${firebaseUserId}`);
@@ -35,17 +49,14 @@ export async function getUserByFirebaseUserId({ firebaseUserId, createUser, user
 
     if (!user._id) {
       if (createUser) {
-        const res = await fetch(`${getApiURL()}/api/user/`, {
-          body: JSON.stringify({ 
-            firebaseUserId, 
-            email: userData?.email, 
-            image: userData?.photoURL, 
-            name: userData?.displayName 
-          }),
-          method: "POST"
-        });
+        if (!userData) throw new Error("missing user data to create user");
 
-        return await res.json();
+        return await createUserDb({ 
+          firebaseUserId, 
+          email: userData?.email ?? "", 
+          image: userData?.photoURL ?? "", 
+          name: userData?.displayName ?? "" 
+        });
       }
 
       console.error("no user found getUserByFirebaseUserId", user);
@@ -54,6 +65,17 @@ export async function getUserByFirebaseUserId({ firebaseUserId, createUser, user
     return user;
   } catch (error) {
     console.error("unable to get user by firebase id", error);
+    if (createUser) {
+      if (!userData) throw new Error("missing user data to create user");
+
+      return await createUserDb({ 
+        firebaseUserId, 
+        email: userData?.email ?? "", 
+        image: userData?.photoURL ?? "", 
+        name: userData?.displayName ?? "" 
+      });
+    }
+
     throw error;
   }
 }
