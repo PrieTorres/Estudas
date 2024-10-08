@@ -1,38 +1,58 @@
 "use client";
 
 import { Section } from "@/components/Section";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useContext, useEffect, useState } from "react";
+import { auth } from "@/firebase";
 import { LoadingSection } from "@/components/LoadingSection";
 import { CourseCard } from "@/components/Course";
 import { ProgressCourse } from "@/types/progressCourse";
-import { UserSession } from "@/types/userSession";
 import { LoadedDataCourse } from "@/types/course";
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { getUserByFirebaseUserId } from "@/lib/helper";
+import { User } from "firebase/auth";
+import { PageContext } from "@/context/pageContext";
+
+interface UserAuth extends User {
+  _id: string;
+}
 
 export default function Home() {
-  const { data: session } = useSession() as { data: UserSession | null; };
+  const [user] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
   const [loading, setLoading] = useState(true);
   const [coursesInProgress, setCoursesInProgress] = useState([]);
+  const { userId, updateSessionId } = useContext(PageContext);
 
   useEffect(() => {
     const fetchProgress = async () => {
       setLoading(true);
-      const data = await fetch(`/api/progressCourse/${session?.user?.id}`);
-      const savedProgress = await data.json();
 
-      if (Array.isArray(savedProgress)) {
-        setCoursesInProgress(savedProgress as Array<never>);
-      } else setCoursesInProgress([]);
+      let userMongo = null;
+
+      if (!user?._id && !userId) {
+        userMongo = await getUserByFirebaseUserId({ firebaseUserId: user?.uid ?? "", createUser: true, userData: user });
+        if (typeof updateSessionId == "function") updateSessionId(userMongo?._id ?? userMongo?.id ?? "");
+      }
+
+      try {
+        const data = await fetch(`/api/progressCourse/${userId ?? userMongo?._id ?? userMongo?.id ?? ""}`);
+        const savedProgress = await data.json();
+
+        if (Array.isArray(savedProgress)) {
+          setCoursesInProgress(savedProgress as Array<never>);
+        } else setCoursesInProgress([]);
+      } catch (error) {
+        console.error("unable to fetch progress", error);
+      }
 
       setLoading(false);
     };
 
-    if (session?.user?.id) {
+    if (user) {
       fetchProgress();
     } else {
       setLoading(false);
     }
-  }, [session?.user?.id]);
+  }, [user]);
 
   return (
     <div>
@@ -43,8 +63,8 @@ export default function Home() {
           <Section>
             <div>
               {
-                !session?.user?.id ?
-                  "faça login para salvar seu progresso" : "cursos em andamento"
+                !user ? "faça login para salvar seu progresso" :
+                  coursesInProgress?.length > 0 ? "cursos em andamento" : "nenhum curso em andamento :("
               }
               {
                 coursesInProgress.map((progressData: ProgressCourse, i) => (

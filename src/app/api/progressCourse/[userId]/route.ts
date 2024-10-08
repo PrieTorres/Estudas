@@ -11,6 +11,7 @@ export async function GET(req: Request, { params }: { params: { userId: number |
     return new Response(JSON.stringify(progress), { status: 200 });
 
   } catch (error) {
+    console.error("error by loading progress data course by user id ", params.userId, error);
     return new Response("Internal Server Error", { status: 500 });
   }
 };

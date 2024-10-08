@@ -2,37 +2,53 @@
 import { Container } from './styles';
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { signIn, signOut, useSession, getProviders } from "next-auth/react";
-import { SafeImage } from '../SafeImage';
-
+import { useContext, useState } from "react";
+import { signInWithGoogle, auth } from '@/firebase';
+import { signOut as firebaseSignOut } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { PageContext } from '@/context/pageContext';
 
 export const SignButtons = () => {
-  const { data: session } = useSession();
-
-  const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
+  const [user] = useAuthState(auth);
+  const { updateSessionId } = useContext(PageContext);
 
-  useEffect(() => {
-    (async () => {
-      const res = await getProviders();
-      setProviders(res);
-    })();
-  }, []);
+  function handleSignOut() {
+    firebaseSignOut(auth);
+    if (typeof updateSessionId === 'function') {
+      updateSessionId("");
+    }
+  }
 
-  return(
+  function handleSignIn() {
+    signInWithGoogle();
+
+    if (typeof updateSessionId === 'function') {
+      if (user) {
+        getUserByFirebaseUserId({ firebaseUserId: user?.uid ?? "", createUser: true, userData: user }).then((response) => {
+          if (typeof updateSessionId == "function") updateSessionId(response?._id ?? response?.id ?? "");
+        });
+      }
+    }
+  }
+
+  return (
     <Container>
       {/* Desktop Navigation */}
-      <div className='sm:flex hidden'>
-        {session?.user ? (
+      <div className='sm:flex hidden' style={{ alignContent: "center", alignItems: "center" }}>
+        {user ? (
           <div className='flex gap-3 md:gap-5'>
-            <button type='button' onClick={signOut} className='outline_btn'>
+            <button
+              type='button'
+              onClick={handleSignOut}
+              className='outline_btn'
+            >
               Sign Out
             </button>
 
-            <Link href='/profile'>
+            <Link href='/profile' className='sm:flex hidden' style={{ alignContent: "center", alignItems: "center" }} >
               <Image
-                src={session?.user.image}
+                src={user.photoURL}
                 width={37}
                 height={37}
                 className='rounded-full'
@@ -41,30 +57,22 @@ export const SignButtons = () => {
             </Link>
           </div>
         ) : (
-          <>
-            {providers &&
-              Object.values(providers).map((provider) => (
-                <button
-                  type='button'
-                  key={provider.name}
-                  onClick={() => {
-                    signIn(provider.id);
-                  }}
-                  className='black_btn'
-                >
-                  Sign in
-                </button>
-              ))}
-          </>
+          <button
+            type='button'
+            onClick={handleSignIn}
+            className='black_btn'
+          >
+            Sign in
+          </button>
         )}
       </div>
 
       {/* Mobile Navigation */}
       <div className='sm:hidden flex relative'>
-        {session?.user ? (
+        {user ? (
           <div className='flex'>
             <Image
-              src={session?.user.image}
+              src={user.photoURL}
               width={37}
               height={37}
               className='rounded-full'
@@ -85,7 +93,7 @@ export const SignButtons = () => {
                   type='button'
                   onClick={() => {
                     setToggleDropdown(false);
-                    signOut();
+                    handleSignOut();
                   }}
                   className='mt-5 w-full black_btn'
                 >
@@ -95,23 +103,15 @@ export const SignButtons = () => {
             )}
           </div>
         ) : (
-          <>
-            {providers &&
-              Object.values(providers).map((provider) => (
-                <button
-                  type='button'
-                  key={provider.name}
-                  onClick={() => {
-                    signIn(provider.id);
-                  }}
-                  className='black_btn'
-                >
-                  Sign in
-                </button>
-              ))}
-          </>
+          <button
+            type='button'
+            onClick={handleSignIn}
+            className='black_btn'
+          >
+            Sign in
+          </button>
         )}
       </div>
     </Container>
-  )
+  );
 };

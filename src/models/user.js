@@ -6,6 +6,10 @@ const UserSchema = new Schema({
     unique: [true, 'Email already exists!'],
     required: [true, 'Email is required!'],
   },
+  firebaseUserId: {
+    type: String,
+    unique: [true, 'Firebase User Id already exists!'],
+  },
   name: {
     type: String,
     required: [true, 'Name is required!'],
@@ -16,6 +20,6 @@ const UserSchema = new Schema({
   }
 });
 
-const User = models.User || model("User", UserSchema);
+const User = models?.User || model("User", UserSchema);
 
 export default User;

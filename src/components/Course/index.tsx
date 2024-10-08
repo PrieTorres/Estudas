@@ -1,12 +1,18 @@
 "use client";
 
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import * as Styled from './styles';
 import { useRouter } from "next/navigation";
 import { LoadedDataCourse } from '@/types/course';
 import { saveUpdateCourseProgress } from '@/lib/helper';
-import { useSession } from "next-auth/react";
-import { UserSession } from '@/types/userSession';
+import { User } from "firebase/auth";
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from "@/firebase";
+import { PageContext } from '@/context/pageContext';
+
+interface UserAuth extends User {
+  _id: string;
+} 
 
 interface CourseProps {
   title: string;
@@ -16,12 +22,13 @@ interface CourseProps {
 
 export const CourseCard = ({ title, progress, course }: CourseProps): ReactNode => {
   const router = useRouter();
-  const { data: session } = useSession() as { data: UserSession | null };
+  const [user] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
+  const { userId } = useContext(PageContext);
 
   const handleCourseClick = () => {
-    if ((!course.progress || course.progress == 0) && session?.user?.id) {
+    if ((!course.progress || course.progress == 0) && userId) {
       saveUpdateCourseProgress({
-        userId: session?.user?.id,
+        userId: userId,
         courseId: course._id,
         progress: 1
       }).then(() => {

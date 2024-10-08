@@ -2,6 +2,7 @@
 
 import styled, { DefaultTheme, css } from 'styled-components';
 import { SectionTypes } from '.';
+import { responsiveFontSize } from '@/Styles/helperStyles';
 
 interface ContainerProps {
   theme: DefaultTheme;
@@ -27,5 +28,9 @@ export const Container = styled.section<ContainerProps>`
         flex-wrap: wrap;
         align-content: flex-start;
       ` : ""}
+
+      & h1 {
+        ${responsiveFontSize(theme, "xlarge")}
+      }
   `}
 `;
