@@ -2,14 +2,35 @@
 import { Container } from './styles';
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { signInWithGoogle, auth } from '@/firebase';
 import { signOut as firebaseSignOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { PageContext } from '@/context/pageContext';
 
 export const SignButtons = () => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [user] = useAuthState(auth);
+  const { updateSessionId } = useContext(PageContext);
+
+  function handleSignOut() {
+    firebaseSignOut(auth);
+    if (typeof updateSessionId === 'function') {
+      updateSessionId("");
+    }
+  }
+
+  function handleSignIn() {
+    signInWithGoogle();
+
+    if (typeof updateSessionId === 'function') {
+      if (user) {
+        getUserByFirebaseUserId({ firebaseUserId: user?.uid ?? "", createUser: true, userData: user }).then((response) => {
+          if (typeof updateSessionId == "function") updateSessionId(response?._id ?? response?.id ?? "");
+        });
+      }
+    }
+  }
 
   return (
     <Container>
@@ -19,7 +40,7 @@ export const SignButtons = () => {
           <div className='flex gap-3 md:gap-5'>
             <button
               type='button'
-              onClick={() => firebaseSignOut(auth)}
+              onClick={handleSignOut}
               className='outline_btn'
             >
               Sign Out
@@ -38,7 +59,7 @@ export const SignButtons = () => {
         ) : (
           <button
             type='button'
-            onClick={signInWithGoogle}
+            onClick={handleSignIn}
             className='black_btn'
           >
             Sign in
@@ -72,7 +93,7 @@ export const SignButtons = () => {
                   type='button'
                   onClick={() => {
                     setToggleDropdown(false);
-                    firebaseSignOut(auth);
+                    handleSignOut();
                   }}
                   className='mt-5 w-full black_btn'
                 >
@@ -84,7 +105,7 @@ export const SignButtons = () => {
         ) : (
           <button
             type='button'
-            onClick={signInWithGoogle}
+            onClick={handleSignIn}
             className='black_btn'
           >
             Sign in

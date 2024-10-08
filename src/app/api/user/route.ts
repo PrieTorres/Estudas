@@ -1,5 +1,6 @@
 import { connectToDB } from "@/utils/database";
 import User from "@/models/user";
+import { cookies } from "next/headers";
 
 export async function POST(req: Request) {
   const { firebaseUserId, email, image, name } = await req.json();
@@ -20,6 +21,8 @@ export async function POST(req: Request) {
 
     const user = await new User({ firebaseUserId, email, image, name: userName });
     user.save();
+
+    cookies().set('userId', user._id, { httpOnly: false });
 
     return new Response(JSON.stringify(user), { status: 201 });
   } catch (error) {
