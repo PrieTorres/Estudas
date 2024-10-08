@@ -27,7 +27,7 @@ const signInWithGoogle = async () => {
     if (!userExists && user) {
       try {
         const { email, photoURL: image, displayName: name, uid: firebaseUserId  } = user;
-        console.info("creatinng user", { email, photoURL: image, displayName: name, uid: firebaseUserId  });
+
         await connectToDB();
         const generateUser = () => ((name?.replace(/\s/g, "")?.toLowerCase() ?? "") + `${Math.floor(Math.random() * 10000000000000000)}`).substring(0, 20);
         let userName = generateUser();
