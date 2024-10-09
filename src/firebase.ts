@@ -4,15 +4,9 @@ import { getFirestore } from 'firebase/firestore';
 import { clientConfig } from '@/config';
 import User from './models/user';
 import { connectToDB } from './utils/database';
-import { mongo } from 'mongoose';
 import { randomBytes } from 'crypto';
 
-let app: FirebaseApp;
-if (!getApps().length) {
-  app = initializeApp(clientConfig);
-} else {
-  app = getApps()[0];
-}
+const app: FirebaseApp = !getApps().length ? initializeApp(clientConfig) : getApps()[0];
 
 const provider = new GoogleAuthProvider();
 
