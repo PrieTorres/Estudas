@@ -20,7 +20,7 @@ const members = [
   },
   {
     name: "Priscila Torres",
-    description: "Desenvolvedora do site, estudante no 1 semestre de engenharia de software, responsável por todo e qualquer possível bug no site"
+    description: "Desenvolvedora do site, responsável por todo e qualquer possível bug no site"
   },
 
 ];

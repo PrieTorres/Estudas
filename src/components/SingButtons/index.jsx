@@ -26,7 +26,7 @@ export const SignButtons = () => {
     if (typeof updateSessionId === 'function') {
       if (user) {
         getUserByFirebaseUserId({ firebaseUserId: user?.uid ?? "", createUser: true, userData: user }).then((response) => {
-          if (typeof updateSessionId == "function") updateSessionId(response?._id ?? response?.id ?? "");
+          updateSessionId(response?._id ?? response?.id ?? "");
         });
       }
     }
