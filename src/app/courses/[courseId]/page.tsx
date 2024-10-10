@@ -28,6 +28,10 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
     if (params.courseId) loadCourse();
   }, [params.courseId]);
 
+  const handleClickStep = (i: number) => {
+    setStep(i)
+  }
+
   const steps = course?.steps?.sort((a, b) => a?.order - b?.order);
 
   return (
@@ -37,7 +41,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
           <StepsVisualizer
             stepQuantity={steps.length}
             currentStep={step}
-            onClickStep={(i: number) => setStep(i)}
+            onClickStep={handleClickStep}
           />
           : undefined
         }
@@ -61,7 +65,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
             step > 0 && steps.length > 1 ?
               <IconButton
                 icon="arrow_back"
-                onClick={() => setStep(prev => prev - 1)}
+                onClick={() => handleClickStep(step - 1)}
               />
               : <FillingDiv />
           }
@@ -69,7 +73,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
             step < (steps.length - 1) && steps.length > 1 ?
               <IconButton
                 icon="arrow_forward"
-                onClick={() => setStep(prev => prev + 1)}
+                onClick={() => handleClickStep(step + 1)}
               />
               : <FillingDiv />
           }
