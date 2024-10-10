@@ -30,7 +30,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
     if (params.courseId) loadCourse();
   }, [params.courseId]);
 
-  const steps = course?.steps?.sort((a, b) => a?.order - b?.order);
+  const steps = course?.steps?.toSorted((a, b) => a?.order - b?.order);
 
   return (
     <div style={{ padding: 10 }}>

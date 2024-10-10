@@ -35,7 +35,7 @@ export default function Home() {
           userMongo = await getUserByFirebaseUserId({ firebaseUserId: user?.uid ?? "", createUser: true, userData: user });
           if (typeof updateSessionId == "function") updateSessionId(userMongo?._id ?? userMongo?.id ?? "");
         }
-        
+
         console.log("fetching progress", userId ?? userMongo?._id ?? userMongo?.id ?? "");
         const data = await fetch(`/api/progressCourse/${userId ?? userMongo?._id ?? userMongo?.id ?? ""}`);
         const savedProgress = await data.json();
@@ -63,7 +63,7 @@ export default function Home() {
         loading ?
           <LoadingSection />
           :
-          <Section>
+          <Section type="flex-list">
             <div>
               {
                 !user ? "faça login para salvar seu progresso" :
