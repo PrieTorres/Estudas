@@ -10,8 +10,8 @@ const CoursesPage = async () => {
     return (
       <div>
         <Section type="flex-list">
-          {courses.map((courseMetadata: LoadedDataCourse, i:number) =>
-            <div key={`${courseMetadata._id}_${i}`}>
+          {courses.map((courseMetadata: LoadedDataCourse, i: number) =>
+            <div key={`${courseMetadata._id}_${i}`} >
               <CourseCard
                 course={courseMetadata}
                 title={courseMetadata.title}
@@ -24,7 +24,7 @@ const CoursesPage = async () => {
     );
   } catch (error) {
     console.error("unable to fetch courses", error);
-    return (<div>some error happened while trying to list courses</div>)
+    return (<div>some error happened while trying to list courses</div>);
   }
 };
 
