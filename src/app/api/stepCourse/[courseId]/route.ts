@@ -15,14 +15,14 @@ export async function GET(req: Request, { params }: { params: { courseId: number
       try {
         const questions = await ActivityStepCourse.find({ courseId: params.courseId, stepId: step._id }).lean();
 
-        return { ...step, questions: questions ?? [] };
+        return { ...step, questions: questions?.sort((a, b) => a.order - b.order) ?? [] };
       } catch (err) {
         console.error(`Error loading questions for step ${step._id}:`, err);
         return { ...step, questions: [] };
       }
     }));
 
-    return new Response(JSON.stringify(loadedSteps), { status: 200 });
+    return new Response(JSON.stringify(loadedSteps.sort((a, b) => a.order - b.order)), { status: 200 });
 
   } catch (error) {
     console.error("Internal Server Error:", error);
