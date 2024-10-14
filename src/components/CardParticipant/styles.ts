@@ -11,6 +11,7 @@ export const Container = styled.article`
     padding: ${theme.spacings.small};
     text-align: center;
     border-radius: ${theme.radius.default};
+    height: 430px;
 
     & p {
       ${responsiveFontSize(theme, "small")}
@@ -31,6 +32,7 @@ export const Container = styled.article`
       display: flex;
       width: 100%;
       justify-content: center;
+      height: auto;
     }
 
     @media ${theme.media.lteSmall} {
