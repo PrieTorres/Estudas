@@ -1,6 +1,7 @@
 import { connectToDB } from "@/utils/database";
 import StepCourse from "@/models/stepCourse";
 import ActivityStepCourse from "@/models/ActivityStepCourse";
+import { StepCourse as StepCourseType } from "@/types/stepCourse";
 
 export async function GET(req: Request, { params }: { params: { courseId: number | string; }; }) {
   try {
@@ -15,10 +16,10 @@ export async function GET(req: Request, { params }: { params: { courseId: number
       try {
         const questions = await ActivityStepCourse.find({ courseId: params.courseId, stepId: step._id }).lean();
 
-        return { ...step, questions: questions?.sort((a, b) => a.order - b.order) ?? [] };
+        return { ...step, questions: questions?.sort((a, b) => a.order - b.order) ?? [] } as StepCourseType;
       } catch (err) {
         console.error(`Error loading questions for step ${step._id}:`, err);
-        return { ...step, questions: [] };
+        return { ...step, questions: [], content: step.content, courseId: step.courseId, order: step.order } as StepCourseType;
       }
     }));
 
