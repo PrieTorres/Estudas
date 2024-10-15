@@ -10,6 +10,8 @@ import { Section } from '@/components/Section';
 import { QuestionsContainer } from '@/components/QuestionsContainer';
 import { FillingDiv } from "@/components/FillingDiv";
 import { ActivityStepCourse } from '@/types/activityStepCourse';
+import ex_cmd_ent_1 from "@/assets/img/ex_cmd_ent_1.png";
+import ex_cmd_ent_2 from "@/assets/img/ex_cmd_ent_2.png";
 
 const CoursePage = async ({ params }: { params: { courseId: string | number; }; }) => {
   const [course, setCourse] = useState<LoadedDataCourse>({
@@ -46,19 +48,21 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
           : undefined
         }
         {
-          course?.steps[step]?.content ? <Container
-            dangerouslySetInnerHTML={{ __html: (course?.steps[step]?.content ?? "") }}
-          /> : undefined
+          course?.steps[step]?.content ? <Section>
+            <Container
+              dangerouslySetInnerHTML={{ __html: (course?.steps[step]?.content ?? "") }}
+            />
+          </Section> : undefined
         }
         {
           Array.isArray(course?.steps[step]?.questions) && course?.steps[step]?.questions?.length ?
-          <Section>
-            <h1>Hora de praticar!</h1>
-            <QuestionsContainer
-              questions={course?.steps[step]?.questions as ActivityStepCourse[]}
-            />
-          </Section>
-          : undefined
+            <Section>
+              <h1>Hora de praticar!</h1>
+              <QuestionsContainer
+                questions={course?.steps[step]?.questions as ActivityStepCourse[]}
+              />
+            </Section>
+            : undefined
         }
         <div style={{ display: "flex", justifyContent: "space-between", padding: "0px 40px" }}>
           {

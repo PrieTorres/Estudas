@@ -8,5 +8,12 @@ export const Container = styled.article`
       gap: 8px;
       flex-wrap: wrap;
     }
+
+    & img {
+      width: 100%;
+      border-radius: ${theme.radius.default};
+      padding: ${theme.spacings.medium};
+      overflow: hidden;
+    }
   `}
 `;

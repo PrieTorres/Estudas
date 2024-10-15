@@ -7,15 +7,15 @@ export async function GET(req: Request) {
   try {
     await connectToDB();
 
-    const courses = await Course.find({});
+    const courses = await Course.find({ "hide": { "$ne": 'true' } });
     if (!courses?.length) {
       return new Response("No courses data", { status: 200 });
     }
 
-    return new Response(JSON.stringify(courses), { status: 200 });
+    return new Response(JSON.stringify(courses.filter(course => !course.hide)), { status: 200 });
   } catch (err) {
     console.error("unable to get courses", err);
-    return new Response("Unable to get courses", { status: 500 })
+    return new Response("Unable to get courses", { status: 500 });
   }
 }
 

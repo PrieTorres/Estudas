@@ -23,7 +23,7 @@ export const Container = styled.section<ContainerProps>`
 
       ${type == "flex-list" ? css`
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         gap: 12px;
         flex-wrap: wrap;
         align-content: flex-start;

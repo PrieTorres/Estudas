@@ -8,6 +8,6 @@ export const Container = styled.article`
       padding: ${theme.spacings.medium};
       border-radius: ${theme.radius.default};
       width: 300px;
-      
+      height: 160px;
   `}
 `;

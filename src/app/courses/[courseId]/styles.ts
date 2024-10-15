@@ -15,6 +15,11 @@ export const Container = styled.div`
       ${responsiveFontSize(theme, "xlarge")}
     }
 
+    & a {
+      text-shadow: 0px 0px 2px ${theme.colors.white};
+      text-decoration: underline;
+    }
+
     h3 {
       margin-top: 10px;
       ${responsiveFontSize(theme, "large")}
@@ -26,6 +31,10 @@ export const Container = styled.div`
 
     div > p {
       margin-bottom: 8px;
+    }
+
+    & img {
+      width: 100%;
     }
     
   `}

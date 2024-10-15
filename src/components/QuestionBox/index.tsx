@@ -18,7 +18,7 @@ export interface QuestionBoxProps {
   disabled?: boolean;
 }
 
-export const QuestionBox = ({ question, response, options, onClickOpt, answeredMetadata = {}, disabled }: QuestionBoxProps): ReactElement => {
+export const QuestionBox = ({ question, response, options, onClickOpt, answeredMetadata = {}, disabled, type }: QuestionBoxProps): ReactElement => {
   function answerClassNames(opt: string, answeredMetadata: AnsweredMetadata) {
     const { clicked, answer } = answeredMetadata;
 
@@ -35,7 +35,10 @@ export const QuestionBox = ({ question, response, options, onClickOpt, answeredM
 
   return (
     <Container>
-      <h2>{question}</h2>
+      {type == "quiz_html" ?
+        <div dangerouslySetInnerHTML={{ __html: question }} /> :
+        <h2>{question}</h2>
+      }
       <div>
         {options.map((opt, i) => (
           <div key={`opcao-${i}`}>
