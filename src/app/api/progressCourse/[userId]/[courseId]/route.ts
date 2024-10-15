@@ -21,12 +21,12 @@ export async function GET(req: Request, { params }: { params: paramsType  }) {
   }
 };
 
-export const PATCH = async (request: Request, { params }: { params: { id: number | string; }; }) => {
+export const PATCH = async (request: Request, { params }: { params: paramsType  }) => {
   try {
     const { progress, stepsDone, activitiesDone } = await request.json();
 
     await connectToDB();
-    const currentProgress = await ProgressCourse.findById(params.id);
+    const currentProgress = await ProgressCourse.findOne({ userId: params.userId, courseId: params.courseId });
 
     if (!currentProgress) {
       return new Response("Progress not found", { status: 404 });

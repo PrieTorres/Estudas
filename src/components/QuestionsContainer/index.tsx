@@ -1,12 +1,12 @@
 "use client";
 
-import { ReactElement, useCallback, useState } from 'react';
+import { ReactElement, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Container } from './styles';
 import { ActivityStepCourse } from '@/types/activityStepCourse';
 import { AnsweredMetadata, QuestionBox } from '../QuestionBox';
 import { LabelButton } from '../LabelButton';
 import { FillingDiv } from "@/components/FillingDiv";
-
+import { PageContext } from '@/context/pageContext';
 
 interface QuestionsContainerProps {
   questions: Array<ActivityStepCourse>;
@@ -19,41 +19,62 @@ interface QuestResponse {
 export const QuestionsContainer = ({ questions }: QuestionsContainerProps): ReactElement => {
   const [questionIndex, setQuestionIndex] = useState<number>(0);
   const [questResponses, setQuestResponses] = useState<QuestResponse>({});
+  const { loadedCourse, updateCourse } = useContext(PageContext);
 
   const handleAnswer = useCallback((userAnswer: string) => {
     const { answer, _id } = questions[questionIndex];
     const updatedResponses = {
       ...questResponses,
-      [`${_id}`]: {
+      [_id]: {
         clicked: userAnswer,
         answer: answer,
         isCorrect: answer === userAnswer
       }
     };
 
-    setQuestResponses(updatedResponses);
-  }, [questionIndex, questResponses, questions]);
+    if (loadedCourse && typeof updateCourse === "function") {
+      const activitiesDone = Object.keys(updatedResponses).map(key => ({
+        activityId: key,
+        answer: updatedResponses[key].clicked ?? ""
+      }));
 
-  const getCorrectQuant = () => {
-    let correct = 0;
-    Object.values(questResponses).forEach(val => val.isCorrect ? correct++ : "");
+      if (Array.isArray(loadedCourse.activitiesDone)) {
+        const filteredActivities = loadedCourse.activitiesDone.filter(
+          (activity) => !activitiesDone.find((act) => act.activityId === activity.activityId)
+        );
+        activitiesDone.push(...filteredActivities.map(activity => ({
+          activityId: activity.activityId,
+          answer: activity.answer
+        })));
+      }
 
-    return correct;
-  }
-
-  const isAllAnswered = () => Object.values(questResponses).length == questions.length;
-
-  const getPercentCorrect = () => {
-    const quantCorrect = getCorrectQuant();
-    
-    if(quantCorrect <= 0) {
-      return 0;
+      loadedCourse.activitiesDone = activitiesDone;
+      updateCourse(loadedCourse);
     }
 
-    const dec = quantCorrect / questions.length;
-    const percent = dec * 100;
-    return percent.toFixed(2);
-  }
+    setQuestResponses(updatedResponses);
+  }, [questionIndex, questResponses, questions, loadedCourse, updateCourse]);
+
+  const getCorrectQuant = useCallback(() => {
+    return Object.values(questResponses).reduce((count, val) => val.isCorrect ? count + 1 : count, 0);
+  }, [questResponses]);
+
+  const isAllAnswered = useMemo(() => Object.values(questResponses).length === questions.length, [questResponses, questions.length]);
+
+  const getPercentCorrect = useCallback(() => {
+    const quantCorrect = getCorrectQuant();
+    return quantCorrect > 0 ? ((quantCorrect / questions.length) * 100).toFixed(2) : "0";
+  }, [getCorrectQuant, questions.length]);
+
+  useEffect(() => {
+    if (isAllAnswered && loadedCourse && typeof updateCourse === "function") {
+      const oldScore = loadedCourse.score ?? 0;
+      loadedCourse.score = parseFloat(getPercentCorrect());
+      if(loadedCourse.score !== oldScore) {
+        updateCourse(loadedCourse, true);
+      }
+    }
+  }, [isAllAnswered, questResponses, loadedCourse, updateCourse, getPercentCorrect]);
 
   return (
     <Container>
@@ -65,9 +86,9 @@ export const QuestionsContainer = ({ questions }: QuestionsContainerProps): Reac
         type={questions[questionIndex].type}
         onClickOpt={handleAnswer}
         answeredMetadata={questResponses[questions[questionIndex]._id]}
-        disabled={isAllAnswered()}
+        disabled={isAllAnswered}
       />
-      
+
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", padding: 8, gap: 10 }}>
         {questionIndex > 0 ? (
           <LabelButton
@@ -83,13 +104,12 @@ export const QuestionsContainer = ({ questions }: QuestionsContainerProps): Reac
         ) : <FillingDiv />}
       </div>
 
-      {
-        isAllAnswered() &&
+      {isAllAnswered && (
         <div>
           <p>Você acertou {getCorrectQuant()} de {questions.length}</p>
           <p>Sua porcentagem de acerto foi {getPercentCorrect()}%</p>
         </div>
-      }
+      )}
     </Container>
   );
 };
