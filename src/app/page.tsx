@@ -19,7 +19,7 @@ interface UserAuth extends User {
 export default function Home() {
   const [user] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
   const [loading, setLoading] = useState(true);
-  const [coursesInProgress, setCoursesInProgress] = useState([]);
+  const [coursesInProgress, setCoursesInProgress] = useState<ProgressCourse[]>([]);
   const { userId, updateSessionId } = useContext(PageContext);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function Home() {
                   coursesInProgress?.length > 0 ? "cursos em andamento" : "nenhum curso em andamento :("
               }
               {
-                coursesInProgress.map((progressData: ProgressCourse, i) => (
+                coursesInProgress.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide).map((progressData, i) => (
                   <div key={`${progressData?._id}_${i}`}>
                     {typeof progressData.courseId === 'object' && (
                       <CourseCard

@@ -6,11 +6,11 @@ import { LoadedDataCourse } from "@/types/course";
 const CoursesPage = async () => {
   try {
     const data = await fetch(`${getApiURL()}/api/courses`);
-    const courses = await data.json();
+    const courses: LoadedDataCourse[] = await data.json();
     return (
       <div>
         <Section type="flex-list">
-          {courses.map((courseMetadata: LoadedDataCourse, i: number) =>
+          {courses.filter(course => !course.hide).map((courseMetadata: LoadedDataCourse, i: number) =>
             <div key={`${courseMetadata._id}_${i}`} >
               <CourseCard
                 course={courseMetadata}
