@@ -1,15 +1,15 @@
 "use client";
 
-import { getDataCourse } from '@/lib/helper';
+import { getDataCourse, updateCourseProgress } from '@/lib/helper';
 import { Container } from './styles';
 import { LoadedDataCourse } from "@/types/course";
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { StepsVisualizer } from '@/components/StepsVisualizer';
 import { IconButton } from '@/components/IconButton';
 import { Section } from '@/components/Section';
 import { QuestionsContainer } from '@/components/QuestionsContainer';
 import { FillingDiv } from "@/components/FillingDiv";
-import { ActivityStepCourse } from '@/types/activityStepCourse';
+import { PageContext } from '@/context/pageContext';
 
 const CoursePage = async ({ params }: { params: { courseId: string | number; }; }) => {
   const [course, setCourse] = useState<LoadedDataCourse>({
@@ -18,19 +18,43 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
     _id: ""
   });
   const [step, setStep] = useState<number>(0);
+  const { userId, openCourse } = useContext(PageContext);
 
   useEffect(() => {
     async function loadCourse() {
-      const data: LoadedDataCourse = await getDataCourse({ courseId: params?.courseId });
+      const data: LoadedDataCourse = await getDataCourse({ courseId: params?.courseId, userId });
       setCourse(data);
+      if (openCourse) openCourse(data);
     }
 
     if (params.courseId) loadCourse();
   }, [params.courseId]);
 
   const handleClickStep = (i: number) => {
-    setStep(i)
-  }
+    const idStep = `${course?.steps[i]?._id}`;
+    const courseData = course;
+
+    if (!course.stepsDone?.includes(idStep) && userId) {
+      if (Array.isArray(courseData.stepsDone)) {
+        courseData.stepsDone.push(idStep);
+      } else {
+        courseData.stepsDone = [idStep];
+      }
+
+      courseData.progress = (courseData.stepsDone.length / courseData.steps.length) * 100;
+      updateCourseProgress({
+        userId: userId,
+        courseId: courseData._id,
+        progress: courseData.progress,
+        stepsDone: courseData.stepsDone
+      });
+
+      setCourse(courseData);
+      if (openCourse) openCourse(courseData);
+    }
+
+    setStep(i);
+  };
 
   const steps = course?.steps?.sort((a, b) => a?.order - b?.order);
 
@@ -57,7 +81,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
             <Section>
               <h1>Hora de praticar!</h1>
               <QuestionsContainer
-                questions={course?.steps[step]?.questions as ActivityStepCourse[]}
+                questions={course?.steps[step]?.questions}
               />
             </Section>
             : undefined

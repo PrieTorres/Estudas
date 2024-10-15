@@ -16,9 +16,16 @@ const ProgressCourseSchema = new Schema({
     required: [true, 'Progress is required.'],
     min: 0,
   },
-  steps : {
-    type: Schema.Types.Array,
-  } 
+  score: {
+    type: Schema.Types.Number,
+    min: 0,
+    max: 100,
+  },
+  stepsDone: { type: [String], default: [] },
+  activitiesDone: [{
+    activityId: { type: String, required: true },
+    answer: { type: String, required: true }
+  }]
 });
 
 const ProgressCourse = models?.ProgressCourse || model('ProgressCourse', ProgressCourseSchema);

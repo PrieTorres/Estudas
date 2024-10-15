@@ -1,9 +1,12 @@
+import { LoadedDataCourse } from "@/types/course";
 import { createContext, ReactNode, useMemo, useState } from "react";
 
 interface PageContextProps {
   userId?: any;
   loading?: boolean;
   coursesInProgress?: any[];
+  loadedCourse?: LoadedDataCourse;
+  openCourse?: (courseData: LoadedDataCourse) => void;
   fetchProgress?: () => void;
   updateSessionId?: (userId: string) => void;
 }
@@ -17,7 +20,11 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
     setPageState((prev) => ({ ...prev, userId }));
   }
 
-  const contextValue = useMemo(() => ({ ...pageState, updateSessionId }), [pageState, updateSessionId]);
+  const openCourse = (courseData: LoadedDataCourse) => {
+    setPageState((prev) => ({ ...prev, loadedCourse: courseData }));
+  }
+
+  const contextValue = useMemo(() => ({ ...pageState, updateSessionId, openCourse }), [pageState, updateSessionId, openCourse]);
 
   return (
     <PageContext.Provider value={contextValue}>
