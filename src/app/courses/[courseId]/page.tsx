@@ -10,8 +10,6 @@ import { Section } from '@/components/Section';
 import { QuestionsContainer } from '@/components/QuestionsContainer';
 import { FillingDiv } from "@/components/FillingDiv";
 import { ActivityStepCourse } from '@/types/activityStepCourse';
-import ex_cmd_ent_1 from "@/assets/img/ex_cmd_ent_1.png";
-import ex_cmd_ent_2 from "@/assets/img/ex_cmd_ent_2.png";
 
 const CoursePage = async ({ params }: { params: { courseId: string | number; }; }) => {
   const [course, setCourse] = useState<LoadedDataCourse>({
