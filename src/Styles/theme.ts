@@ -44,7 +44,8 @@ export const theme = {
   media: {
     lteBig: "(min-width: 900px)",
     lteMedium: "(max-width: 768px)",
-    lteSmall: "(max-width: 428px)"
+    lteSmall: "(max-width: 428px)",
+    lteSmallMed: "(max-width: 620px)",
   },
   height: {
     headerheight: "100px",

@@ -15,5 +15,11 @@ export const Container = styled.article`
       &:hover {
         box-shadow: 0 0 5px 1px ${theme.colors.darkGrey};
       }
+
+      @media ${theme.media.lteSmall} {
+        width: 220px;
+        max-width: 100%;
+        height: 100px;
+      }
   `}
 `;
