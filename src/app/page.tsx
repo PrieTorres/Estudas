@@ -19,7 +19,7 @@ interface UserAuth extends User {
 export default function Home() {
   const [user] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
   const [loading, setLoading] = useState(true);
-  const [coursesInProgress, setCoursesInProgress] = useState([]);
+  const [coursesInProgress, setCoursesInProgress] = useState<ProgressCourse[]>([]);
   const { userId, updateSessionId } = useContext(PageContext);
 
   useEffect(() => {
@@ -28,12 +28,15 @@ export default function Home() {
 
       let userMongo = null;
 
-      if (!user?._id && !userId) {
-        userMongo = await getUserByFirebaseUserId({ firebaseUserId: user?.uid ?? "", createUser: true, userData: user });
-        if (typeof updateSessionId == "function") updateSessionId(userMongo?._id ?? userMongo?.id ?? "");
-      }
+    
 
       try {
+        if (!user?._id && !userId) {
+          userMongo = await getUserByFirebaseUserId({ firebaseUserId: user?.uid ?? "", createUser: true, userData: user });
+          if (typeof updateSessionId == "function") updateSessionId(userMongo?._id ?? userMongo?.id ?? "");
+        }
+
+        console.log("fetching progress", userId ?? userMongo?._id ?? userMongo?.id ?? "");
         const data = await fetch(`/api/progressCourse/${userId ?? userMongo?._id ?? userMongo?.id ?? ""}`);
         const savedProgress = await data.json();
 
@@ -60,14 +63,14 @@ export default function Home() {
         loading ?
           <LoadingSection />
           :
-          <Section>
+          <Section type="flex-list">
             <div>
               {
                 !user ? "faça login para salvar seu progresso" :
                   coursesInProgress?.length > 0 ? "cursos em andamento" : "nenhum curso em andamento :("
               }
               {
-                coursesInProgress.map((progressData: ProgressCourse, i) => (
+                coursesInProgress.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide).map((progressData, i) => (
                   <div key={`${progressData?._id}_${i}`}>
                     {typeof progressData.courseId === 'object' && (
                       <CourseCard

@@ -6,12 +6,12 @@ import { LoadedDataCourse } from "@/types/course";
 const CoursesPage = async () => {
   try {
     const data = await fetch(`${getApiURL()}/api/courses`);
-    const courses = await data.json();
+    const courses: LoadedDataCourse[] = await data.json();
     return (
       <div>
         <Section type="flex-list">
-          {courses.map((courseMetadata: LoadedDataCourse, i:number) =>
-            <div key={`${courseMetadata._id}_${i}`}>
+          {courses.filter(course => !course.hide).map((courseMetadata: LoadedDataCourse, i: number) =>
+            <div key={`${courseMetadata._id}_${i}`} >
               <CourseCard
                 course={courseMetadata}
                 title={courseMetadata.title}
@@ -24,7 +24,7 @@ const CoursesPage = async () => {
     );
   } catch (error) {
     console.error("unable to fetch courses", error);
-    return (<div>some error happened while trying to list courses</div>)
+    return (<div>some error happened while trying to list courses</div>);
   }
 };
 

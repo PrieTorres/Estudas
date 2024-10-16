@@ -28,7 +28,7 @@ export const CourseCard = ({ title, progress, course }: CourseProps): ReactNode 
   const handleCourseClick = async () => {
     try {
       let userDbId = userId;
-      if ((!course.progress || course.progress === 0)) {
+      if ((!course.progress || course.progress === 0) && user?.uid) {
         if (!userId && user?.uid) {
           const data = await getUserByFirebaseUserId({ firebaseUserId: user.uid, createUser: true, userData: user });
           updateSessionId?.(data._id);

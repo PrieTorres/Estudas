@@ -20,11 +20,11 @@ export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K)
 };
 
 export function isProd() {
-  return process.env.ENVIRONMENT == "production";
+  return process.env.NEXT_PUBLIC_ENVIRONMENT == "production";
 };
 
 export function getApiURL() {
-  return (isProd() ? process.env.PROD_URL : process.env.DEV_URL) ?? "http://localhost:3000";
+  return (isProd() ? process.env.NEXT_PUBLIC_PROD_URL : process.env.NEXT_PUBLIC_DEV_URL) ?? "https://estudas-e527b.web.app";
 }
 
 
@@ -44,19 +44,11 @@ export async function createUserDb({ firebaseUserId, email, image, name }: { fir
 
 export async function getUserByFirebaseUserId({ firebaseUserId, createUser, userData }: { firebaseUserId: string, createUser?: boolean, userData?: User | null; }) {
   try {
-    const data = await fetch(`${getApiURL()}/api/user/${firebaseUserId}`);
-    const user = await data.json();
+    const user = await fetchUserByFirebaseUserId(firebaseUserId);
 
     if (!user._id) {
       if (createUser) {
-        if (!userData) throw new Error("missing user data to create user");
-
-        return await createUserDb({ 
-          firebaseUserId, 
-          email: userData?.email ?? "", 
-          image: userData?.photoURL ?? "", 
-          name: userData?.displayName ?? "" 
-        });
+        return await handleUserCreation(firebaseUserId, userData);
       }
 
       console.error("no user found getUserByFirebaseUserId", user);
@@ -64,20 +56,33 @@ export async function getUserByFirebaseUserId({ firebaseUserId, createUser, user
 
     return user;
   } catch (error) {
-    console.error("unable to get user by firebase id", error);
-    if (createUser) {
-      if (!userData) throw new Error("missing user data to create user");
-
-      return await createUserDb({ 
-        firebaseUserId, 
-        email: userData?.email ?? "", 
-        image: userData?.photoURL ?? "", 
-        name: userData?.displayName ?? "" 
-      });
-    }
-
-    throw error;
+    return await handleUserFetchError(error, createUser, firebaseUserId, userData);
   }
+}
+
+async function fetchUserByFirebaseUserId(firebaseUserId: string) {
+  const data = await fetch(`${getApiURL()}/api/user/${firebaseUserId}`);
+  return await data.json();
+}
+
+async function handleUserCreation(firebaseUserId: string, userData?: User | null) {
+  if (!userData) throw new Error("missing user data to create user");
+
+  return await createUserDb({ 
+    firebaseUserId, 
+    email: userData?.email ?? "", 
+    image: userData?.photoURL ?? "", 
+    name: userData?.displayName ?? "" 
+  });
+}
+
+async function handleUserFetchError(error: any, createUser?: boolean, firebaseUserId?: string, userData?: User | null) {
+  console.error("unable to get user by firebase id", error);
+  if (createUser) {
+    return await handleUserCreation(firebaseUserId!, userData);
+  }
+
+  throw error;
 }
 
 export async function saveCourseProgress({ userId, courseId, progress }: { userId: number | string, courseId: number | string, progress: number; }) {
@@ -86,7 +91,7 @@ export async function saveCourseProgress({ userId, courseId, progress }: { userI
       userId, courseId, progress
     };
 
-    const res = await fetch(`${getApiURL()}/api/progressCourse/`, {
+    const res = await fetch(`${getApiURL()}/api/progressCourse`, {
       body: JSON.stringify(courseProgress),
       method: "POST"
     });
@@ -102,9 +107,9 @@ export async function saveCourseProgress({ userId, courseId, progress }: { userI
 export async function updateCourseProgress({ id, progress }: { id: number | string, progress: number; }) {
   try {
 
-    const res = await fetch(`${getApiURL()}/api/progressCourse/`, {
+    const res = await fetch(`${getApiURL()}/api/progressCourse`, {
       body: JSON.stringify({ id, progress }),
-      method: "POST"
+      method: "PATCH"
     });
 
     return res;
@@ -127,7 +132,7 @@ export async function saveUpdateCourseProgress({ userId, courseId, progress }: {
     if (!savedProgress?._id) {
       return await saveCourseProgress({ userId, courseId, progress });
     } else {
-      return await updateCourseProgress({ id: savedProgress?.id, progress });
+      // return await updateCourseProgress({ id: savedProgress?.id, progress });
     }
   } catch (error) {
     if (error) {

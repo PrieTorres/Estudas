@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 export async function GET(req: Request) {
   const userId = cookies().get("userId");
-  if(!userId) return new Response("need to be logged in to get course progress data", { status: 500 });
+  if (!userId) return new Response("need to be logged in to get course progress data", { status: 500 });
 
   try {
     await connectToDB();
@@ -33,6 +33,30 @@ export async function POST(req: Request) {
     await saveProgress.save();
     return new Response(JSON.stringify(saveProgress), { status: 201 });
   } catch (error) {
-    return new Response("Failed to create a new prompt", { status: 500 });
+    console.error("error saving progress", error, { userId, courseId, progressPercent });
+    return new Response("Failed to save progress", { status: 500 });
   }
 }
+
+export const PATCH = async (request: Request) => {
+  const { progress, id } = await request.json();
+
+  try {
+    await connectToDB();
+
+    const currentProgress = await ProgressCourse.findById(id);
+
+    if (!currentProgress) {
+      return new Response("Progress not found", { status: 404 });
+    }
+
+    currentProgress.progress = progress;
+
+    await currentProgress.save();
+
+    return new Response("Successfully updated progress", { status: 200 });
+  } catch (error) {
+    console.error("Error updating progress", error);
+    return new Response("Error Updating progress", { status: 500 });
+  }
+};

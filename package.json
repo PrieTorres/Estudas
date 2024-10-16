@@ -10,7 +10,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "NEXT_PUBLIC_ENVIRONMENT=production next build && firebase deploy"
   },
   "dependencies": {
     "@next-auth/firebase-adapter": "^2.0.1",
