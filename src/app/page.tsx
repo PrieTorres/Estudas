@@ -28,15 +28,12 @@ export default function Home() {
 
       let userMongo = null;
 
-    
-
       try {
-        if (!user?._id && !userId) {
-          userMongo = await getUserByFirebaseUserId({ firebaseUserId: user?.uid ?? "", createUser: true, userData: user });
+        if (!user?._id && !userId && user?.uid) {
+          userMongo = await getUserByFirebaseUserId({ firebaseUserId: user?.uid, createUser: true, userData: user });
           if (typeof updateSessionId == "function") updateSessionId(userMongo?._id ?? userMongo?.id ?? "");
         }
 
-        console.log("fetching progress", userId ?? userMongo?._id ?? userMongo?.id ?? "");
         const data = await fetch(`/api/progressCourse/${userId ?? userMongo?._id ?? userMongo?.id ?? ""}`);
         const savedProgress = await data.json();
 
@@ -54,6 +51,7 @@ export default function Home() {
       fetchProgress();
     } else {
       setLoading(false);
+      setCoursesInProgress([]);
     }
   }, [user]);
 
@@ -64,25 +62,26 @@ export default function Home() {
           <LoadingSection />
           :
           <Section type="flex-list">
-            <div>
+            <div style={{ width: "100%" }}>
               {
                 !user ? "faça login para salvar seu progresso" :
                   coursesInProgress?.length > 0 ? "cursos em andamento" : "nenhum curso em andamento :("
               }
-              {
-                coursesInProgress.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide).map((progressData, i) => (
-                  <div key={`${progressData?._id}_${i}`}>
-                    {typeof progressData.courseId === 'object' && (
-                      <CourseCard
-                        title={progressData.courseId?.title}
-                        progress={progressData.progress}
-                        course={progressData.courseId as LoadedDataCourse}
-                      />
-                    )}
-                  </div>
-                ))
-              }
             </div>
+            {
+              coursesInProgress.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide).map((progressData, i) => (
+                <div key={`${progressData?._id}_${i}`}>
+                  {typeof progressData.courseId === 'object' && (
+                    <CourseCard
+                      title={progressData.courseId?.title}
+                      progress={progressData.progress}
+                      course={progressData.courseId as LoadedDataCourse}
+                      score={progressData.score}
+                    />
+                  )}
+                </div>
+              ))
+            }
           </Section>
       }
     </div>

@@ -21,26 +21,28 @@ export async function GET(req: Request, { params }: { params: paramsType  }) {
   }
 };
 
-export const PATCH = async (request: Request, { params }: { params: { id: number | string; }; }) => {
-  const { progress } = await request.json();
-
+export const PATCH = async (request: Request, { params }: { params: paramsType  }) => {
   try {
-    await connectToDB();
+    const { progress, stepsDone, activitiesDone, score } = await request.json();
 
-    const currentProgress = await ProgressCourse.findById(params.id);
+    await connectToDB();
+    const currentProgress = await ProgressCourse.findOne({ userId: params.userId, courseId: params.courseId });
 
     if (!currentProgress) {
       return new Response("Progress not found", { status: 404 });
     }
 
-    currentProgress.progress = progress;
+    if (progress !== undefined) currentProgress.progress = progress;
+    if (stepsDone !== undefined) currentProgress.stepsDone = stepsDone;
+    if (activitiesDone !== undefined) currentProgress.activitiesDone = activitiesDone;
+    if (score !== undefined) currentProgress.score = score;
 
     await currentProgress.save();
 
     return new Response("Successfully updated progress", { status: 200 });
   } catch (error) {
     console.error("Error updating progress", error);
-    return new Response("Error Updating progress", { status: 500 });
+    return new Response("Error updating progress", { status: 500 });
   }
 };
 

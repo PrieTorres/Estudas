@@ -32,5 +32,13 @@ export const Container = styled.section<ContainerProps>`
       & h1 {
         ${responsiveFontSize(theme, "xlarge")}
       }
+
+      @media ${theme.media.lteSmall} {
+        padding: ${theme.spacings.medium};
+      }
+
+      @media ${theme.media.lteMedium} {
+        justify-content: center;
+      }
   `}
 `;

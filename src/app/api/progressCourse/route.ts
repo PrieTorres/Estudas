@@ -39,24 +39,26 @@ export async function POST(req: Request) {
 }
 
 export const PATCH = async (request: Request) => {
-  const { progress, id } = await request.json();
-
   try {
-    await connectToDB();
+    const { id, progress, stepsDone, activitiesDone, score } = await request.json();
 
+    await connectToDB();
     const currentProgress = await ProgressCourse.findById(id);
 
     if (!currentProgress) {
       return new Response("Progress not found", { status: 404 });
     }
 
-    currentProgress.progress = progress;
+    if (progress !== undefined) currentProgress.progress = progress;
+    if (stepsDone !== undefined) currentProgress.stepsDone = stepsDone;
+    if (activitiesDone !== undefined) currentProgress.activitiesDone = activitiesDone;
+    if (score !== undefined) currentProgress.score = score;
 
     await currentProgress.save();
 
     return new Response("Successfully updated progress", { status: 200 });
   } catch (error) {
     console.error("Error updating progress", error);
-    return new Response("Error Updating progress", { status: 500 });
+    return new Response("Error updating progress", { status: 500 });
   }
 };

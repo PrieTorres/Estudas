@@ -5,6 +5,7 @@ import { StepCourse as StepCourseType } from "@/types/stepCourse";
 import { ActivityStepCourse as ActivityStepCourseType } from "@/types/activityStepCourse";
 import ActivityStepCourse from "@/models/ActivityStepCourse";
 import { User } from "firebase/auth";
+import { ActivitiesDone } from "@/types/progressCourse";
 
 type keyType = string | number | symbol;
 export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K): Record<T[K] & (keyType), T> {
@@ -28,7 +29,7 @@ export function getApiURL() {
 }
 
 
-export async function createUserDb({ firebaseUserId, email, image, name }: { firebaseUserId: string, email: string, image: string, name: string }) {
+export async function createUserDb({ firebaseUserId, email, image, name }: { firebaseUserId: string, email: string, image: string, name: string; }) {
   try {
     const res = await fetch(`${getApiURL()}/api/user/`, {
       body: JSON.stringify({ firebaseUserId, email, image, name }),
@@ -68,11 +69,11 @@ async function fetchUserByFirebaseUserId(firebaseUserId: string) {
 async function handleUserCreation(firebaseUserId: string, userData?: User | null) {
   if (!userData) throw new Error("missing user data to create user");
 
-  return await createUserDb({ 
-    firebaseUserId, 
-    email: userData?.email ?? "", 
-    image: userData?.photoURL ?? "", 
-    name: userData?.displayName ?? "" 
+  return await createUserDb({
+    firebaseUserId,
+    email: userData?.email ?? "",
+    image: userData?.photoURL ?? "",
+    name: userData?.displayName ?? ""
   });
 }
 
@@ -104,13 +105,31 @@ export async function saveCourseProgress({ userId, courseId, progress }: { userI
   }
 }
 
-export async function updateCourseProgress({ id, progress }: { id: number | string, progress: number; }) {
+export async function updateCourseProgress({ id, progress, stepsDone, activitiesDone, courseId, userId, score }: {
+  id?: number | string;
+  courseId?: number | string;
+  userId?: number | string;
+  progress: number;
+  stepsDone?: string[];
+  activitiesDone?: ActivitiesDone[];
+  score?: number;
+}) {
   try {
+    let res;
 
-    const res = await fetch(`${getApiURL()}/api/progressCourse`, {
-      body: JSON.stringify({ id, progress }),
-      method: "PATCH"
-    });
+    if (id) {
+      res = await fetch(`${getApiURL()}/api/progressCourse`, {
+        body: JSON.stringify({ id, progress, stepsDone, activitiesDone, score }),
+        method: "PATCH"
+      });
+    } else if (courseId && userId) {
+      res = await fetch(`${getApiURL()}/api/progressCourse/${userId}/${courseId}`, {
+        body: JSON.stringify({ progress, stepsDone, activitiesDone, score }),
+        method: "PATCH"
+      });
+    } else {
+      throw new Error("missing params to update progress");
+    }
 
     return res;
 
@@ -142,33 +161,36 @@ export async function saveUpdateCourseProgress({ userId, courseId, progress }: {
   }
 }
 
-export async function getDataCourse({ courseId }: { courseId: number | string; }): Promise<LoadedDataCourse> {
+export async function getDataCourse({ courseId, userId }: { courseId: number | string; userId?: number | string }): Promise<LoadedDataCourse> {
   try {
-    const data = await fetch(`/api/courses/${courseId}`);
-    const course: LoadedDataCourse = await data.json();
+    const courseResponse = await fetch(`${getApiURL()}/api/courses/${courseId}`);
+    const course: LoadedDataCourse = await courseResponse.json();
 
-    try {
-      const data = await fetch(`/api/stepCourse/${courseId}`);
-      const courseSteps = await data.json();
+    const [courseStepsResponse, progressResponse] = await Promise.all([
+      fetch(`${getApiURL()}/api/stepCourse/${courseId}`),
+      userId ? fetch(`${getApiURL()}/api/progressCourse/${userId}/${courseId}`) : Promise.resolve(null)
+    ]);
 
-      course.steps = courseSteps;
-    } catch (err) {
-      console.error("unable to find course data", err);
+    const courseSteps = await courseStepsResponse.json();
+    course.steps = courseSteps;
+
+    if (progressResponse) {
+      const progress = await progressResponse.json();
+      course.progress = progress?.progress ?? 0;
+      course.stepsDone = progress?.stepsDone;
+      course.activitiesDone = progress?.activitiesDone;
     }
 
     return course;
   } catch (err) {
-    console.error("some error ocurred");
-    return ({
+    console.error("An error occurred while fetching course data", err);
+    return {
       title: "",
       _id: "",
       steps: []
-    });
+    };
   }
-};
-
-
-
+}
 
 export async function createCourse(course: LoadedDataCourse) {
   try {

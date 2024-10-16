@@ -1,17 +1,15 @@
 "use client";
 
-import { getDataCourse } from '@/lib/helper';
+import { getDataCourse, updateCourseProgress } from '@/lib/helper';
 import { Container } from './styles';
 import { LoadedDataCourse } from "@/types/course";
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { StepsVisualizer } from '@/components/StepsVisualizer';
 import { IconButton } from '@/components/IconButton';
 import { Section } from '@/components/Section';
 import { QuestionsContainer } from '@/components/QuestionsContainer';
 import { FillingDiv } from "@/components/FillingDiv";
-import { ActivityStepCourse } from '@/types/activityStepCourse';
-import ex_cmd_ent_1 from "@/assets/img/ex_cmd_ent_1.png";
-import ex_cmd_ent_2 from "@/assets/img/ex_cmd_ent_2.png";
+import { PageContext } from '@/context/pageContext';
 
 const CoursePage = async ({ params }: { params: { courseId: string | number; }; }) => {
   const [course, setCourse] = useState<LoadedDataCourse>({
@@ -20,17 +18,50 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
     _id: ""
   });
   const [step, setStep] = useState<number>(0);
+  const { userId, openCourse } = useContext(PageContext);
+
+  function updateProgress(course: LoadedDataCourse, indexStep: number) {
+    const idStep = `${course?.steps[indexStep]?._id}`;
+    const courseData = course;
+
+    if (!course.stepsDone?.includes(idStep) && userId) {
+      if (Array.isArray(courseData.stepsDone)) {
+        courseData.stepsDone.push(idStep);
+      } else {
+        courseData.stepsDone = [idStep];
+      }
+
+      courseData.progress = (courseData.stepsDone.length / courseData.steps.length) * 100;
+      updateCourseProgress({
+        userId: userId,
+        courseId: courseData._id,
+        progress: courseData.progress,
+        stepsDone: courseData.stepsDone
+      });
+
+      setCourse(courseData);
+      if (openCourse) openCourse(courseData);
+    }
+  }
 
   useEffect(() => {
     async function loadCourse() {
-      const data: LoadedDataCourse = await getDataCourse({ courseId: params?.courseId });
+      const data: LoadedDataCourse = await getDataCourse({ courseId: params?.courseId, userId });
       setCourse(data);
+      if (openCourse) openCourse(data);
+      updateProgress(data, 0);
     }
 
     if (params.courseId) loadCourse();
+
   }, [params.courseId]);
 
-  const steps = course?.steps?.toSorted((a, b) => a?.order - b?.order);
+  const handleClickStep = (i: number) => {
+    updateProgress(course, i);
+    setStep(i);
+  };
+
+  const steps = course?.steps?.sort((a, b) => a?.order - b?.order);
 
   return (
     <div style={{ padding: 10 }}>
@@ -39,7 +70,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
           <StepsVisualizer
             stepQuantity={steps.length}
             currentStep={step}
-            onClickStep={(i: number) => setStep(i)}
+            onClickStep={handleClickStep}
           />
           : undefined
         }
@@ -55,7 +86,8 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
             <Section>
               <h1>Hora de praticar!</h1>
               <QuestionsContainer
-                questions={course?.steps[step]?.questions as ActivityStepCourse[]}
+                activitiesDone={course?.activitiesDone}
+                questions={course?.steps[step]?.questions}
               />
             </Section>
             : undefined
@@ -65,7 +97,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
             step > 0 && steps.length > 1 ?
               <IconButton
                 icon="arrow_back"
-                onClick={() => setStep(prev => prev - 1)}
+                onClick={() => handleClickStep(step - 1)}
               />
               : <FillingDiv />
           }
@@ -73,7 +105,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
             step < (steps.length - 1) && steps.length > 1 ?
               <IconButton
                 icon="arrow_forward"
-                onClick={() => setStep(prev => prev + 1)}
+                onClick={() => handleClickStep(step + 1)}
               />
               : <FillingDiv />
           }

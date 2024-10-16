@@ -58,6 +58,14 @@ export const Container = styled.div`
         padding: ${theme.spacings.large};
       }
     }
+
+    @media ${theme.media.lteMedium} {
+      padding: ${theme.spacings.medium};
+    }
+
+    @media ${theme.media.lteSmall} {
+      padding: ${theme.spacings.small};
+    }
     
   `}
 `;

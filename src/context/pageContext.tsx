@@ -1,9 +1,14 @@
+import { updateCourseProgress } from "@/lib/helper";
+import { LoadedDataCourse } from "@/types/course";
 import { createContext, ReactNode, useMemo, useState } from "react";
 
 interface PageContextProps {
   userId?: any;
   loading?: boolean;
   coursesInProgress?: any[];
+  loadedCourse?: LoadedDataCourse;
+  openCourse?: (courseData: LoadedDataCourse) => void;
+  updateCourse?: (courseData: LoadedDataCourse, fetch?: boolean) => void;
   fetchProgress?: () => void;
   updateSessionId?: (userId: string) => void;
 }
@@ -15,9 +20,31 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
 
   const updateSessionId = (userId: string) => {
     setPageState((prev) => ({ ...prev, userId }));
-  }
+  };
 
-  const contextValue = useMemo(() => ({ ...pageState, updateSessionId }), [pageState, updateSessionId]);
+  const openCourse = (courseData: LoadedDataCourse) => {
+    setPageState((prev) => ({ ...prev, loadedCourse: courseData }));
+  };
+
+  const updateCourse = (courseData: LoadedDataCourse, fetch?: boolean) => {
+    let course = { ...pageState.loadedCourse, ...courseData };
+    course.stepsDone = course.stepsDone?.filter((step) => course.steps?.find((s) => s._id === step));
+
+    if (fetch) {
+      updateCourseProgress({
+        userId: pageState.userId,
+        courseId: course._id,
+        progress: course.progress ?? 0,
+        stepsDone: course.stepsDone,
+        activitiesDone: course.activitiesDone,
+        score: course.score
+      });
+    }
+
+    setPageState((prev) => ({ ...prev, loadedCourse: courseData }));
+  };
+
+  const contextValue = useMemo(() => ({ ...pageState, updateSessionId, openCourse, updateCourse }), [pageState, updateSessionId, openCourse, updateCourse]);
 
   return (
     <PageContext.Provider value={contextValue}>

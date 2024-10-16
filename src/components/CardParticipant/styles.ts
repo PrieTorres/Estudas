@@ -36,15 +36,16 @@ export const Container = styled.article`
     }
 
     @media ${theme.media.lteSmall} {
-      width: 250px;
+      width: 230px;
+      height: 220px;
 
       & p {
         ${responsiveFontSize(theme, "medium")}
       }
 
       & img {
-        width: 170px;
-        height: 170px;
+        width: 100px;
+        height: 100px;
         margin-bottom: 12px;
       }
     }

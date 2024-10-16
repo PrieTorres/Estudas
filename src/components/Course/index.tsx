@@ -18,12 +18,14 @@ interface CourseProps {
   title: string;
   progress?: number;
   course: LoadedDataCourse;
+  score?: number;
 }
 
-export const CourseCard = ({ title, progress, course }: CourseProps): ReactNode => {
+export const CourseCard = ({ title, progress, course, score }: CourseProps): ReactNode => {
   const router = useRouter();
   const [user] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
   const { userId, updateSessionId } = useContext(PageContext);
+  const scoreValue = score ?? course.score;
 
   const handleCourseClick = async () => {
     try {
@@ -57,6 +59,7 @@ export const CourseCard = ({ title, progress, course }: CourseProps): ReactNode 
         <div>
           <div>{progress} %</div>
           <div>{progress >= 100 ? "Concluído" : "Pendente"}</div>
+          <div>{scoreValue != undefined ? `nota: ${score?.toFixed(2)}` : ""}</div>
         </div>
       ) : (
         <div>Não iniciado</div>
