@@ -23,7 +23,7 @@ export async function GET(req: Request, { params }: { params: paramsType  }) {
 
 export const PATCH = async (request: Request, { params }: { params: paramsType  }) => {
   try {
-    const { progress, stepsDone, activitiesDone } = await request.json();
+    const { progress, stepsDone, activitiesDone, score } = await request.json();
 
     await connectToDB();
     const currentProgress = await ProgressCourse.findOne({ userId: params.userId, courseId: params.courseId });
@@ -35,6 +35,7 @@ export const PATCH = async (request: Request, { params }: { params: paramsType  
     if (progress !== undefined) currentProgress.progress = progress;
     if (stepsDone !== undefined) currentProgress.stepsDone = stepsDone;
     if (activitiesDone !== undefined) currentProgress.activitiesDone = activitiesDone;
+    if (score !== undefined) currentProgress.score = score;
 
     await currentProgress.save();
 

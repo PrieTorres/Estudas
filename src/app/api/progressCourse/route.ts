@@ -40,7 +40,7 @@ export async function POST(req: Request) {
 
 export const PATCH = async (request: Request) => {
   try {
-    const { id, progress, stepsDone, activitiesDone } = await request.json();
+    const { id, progress, stepsDone, activitiesDone, score } = await request.json();
 
     await connectToDB();
     const currentProgress = await ProgressCourse.findById(id);
@@ -52,6 +52,7 @@ export const PATCH = async (request: Request) => {
     if (progress !== undefined) currentProgress.progress = progress;
     if (stepsDone !== undefined) currentProgress.stepsDone = stepsDone;
     if (activitiesDone !== undefined) currentProgress.activitiesDone = activitiesDone;
+    if (score !== undefined) currentProgress.score = score;
 
     await currentProgress.save();
 

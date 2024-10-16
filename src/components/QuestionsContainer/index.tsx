@@ -7,16 +7,18 @@ import { AnsweredMetadata, QuestionBox } from '../QuestionBox';
 import { LabelButton } from '../LabelButton';
 import { FillingDiv } from "@/components/FillingDiv";
 import { PageContext } from '@/context/pageContext';
+import { ActivitiesDone as ActivitiesDoneType } from '@/types/progressCourse';
 
 interface QuestionsContainerProps {
   questions: Array<ActivityStepCourse>;
+  activitiesDone?: Array<ActivitiesDoneType>;
 }
 
 interface QuestResponse {
   [key: string]: AnsweredMetadata;
 }
 
-export const QuestionsContainer = ({ questions }: QuestionsContainerProps): ReactElement => {
+export const QuestionsContainer = ({ questions, activitiesDone }: QuestionsContainerProps): ReactElement => {
   const [questionIndex, setQuestionIndex] = useState<number>(0);
   const [questResponses, setQuestResponses] = useState<QuestResponse>({});
   const { loadedCourse, updateCourse } = useContext(PageContext);
@@ -67,10 +69,28 @@ export const QuestionsContainer = ({ questions }: QuestionsContainerProps): Reac
   }, [getCorrectQuant, questions.length]);
 
   useEffect(() => {
+    if (activitiesDone) {
+      const newQuestResponses: QuestResponse = { ...questResponses };
+      activitiesDone.forEach(({ activityId, answer }) => {
+        const question = questions.find(({ _id }) => _id === activityId);
+        if (question) {
+          newQuestResponses[activityId] = {
+            clicked: answer,
+            answer: question.answer,
+            isCorrect: answer === question.answer
+          };
+        }
+      });
+
+      setQuestResponses(newQuestResponses);
+    }
+  }, [activitiesDone]);
+
+  useEffect(() => {
     if (isAllAnswered && loadedCourse && typeof updateCourse === "function") {
       const oldScore = loadedCourse.score ?? 0;
       loadedCourse.score = parseFloat(getPercentCorrect());
-      if(loadedCourse.score !== oldScore) {
+      if (loadedCourse.score !== oldScore) {
         updateCourse(loadedCourse, true);
       }
     }

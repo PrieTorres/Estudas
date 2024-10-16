@@ -36,7 +36,8 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
         courseId: course._id,
         progress: course.progress ?? 0,
         stepsDone: course.stepsDone,
-        activitiesDone: course.activitiesDone
+        activitiesDone: course.activitiesDone,
+        score: course.score
       });
     }
 

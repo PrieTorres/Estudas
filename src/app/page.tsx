@@ -51,6 +51,7 @@ export default function Home() {
       fetchProgress();
     } else {
       setLoading(false);
+      setCoursesInProgress([]);
     }
   }, [user]);
 
@@ -75,6 +76,7 @@ export default function Home() {
                       title={progressData.courseId?.title}
                       progress={progressData.progress}
                       course={progressData.courseId as LoadedDataCourse}
+                      score={progressData.score}
                     />
                   )}
                 </div>

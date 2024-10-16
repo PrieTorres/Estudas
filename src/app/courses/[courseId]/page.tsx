@@ -20,18 +20,8 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
   const [step, setStep] = useState<number>(0);
   const { userId, openCourse } = useContext(PageContext);
 
-  useEffect(() => {
-    async function loadCourse() {
-      const data: LoadedDataCourse = await getDataCourse({ courseId: params?.courseId, userId });
-      setCourse(data);
-      if (openCourse) openCourse(data);
-    }
-
-    if (params.courseId) loadCourse();
-  }, [params.courseId]);
-
-  const handleClickStep = (i: number) => {
-    const idStep = `${course?.steps[i]?._id}`;
+  function updateProgress(course: LoadedDataCourse, indexStep: number) {
+    const idStep = `${course?.steps[indexStep]?._id}`;
     const courseData = course;
 
     if (!course.stepsDone?.includes(idStep) && userId) {
@@ -52,7 +42,22 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
       setCourse(courseData);
       if (openCourse) openCourse(courseData);
     }
+  }
 
+  useEffect(() => {
+    async function loadCourse() {
+      const data: LoadedDataCourse = await getDataCourse({ courseId: params?.courseId, userId });
+      setCourse(data);
+      if (openCourse) openCourse(data);
+      updateProgress(data, 0);
+    }
+
+    if (params.courseId) loadCourse();
+
+  }, [params.courseId]);
+
+  const handleClickStep = (i: number) => {
+    updateProgress(course, i);
     setStep(i);
   };
 
@@ -81,6 +86,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
             <Section>
               <h1>Hora de praticar!</h1>
               <QuestionsContainer
+                activitiesDone={course?.activitiesDone}
                 questions={course?.steps[step]?.questions}
               />
             </Section>

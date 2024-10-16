@@ -105,25 +105,26 @@ export async function saveCourseProgress({ userId, courseId, progress }: { userI
   }
 }
 
-export async function updateCourseProgress({ id, progress, stepsDone, activitiesDone, courseId, userId }: {
+export async function updateCourseProgress({ id, progress, stepsDone, activitiesDone, courseId, userId, score }: {
   id?: number | string;
   courseId?: number | string;
   userId?: number | string;
   progress: number;
   stepsDone?: string[];
   activitiesDone?: ActivitiesDone[];
+  score?: number;
 }) {
   try {
     let res;
 
     if (id) {
       res = await fetch(`${getApiURL()}/api/progressCourse`, {
-        body: JSON.stringify({ id, progress, stepsDone, activitiesDone }),
+        body: JSON.stringify({ id, progress, stepsDone, activitiesDone, score }),
         method: "PATCH"
       });
     } else if (courseId && userId) {
       res = await fetch(`${getApiURL()}/api/progressCourse/${userId}/${courseId}`, {
-        body: JSON.stringify({ progress, stepsDone, activitiesDone }),
+        body: JSON.stringify({ progress, stepsDone, activitiesDone, score }),
         method: "PATCH"
       });
     } else {
