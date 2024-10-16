@@ -21,5 +21,11 @@ export const Container = styled.header`
       align-items: flex-start;
       ${responsiveFontSize(theme, "xlarge")}
     }
+
+    @media ${theme.media.lteSmallMed} {
+      gap: 8px;
+      padding: ${theme.spacings.small};
+      flex-wrap: wrap;
+    }
   `}
 `;

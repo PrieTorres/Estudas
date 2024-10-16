@@ -25,7 +25,7 @@ export function isProd() {
 };
 
 export function getApiURL() {
-  return (isProd() ? process.env.NEXT_PUBLIC_PROD_URL : process.env.NEXT_PUBLIC_DEV_URL) ?? "http://localhost:3000";
+  return (isProd() ? process.env.NEXT_PUBLIC_PROD_URL : process.env.NEXT_PUBLIC_DEV_URL) ?? "https://estudas-e527b.web.app";
 }
 
 

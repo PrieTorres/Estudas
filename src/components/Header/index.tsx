@@ -7,9 +7,14 @@ import { MainLogo } from '../MainLogo';
 export const Header = (): ReactElement => {
   return (
     <Container>
-      <MainLogo/>
-      <Menu />
+      <MainLogo />
+      <div className="max-sm:hidden">
+        <Menu />
+      </div>
       <SignButtons />
+      <div className="hidden max-sm:block" style={{ width: "100%" }}>
+        <Menu />
+      </div>
     </Container>
   );
 };

@@ -24,6 +24,7 @@ export const Container = styled.nav`
       flex-direction: column;
       align-items: center;
       align-content: center;
+      width: 100%;
 
       & div {
         width: 100%;

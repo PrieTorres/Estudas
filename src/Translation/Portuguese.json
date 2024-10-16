@@ -2,6 +2,8 @@
   "orders": "pedidos",
   "cart": "carrinho",
   "menu": "menu",
-  "home": "home",
-  "portuguese": "Português"
+  "portuguese": "Português",
+  "courses": "cursos",
+  "about": "sobre nós",
+  "home": "início"
 }

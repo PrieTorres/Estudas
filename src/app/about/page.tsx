@@ -42,7 +42,7 @@ const AboutPage = () => {
       </article>
       <section style={{ padding: 12 }}>
         <h1>Um pouco sobre nós</h1>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }} className="max-sm:justify-center">
           {members.map((member, i) =>
             <div key={`member_${i}`}>
               <CardParticipant

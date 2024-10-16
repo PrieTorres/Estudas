@@ -36,6 +36,36 @@ export const Container = styled.div`
     & img {
       width: 100%;
     }
+
+    & img::after {
+      border-radius: ${theme.radius.default};
+    }
+
+    & table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    & td, & th {
+      border: 1px solid;
+      padding: ${theme.spacings.small};
+    }
+
+    @media ${theme.media.lteBig} {
+      & img {
+        width: 70%;
+        margin: auto;
+        padding: ${theme.spacings.large};
+      }
+    }
+
+    @media ${theme.media.lteMedium} {
+      padding: ${theme.spacings.medium};
+    }
+
+    @media ${theme.media.lteSmall} {
+      padding: ${theme.spacings.small};
+    }
     
   `}
 `;
