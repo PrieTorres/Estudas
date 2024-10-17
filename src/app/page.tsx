@@ -11,6 +11,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { getUserByFirebaseUserId } from "@/lib/helper";
 import { User } from "firebase/auth";
 import { PageContext } from "@/context/pageContext";
+import { Introduction } from "@/components/Introduction";
 
 interface UserAuth extends User {
   _id: string;
@@ -64,8 +65,17 @@ export default function Home() {
           <Section type="flex-list">
             <div style={{ width: "100%" }}>
               {
-                !user ? "faça login para salvar seu progresso" :
-                  coursesInProgress?.length > 0 ? "cursos em andamento" : "nenhum curso em andamento :("
+                !user ?
+                  <div>
+                    <Introduction />
+                    faça login para salvar seu progresso
+                  </div> :
+                  coursesInProgress?.length > 0 ?
+                    "cursos em andamento" :
+                    <div>
+                      <Introduction />
+                      nenhum curso em andamento ;(
+                    </div>
               }
             </div>
             {
