@@ -10,7 +10,7 @@ const CoursesPage = async () => {
     return (
       <div>
         <Section type="flex-list">
-          {courses.filter(course => !course.hide).map((courseMetadata: LoadedDataCourse, i: number) =>
+          {courses.filter(course => !course.hide).sort((a, b) => a.title < b.title ? -1 : 1).map((courseMetadata: LoadedDataCourse, i: number) =>
             <div key={`${courseMetadata._id}_${i}`} >
               <CourseCard
                 course={courseMetadata}
