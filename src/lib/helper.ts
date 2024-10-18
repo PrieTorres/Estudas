@@ -45,7 +45,7 @@ export async function createUserDb({ firebaseUserId, email, image, name }: { fir
 
 export async function getUserByFirebaseUserId({ firebaseUserId, createUser, userData }: { firebaseUserId: string, createUser?: boolean, userData?: User | null; }) {
   try {
-    const user = await fetchUserByFirebaseUserId(firebaseUserId);
+    const user = userData?.email ? await fetchUserByEmail(userData?.email ?? firebaseUserId) : await fetchUserByFirebaseUserId(firebaseUserId);
 
     if (!user._id) {
       if (createUser) {
@@ -63,6 +63,11 @@ export async function getUserByFirebaseUserId({ firebaseUserId, createUser, user
 
 async function fetchUserByFirebaseUserId(firebaseUserId: string) {
   const data = await fetch(`${getApiURL()}/api/user/${firebaseUserId}`);
+  return await data.json();
+}
+
+async function fetchUserByEmail(email: string) {
+  const data = await fetch(`${getApiURL()}/api/user/${email}`);
   return await data.json();
 }
 

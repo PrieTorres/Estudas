@@ -6,7 +6,7 @@ export async function GET(req: Request, { params }: { params: { firebaseUserId: 
   try {
     await connectToDB();
 
-    const user = await User.findOne({ firebaseUserId: params.firebaseUserId });
+    const user = await User.findOne({ $or: [{ email: params.firebaseUserId }, { firebaseUserId: params.firebaseUserId }] });
     if (!user) return new Response("no user found", { status: 404 });
 
     cookies().set('userId', user._id, { httpOnly: false });
