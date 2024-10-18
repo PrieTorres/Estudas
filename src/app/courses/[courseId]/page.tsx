@@ -10,8 +10,9 @@ import { Section } from '@/components/Section';
 import { QuestionsContainer } from '@/components/QuestionsContainer';
 import { FillingDiv } from "@/components/FillingDiv";
 import { PageContext } from '@/context/pageContext';
+import { LoadingSection } from '@/components/LoadingSection';
 
-const CoursePage = async ({ params }: { params: { courseId: string | number; }; }) => {
+const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => {
   const [course, setCourse] = useState<LoadedDataCourse>({
     title: "",
     steps: [],
@@ -66,6 +67,9 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
   return (
     <div style={{ padding: 10 }}>
       <Section>
+        {!course._id &&
+          <LoadingSection />
+        }
         {steps.length > 1 ?
           <StepsVisualizer
             stepQuantity={steps.length}
@@ -77,7 +81,7 @@ const CoursePage = async ({ params }: { params: { courseId: string | number; }; 
         {
           course?.steps[step]?.content ? <Section>
             <Container
-              dangerouslySetInnerHTML={{ __html: (course?.steps[step]?.content ?? "") }}
+              dangerouslySetInnerHTML={{ __html: (course?.steps[step]?.content ?? "loading...") }}
             />
           </Section> : undefined
         }
