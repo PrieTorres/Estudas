@@ -29,7 +29,15 @@ export const PATCH = async (request: Request, { params }: { params: paramsType  
     const currentProgress = await ProgressCourse.findOne({ userId: params.userId, courseId: params.courseId });
 
     if (!currentProgress) {
-      return new Response("Progress not found", { status: 404 });
+      const saveProgress = new ProgressCourse({ 
+        userId: params.userId, 
+        courseId: params.courseId, 
+        progress, stepsDone, activitiesDone, score 
+      });
+
+      await saveProgress.save();
+
+      return new Response("Successfully save progress", { status: 201 });
     }
 
     if (progress !== undefined) currentProgress.progress = progress;
