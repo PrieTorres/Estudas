@@ -8,7 +8,7 @@ export const Container = styled.article`
       padding: ${theme.spacings.medium};
       border-radius: ${theme.radius.default};
       width: 320px;
-      height: 180px;
+      height: 220px;
       cursor: pointer;
       transition: box-shadow 0.3s;
 
