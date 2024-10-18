@@ -28,6 +28,10 @@ export const QuestionBox = ({ question, response, options, onClickOpt, answeredM
       } else {
         return "wrong";
       }
+    } 
+
+    if (opt == answer){
+      return "correct-option";
     }
 
     return "";

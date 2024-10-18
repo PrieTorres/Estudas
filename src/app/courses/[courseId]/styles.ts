@@ -16,13 +16,31 @@ export const Container = styled.div`
     }
 
     & a {
-      text-shadow: 0px 0px 2px ${theme.colors.white};
       text-decoration: underline;
+      transition: all 0.3s ease-in-out;
+    }
+
+    & a:hover {
+      text-shadow: 0px 0px 3px ${theme.colors.white};
     }
 
     h3 {
       margin-top: 10px;
       ${responsiveFontSize(theme, "large")}
+    }
+
+    h4 {
+      margin-top: 10px;
+    }
+
+    ul {
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+
+    ul > li {
+      list-style: disc;
+      margin-left: 20px;
     }
 
     hr {
