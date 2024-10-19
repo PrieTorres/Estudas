@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"
+import { Inter } from "next/font/google";
 import { Provider } from "@/components/Provider/Provider";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -23,6 +23,9 @@ export default function RootLayout({
   return (
     <LanguageContextProvider>
       <html lang="en">
+        <head>
+          <script src="https://www.google.com/recaptcha/enterprise.js?render=6LeWoGUqAAAAAM8f-CcxgiG6CYIyesTt4_k2l7aF"></script>
+        </head>
         <body>
           <Provider>
             <Header />
