@@ -70,7 +70,7 @@ export const SignButtons = () => {
       {/* Mobile Navigation */}
       <div className='sm:hidden flex relative'>
         {user ? (
-          <div className='flex'>
+          <div className='flex flex-col items-end'>
             <Image
               src={user.photoURL}
               width={37}
@@ -81,7 +81,7 @@ export const SignButtons = () => {
             />
 
             {toggleDropdown && (
-              <div className='dropdown'>
+              <div className='dropdown text-center'>
                 <Link
                   href='/profile'
                   className='dropdown_link'

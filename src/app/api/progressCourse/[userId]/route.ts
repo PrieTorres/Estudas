@@ -6,7 +6,7 @@ export async function GET(req: Request, { params }: { params: { userId: number |
     await connectToDB();
 
     const progress = await ProgressCourse.find({ userId: params.userId }).populate("courseId");
-    if (!progress) return new Response("no progress found for this user", { status: 404 });
+    if (!progress) return new Response("[]", { status: 200 });
 
     return new Response(JSON.stringify(progress), { status: 200 });
 

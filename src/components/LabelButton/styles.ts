@@ -20,8 +20,16 @@ export const Container = styled.div<LabelButtonProps>`
       }` : ""
     }
 
+    &.correct, &.wrong, &.correct-option {
+      transition:none;
+    }
+
     &.correct {
       background: ${theme.colors.successfulGreen};
+    }
+
+    &.correct-option {
+      box-shadow: 0px 0px 4px 1px ${theme.colors.successfulGreen};
     }
 
     &.wrong {

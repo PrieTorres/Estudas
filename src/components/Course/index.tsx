@@ -19,9 +19,10 @@ interface CourseProps {
   progress?: number;
   course: LoadedDataCourse;
   score?: number;
+  hideProgress?: boolean;
 }
 
-export const CourseCard = ({ title, progress, course, score }: CourseProps): ReactNode => {
+export const CourseCard = ({ title, progress, course, score, hideProgress }: CourseProps): ReactNode => {
   const router = useRouter();
   const [user] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
   const { userId, updateSessionId } = useContext(PageContext);
@@ -61,7 +62,7 @@ export const CourseCard = ({ title, progress, course, score }: CourseProps): Rea
           <div>{progress >= 100 ? "Concluído" : "Pendente"}</div>
           <div>{scoreValue != undefined ? `nota: ${score?.toFixed(2)}` : ""}</div>
         </div>
-      ) : (
+      ) : !hideProgress && (
         <div>Não iniciado</div>
       )}
     </Styled.Container>

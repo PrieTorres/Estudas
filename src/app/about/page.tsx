@@ -1,26 +1,36 @@
 import { CardParticipant } from "@/components/CardParticipant";
 import { Section } from "@/components/Section";
+import pato from "@/assets/img/pato_programador.png";
+import pinguim from "@/assets/img/pinguim.png";
+import guaxi from "@/assets/img/guaxi.png";
+import gato from "@/assets/img/gato_estudas.png";
+import ornito from "@/assets/img/ornitorrinco.png";
 
 const members = [
   {
     name: "Gabriel Tissi",
-    description: "Responsável por montar o conteúdo de comandos de entrada e saída e laços de repetição"
+    description: "Responsável por montar o conteúdo de comandos de entrada e saída e laços de repetição",
+    src: ornito
   },
   {
     name: "Bruno Schimiguel",
-    description: "Responsável por montar o conteúdo de Lógica de programação e Linguagem de programaçao em C"
+    description: "Responsável por montar o conteúdo de Lógica de programação e Linguagem de programaçao em C",
+    src: pinguim
   },
   {
     name: "Renan",
-    description: "Responsável por montar o conteúdo de Bibliotecas básicas em C e Declaração de variáveis"
+    description: "Responsável por montar o conteúdo de Bibliotecas básicas em C e Declaração de variáveis",
+    src: guaxi
   },
   {
     name: "Erick Andreas Ponticelli",
-    description: "Responsável por montar o conteúdo de Condicionais"
+    description: "Responsável por montar o conteúdo de Condicionais",
+    src: gato
   },
   {
     name: "Priscila Torres",
-    description: "Desenvolvedora do site, responsável por todo e qualquer possível bug no site"
+    description: "Desenvolvedora do site, responsável por todo e qualquer possível bug no site",
+    src: pato
   },
 
 ];
@@ -48,6 +58,7 @@ const AboutPage = () => {
               <CardParticipant
                 name={member.name}
                 description={member.description}
+                imgProps={{ src: member.src, text: `${member.name} profile` }}
               />
             </div>)}
         </div>

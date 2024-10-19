@@ -12,12 +12,13 @@ import { getUserByFirebaseUserId } from "@/lib/helper";
 import { User } from "firebase/auth";
 import { PageContext } from "@/context/pageContext";
 import { Introduction } from "@/components/Introduction";
+import { CertifiedCourse } from "@/components/CertifiedCourse";
 
 interface UserAuth extends User {
   _id: string;
 }
 
-export default function Home() {
+export default function Profile() {
   const [user] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
   const [loading, setLoading] = useState(true);
   const [coursesInProgress, setCoursesInProgress] = useState<ProgressCourse[]>([]);
@@ -63,23 +64,8 @@ export default function Home() {
           <LoadingSection />
           :
           <Section type="flex-list">
-            <div style={{ width: "100%" }}>
-              {
-                !user ?
-                  <div>
-                    <Introduction />
-                    faça login para salvar seu progresso
-                  </div> :
-                  coursesInProgress?.length > 0 ?
-                    "cursos em andamento" :
-                    <div>
-                      <Introduction />
-                      nenhum curso em andamento ;(
-                    </div>
-              }
-            </div>
             {
-              coursesInProgress.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide && prgDat.progress < 100)
+              coursesInProgress.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide && prgDat.progress >= 100)
               .sort((a, b) => {
                 if (typeof a.courseId === 'object' && typeof b.courseId === 'object') {
                   return a.courseId.title < b.courseId.title ? -1 : 1;
@@ -89,11 +75,15 @@ export default function Home() {
               .map((progressData, i) => (
                 <div key={`${progressData?._id}_${i}`}>
                   {typeof progressData.courseId === 'object' && (
-                    <CourseCard
+                    /*<CourseCard
                       title={progressData.courseId?.title}
                       progress={progressData.progress}
                       course={progressData.courseId as LoadedDataCourse}
                       score={progressData.score}
+                    />*/
+                    <CertifiedCourse 
+                      title={progressData.courseId?.title}
+                      score={progressData.score ?? 0}
                     />
                   )}
                 </div>

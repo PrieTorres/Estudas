@@ -7,7 +7,7 @@ export async function GET(req: Request) {
   try {
     await connectToDB();
 
-    const courses = await Course.find({ "hide": { "$ne": 'true' } });
+    const courses = await Course.find({ "hide": { "$ne": 'true' } }).sort({ title: "asc" });
     if (!courses?.length) {
       return new Response("No courses data", { status: 200 });
     }

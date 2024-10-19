@@ -6,7 +6,7 @@ import { responsiveFontSize } from '@/Styles/helperStyles';
 
 interface ContainerProps {
   theme: DefaultTheme;
-  type?: SectionTypes; // Type should be optional if not always provided
+  type?: SectionTypes;
 }
 
 export const Container = styled.section<ContainerProps>`
@@ -27,6 +27,18 @@ export const Container = styled.section<ContainerProps>`
         gap: 12px;
         flex-wrap: wrap;
         align-content: flex-start;
+      ` : ""}
+
+      ${type == "flex-list-stretch" ? css`
+        display: flex;
+        justify-content: stretch;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-content: flex-start;
+
+        & > * {
+          flex: 1;
+        }
       ` : ""}
 
       & h1 {
