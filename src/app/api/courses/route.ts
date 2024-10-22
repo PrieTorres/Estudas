@@ -2,6 +2,7 @@ import { connectToDB } from "@/utils/database";
 import Course from "@/models/course";
 import { LoadedDataCourse } from "@/types/course";
 import { createCourse } from "@/lib/helper";
+import { checkAuth } from "../helper";
 
 export async function GET(req: Request) {
   try {
@@ -20,17 +21,10 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const TOKEN = process.env.AUTH_TOKEN;
+  const authRes = checkAuth(req);
 
-  if (!TOKEN) {
-    return new Response("Server configuration error: AUTH_TOKEN is not set", { status: 500 });
-  }
-
-  const authHeader = req.headers.get("Authorization");
-  const token = authHeader?.split(" ")[1];
-
-  if (token !== TOKEN) {
-    return new Response("Unauthorized", { status: 401 });
+  if (authRes) {
+    return new Response(authRes.message, { status: authRes.status });
   }
 
   try {
@@ -47,7 +41,6 @@ export async function POST(req: Request) {
     }
 
     const saveCourse = await createCourse({ title, steps } as LoadedDataCourse);
-
     return new Response(JSON.stringify(saveCourse), { status: 201 });
 
   } catch (error) {
