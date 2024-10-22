@@ -1,4 +1,4 @@
-import { getApiURL, getUserByFirebaseUserId, updateCourseProgress } from "@/lib/helper";
+import { fetchTk, getApiURL, getTokenRecaptcha, getUserByFirebaseUserId, updateCourseProgress } from "@/lib/helper";
 import { LoadedDataCourse } from "@/types/course";
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -20,6 +20,8 @@ interface PageContextProps {
   updateCourse?: (courseData: LoadedDataCourse, fetch?: boolean) => void;
   fetchProgress?: () => void;
   updateSessionId?: (userId: string) => void;
+  refreshProgress?: () => void;
+  refreshCourses?: () => void;
 }
 
 export const PageContext = createContext<PageContextProps>({});
@@ -70,7 +72,8 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
       }
 
       if (userId || userMongo?._id || userId) {
-        const data = await fetch(`/api/progressCourse/${userId ?? userMongo?._id ?? userMongo?.id ?? ""}`);
+        
+        const data = await fetchTk(`/api/progressCourse/${userId ?? userMongo?._id ?? userMongo?.id ?? ""}`);
         const savedProgress = await data.json();
 
         if (Array.isArray(savedProgress)) {
@@ -87,7 +90,7 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
   const getCourses = async () => {
     setLoading(true);
     try {
-      const data = await fetch(`${getApiURL()}/api/courses`);
+      const data = await fetchTk(`${getApiURL()}/api/courses`);
       const courses: LoadedDataCourse[] = await data.json();
       setCourses(courses);
     } catch (err) {
@@ -114,7 +117,16 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
     getCourses();
   }, [user]);
 
-  const contextValue = useMemo(() => ({ ...pageState, updateSessionId, openCourse, updateCourse, user }), [pageState, updateSessionId, openCourse, updateCourse]);
+
+  function refreshProgress() {
+    fetchProgress(pageState.userId);
+  }
+
+  function refreshCourses() {
+    getCourses();
+  }
+
+  const contextValue = useMemo(() => ({ ...pageState, updateSessionId, openCourse, updateCourse, user, refreshProgress, refreshCourses }), [pageState, updateSessionId, openCourse, updateCourse]);
 
   return (
     <PageContext.Provider value={contextValue}>
