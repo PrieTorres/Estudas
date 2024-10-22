@@ -24,7 +24,7 @@ export default function RootLayout({
     <LanguageContextProvider>
       <html lang="en">
         <head>
-          <script src="https://www.google.com/recaptcha/enterprise.js?render=6LeWoGUqAAAAAM8f-CcxgiG6CYIyesTt4_k2l7aF"></script>
+          <script src={`https://www.google.com/recaptcha/enterprise.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}></script>
         </head>
         <body>
           <Provider>
