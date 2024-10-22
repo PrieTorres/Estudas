@@ -2,41 +2,23 @@
 
 import { Section } from "@/components/Section";
 import { CourseCard } from "@/components/Course";
-import { getApiURL } from "@/lib/helper";
 import { LoadedDataCourse } from "@/types/course";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { LoadingSection } from "@/components/LoadingSection";
+import { PageContext } from "@/context/pageContext";
 
 const CoursesPage = () => {
   try {
-    const [courses, setCourses] = useState<LoadedDataCourse[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    const fetchCourses = async () => {
-      setLoading(true);
-      try {
-        const data = await fetch(`${getApiURL()}/api/courses`);
-        const courses: LoadedDataCourse[] = await data.json();
-        setCourses(courses);
-      } catch (err) {
-        console.error("An error occurred while fetching courses", err);
-        setCourses([]);
-      }
-      setLoading(false);
-    };
-
-    useEffect(() => {
-      fetchCourses();
-    }, []);
+    const { loading, courseList: courses } = useContext(PageContext);
 
     return (
       <div>
         <Section type="flex-list">
           {
-            !courses.length && loading &&
+            !courses?.length && loading &&
             <LoadingSection />
           }
-          {courses.filter(course => !course.hide).sort((a, b) => a.title < b.title ? -1 : 1).map((courseMetadata: LoadedDataCourse, i: number) =>
+          {courses?.filter(course => !course.hide).sort((a, b) => a.title < b.title ? -1 : 1).map((courseMetadata: LoadedDataCourse, i: number) =>
             <div key={`${courseMetadata._id}_${i}`} >
               <CourseCard
                 course={courseMetadata}

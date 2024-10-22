@@ -13,9 +13,6 @@ export function checkAuth(req: Request): ResponseReq | undefined {
   const authHeader = req.headers.get("Authorization");
   const token = authHeader?.split(" ")[1];
 
-  console.log("token", token);
-  console.log("TOKEN", TOKEN);
-
   if (token !== TOKEN) {
     return { message: "Unauthorized",  status: 401 };
   }

@@ -57,8 +57,12 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
 
   }, [params.courseId]);
 
+  useEffect(() => {
+    if(course._id) updateProgress(course, step);
+  }, [step]);
+
   const handleClickStep = (i: number) => {
-    updateProgress(course, i);
+    //updateProgress(course, i);
     setStep(i);
   };
 
