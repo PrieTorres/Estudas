@@ -41,6 +41,8 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
 
   const openCourse = (courseData: LoadedDataCourse) => {
     setPageState((prev) => ({ ...prev, loadedCourse: courseData }));
+    const coursesInProgress = pageState.coursesInProgress?.map((course) => (course.courseId === courseData._id ? courseData : course));
+    setCoursesInProgress(coursesInProgress ?? []);
   };
 
   const updateCourse = (courseData: LoadedDataCourse, fetch?: boolean) => {
