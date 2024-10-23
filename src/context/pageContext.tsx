@@ -27,16 +27,25 @@ interface PageContextProps {
 export const PageContext = createContext<PageContextProps>({});
 
 export const PageProvider = ({ children }: { children: ReactNode; }) => {
-  const [pageState, setPageState] = useState<PageContextProps>({});
-  const [user] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
+  const [user, loadingAuth] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
+  const [pageState, setPageState] = useState<PageContextProps>({
+    user,
+    loading: loadingAuth,
+    coursesInProgress: [],
+    courseList: [],
+  });
 
   const setCourses = (courseList: any[]) => setPageState((prev) => ({ ...prev, courseList }));
   const setLoading = (loading: boolean) => setPageState((prev) => ({ ...prev, loading }));
   const setCoursesInProgress = (coursesInProgress: any[]) => setPageState((prev) => ({ ...prev, coursesInProgress }));
 
-  const updateSessionId = (userId: string) => {
+  const updateSessionId = (userId?: string) => {
     setPageState((prev) => ({ ...prev, userId }));
-    fetchProgress(userId);
+    if (userId) {
+      fetchProgress(userId);
+    } else {
+      setCoursesInProgress([]);
+    }
   };
 
   const openCourse = (courseData: LoadedDataCourse) => {
@@ -74,7 +83,7 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
       }
 
       if (userId || userMongo?._id || userId) {
-        
+
         const data = await fetchTk(`/api/progressCourse/${userId ?? userMongo?._id ?? userMongo?.id ?? ""}`);
         const savedProgress = await data.json();
 
@@ -91,6 +100,7 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
 
   const getCourses = async () => {
     setLoading(true);
+
     try {
       const data = await fetchTk(`${getApiURL()}/api/courses`);
       const courses: LoadedDataCourse[] = await data.json();
@@ -99,10 +109,28 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
       console.error("An error occurred while fetching courses", err);
       setCourses([]);
     }
+
     setLoading(false);
   };
 
   useEffect(() => {
+    getCourses();
+  }, []);
+
+  useEffect(() => {
+    if (user?.uid) {
+      setPageState((prev) => ({ ...prev, user, userId: "" }));
+      refreshProgress();
+    }
+  }, [user?.uid]);
+
+
+  /*useEffect(() => {
+    if (!loadingAuth) refreshProgress();
+  }, [pageState.user?.uid, pageState.userId, loadingAuth]);*/
+
+
+  function refreshProgress() {
     if (!pageState.userId && user?.uid) {
       getUserByFirebaseUserId({ firebaseUserId: user?.uid, createUser: true, userData: user }).then((userMongo) => {
         updateSessionId(userMongo?._id ?? userMongo?.id ?? "");
@@ -115,13 +143,6 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
       setLoading(false);
       setCoursesInProgress([]);
     }
-
-    getCourses();
-  }, [user]);
-
-
-  function refreshProgress() {
-    fetchProgress(pageState.userId);
   }
 
   function refreshCourses() {
