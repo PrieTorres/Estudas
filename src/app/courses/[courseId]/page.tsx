@@ -47,9 +47,9 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
 
   useEffect(() => {
     async function loadCourse() {
-      let data: LoadedDataCourse = coursesInProgress?.find((course) => course._id === params.courseId);
+      let data: any = coursesInProgress?.find((course) => course._id === params.courseId)?.courseId;
       
-      if(!data?._id) data = await getDataCourse({ courseId: params?.courseId, userId });
+      if(!data?.steps?.length) data = await getDataCourse({ courseId: params?.courseId, userId });
 
       setCourse(data);
       if (openCourse) openCourse(data);

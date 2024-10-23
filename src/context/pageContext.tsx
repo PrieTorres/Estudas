@@ -4,6 +4,7 @@ import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { User } from "firebase/auth";
 import { auth } from "@/firebase";
+import { ProgressCourse } from "@/types/progressCourse";
 
 interface UserAuth extends User {
   _id: string;
@@ -17,8 +18,8 @@ interface PageContextProps {
     loadingProgress?: boolean;
     loadingCourses?: boolean;
   };
-  coursesInProgress?: any[];
-  courseList?: any[];
+  coursesInProgress?: ProgressCourse[];
+  courseList?: LoadedDataCourse[];
   loadedCourse?: LoadedDataCourse;
   openCourse?: (courseData: LoadedDataCourse) => void;
   updateCourse?: (courseData: LoadedDataCourse, fetch?: boolean) => void;
@@ -58,8 +59,11 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
     setPageState((prev) => ({ ...prev, loadedCourse: courseData }));
     const coursesInProgress = pageState.coursesInProgress?.map((course) => (course.courseId === courseData._id ? courseData : course));
 
-    if(!coursesInProgress?.find((course) => course._id === courseData._id)) {
-      coursesInProgress?.push(courseData);
+    if(!coursesInProgress?.find((course: any) => (course._id === courseData._id || course?.courseId === courseData._id || course?.courseId?._id === courseData._id))) {
+      coursesInProgress?.push({
+        ...courseData,
+        courseId: courseData,
+      });
     }
     
     setCoursesInProgress(coursesInProgress ?? []);
