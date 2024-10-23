@@ -57,6 +57,11 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
   const openCourse = (courseData: LoadedDataCourse) => {
     setPageState((prev) => ({ ...prev, loadedCourse: courseData }));
     const coursesInProgress = pageState.coursesInProgress?.map((course) => (course.courseId === courseData._id ? courseData : course));
+
+    if(!coursesInProgress?.find((course) => course._id === courseData._id)) {
+      coursesInProgress?.push(courseData);
+    }
+    
     setCoursesInProgress(coursesInProgress ?? []);
   };
 
@@ -138,7 +143,7 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
 
   function refreshProgress() {
     setLoading(true, "loadingProgress");
-    
+
     if (!pageState.userId && user?.uid) {
       getUserByFirebaseUserId({ firebaseUserId: user?.uid, createUser: true, userData: user }).then((userMongo) => {
         updateSessionId(userMongo?._id ?? userMongo?.id ?? "");

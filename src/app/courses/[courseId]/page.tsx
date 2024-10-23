@@ -19,7 +19,7 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
     _id: ""
   });
   const [step, setStep] = useState<number>(0);
-  const { userId, openCourse, loading } = useContext(PageContext);
+  const { userId, openCourse, loading, coursesInProgress } = useContext(PageContext);
 
   function updateProgress(course: LoadedDataCourse, indexStep: number) {
     const idStep = `${course?.steps[indexStep]?._id}`;
@@ -47,7 +47,10 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
 
   useEffect(() => {
     async function loadCourse() {
-      const data: LoadedDataCourse = await getDataCourse({ courseId: params?.courseId, userId });
+      let data: LoadedDataCourse = coursesInProgress?.find((course) => course._id === params.courseId);
+      
+      if(!data?._id) data = await getDataCourse({ courseId: params?.courseId, userId });
+
       setCourse(data);
       if (openCourse) openCourse(data);
       updateProgress(data, 0);
@@ -62,7 +65,6 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
   }, [step]);
 
   const handleClickStep = (i: number) => {
-    //updateProgress(course, i);
     setStep(i);
   };
 
