@@ -17,7 +17,7 @@ export default function Profile() {
   return (
     <div>
       {
-        loading ?
+        loading?.loadingProgress || loading?.loadingAuth ?
           <LoadingSection />
           :
           <Section type="flex-list">
@@ -32,12 +32,6 @@ export default function Profile() {
               .map((progressData, i) => (
                 <div key={`${progressData?._id}_${i}`}>
                   {typeof progressData.courseId === 'object' && (
-                    /*<CourseCard
-                      title={progressData.courseId?.title}
-                      progress={progressData.progress}
-                      course={progressData.courseId as LoadedDataCourse}
-                      score={progressData.score}
-                    />*/
                     <CertifiedCourse 
                       title={progressData.courseId?.title}
                       score={progressData.score ?? 0}

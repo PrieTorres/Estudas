@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div>
       {
-        loading ?
+        loading?.loadingProgress || loading?.loadingAuth ?
           <LoadingSection />
           :
           <Section type="flex-list">

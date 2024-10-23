@@ -15,7 +15,7 @@ const CoursesPage = () => {
       <div>
         <Section type="flex-list">
           {
-            !courses?.length && loading &&
+            !courses?.length && loading?.loadingCourses &&
             <LoadingSection />
           }
           {courses?.filter(course => !course.hide).sort((a, b) => a.title < b.title ? -1 : 1).map((courseMetadata: LoadedDataCourse, i: number) =>

@@ -12,7 +12,11 @@ interface UserAuth extends User {
 interface PageContextProps {
   user?: UserAuth | null;
   userId?: any;
-  loading?: boolean;
+  loading?: {
+    loadingAuth?: boolean;
+    loadingProgress?: boolean;
+    loadingCourses?: boolean;
+  };
   coursesInProgress?: any[];
   courseList?: any[];
   loadedCourse?: LoadedDataCourse;
@@ -30,14 +34,16 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
   const [user, loadingAuth] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
   const [pageState, setPageState] = useState<PageContextProps>({
     user,
-    loading: loadingAuth,
+    loading: { loadingAuth, loadingProgress: false, loadingCourses: false },
     coursesInProgress: [],
     courseList: [],
   });
 
   const setCourses = (courseList: any[]) => setPageState((prev) => ({ ...prev, courseList }));
-  const setLoading = (loading: boolean) => setPageState((prev) => ({ ...prev, loading }));
   const setCoursesInProgress = (coursesInProgress: any[]) => setPageState((prev) => ({ ...prev, coursesInProgress }));
+  const setLoading = (loading: boolean, loadKey: "loadingAuth" | "loadingProgress" | "loadingCourses") => {
+    setPageState((prev) => ({ ...prev, loading: { ...(prev.loading ?? {}), [loadKey]: loading } }));
+  };
 
   const updateSessionId = (userId?: string) => {
     setPageState((prev) => ({ ...prev, userId }));
@@ -73,7 +79,7 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
   };
 
   const fetchProgress = async (userId?: string | number) => {
-    setLoading(true);
+    setLoading(true, "loadingProgress");
 
     let userMongo = null;
 
@@ -95,11 +101,11 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
       console.error("unable to fetch progress", error);
     }
 
-    setLoading(false);
+    setLoading(false, "loadingProgress");
   };
 
   const getCourses = async () => {
-    setLoading(true);
+    setLoading(true, "loadingCourses");
 
     try {
       const data = await fetchTk(`${getApiURL()}/api/courses`);
@@ -110,7 +116,7 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
       setCourses([]);
     }
 
-    setLoading(false);
+    setLoading(false, 'loadingCourses');
   };
 
   useEffect(() => {
@@ -125,12 +131,14 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
   }, [user?.uid]);
 
 
-  /*useEffect(() => {
-    if (!loadingAuth) refreshProgress();
-  }, [pageState.user?.uid, pageState.userId, loadingAuth]);*/
+  useEffect(() => {
+    setLoading(loadingAuth, "loadingAuth");
+  }, [loadingAuth]);
 
 
   function refreshProgress() {
+    setLoading(true, "loadingProgress");
+    
     if (!pageState.userId && user?.uid) {
       getUserByFirebaseUserId({ firebaseUserId: user?.uid, createUser: true, userData: user }).then((userMongo) => {
         updateSessionId(userMongo?._id ?? userMongo?.id ?? "");
@@ -140,7 +148,7 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
     } else if (pageState.userId) {
       fetchProgress(pageState.userId);
     } else {
-      setLoading(false);
+      setLoading(false, "loadingProgress");
       setCoursesInProgress([]);
     }
   }

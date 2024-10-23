@@ -19,7 +19,7 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
     _id: ""
   });
   const [step, setStep] = useState<number>(0);
-  const { userId, openCourse } = useContext(PageContext);
+  const { userId, openCourse, loading } = useContext(PageContext);
 
   function updateProgress(course: LoadedDataCourse, indexStep: number) {
     const idStep = `${course?.steps[indexStep]?._id}`;
@@ -71,7 +71,7 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
   return (
     <div style={{ padding: 10 }}>
       <Section>
-        {!course._id &&
+        {(!course._id || loading?.loadingAuth) &&
           <LoadingSection />
         }
         {steps.length > 1 ?
