@@ -3,8 +3,8 @@ import { authMiddleware } from "next-firebase-auth-edge";
 import { clientConfig, serverConfig } from "./config";
 
 async function validateRecaptcha(token: string): Promise<boolean> {
-  const verificationUrl = `https://recaptchaenterprise.googleapis.com/v1/projects/${process.env.GCP_PROJECT_ID}/assessments?key=${process.env.RECAPTCHA_SECRET_KEY}`;
-  
+  const verificationUrl = `https://recaptchaenterprise.googleapis.com/v1/projects/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}/assessments?key=${process.env.NEXT_PUBLIC_FIREBASE_API_KEY}`;
+
   const response = await fetch(verificationUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

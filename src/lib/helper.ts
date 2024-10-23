@@ -31,7 +31,7 @@ export function getApiURL() {
 export async function getTokenRecaptcha() {
   try {
     if (typeof grecaptcha?.enterprise?.execute != "function") throw new Error("grecaptcha not loaded");
-    const token = await grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "", { action: 'submit' });
+    const token = await grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "", { action: 'LOGIN' });
     return token;
   } catch (error) {
     console.error("unable to get recaptcha token", error);
