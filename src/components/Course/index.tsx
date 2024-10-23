@@ -35,9 +35,9 @@ export const CourseCard = ({ title, progress, course, score, hideProgress }: Cou
       <h2>{title}</h2>
       {typeof progress === "number" ? (
         <div>
-          <div>{progress} %</div>
+          <div>{progress?.toFixed(2)} %</div>
           <div>{progress >= 100 ? "Concluído" : "Pendente"}</div>
-          <div>{scoreValue != undefined ? `nota: ${score?.toFixed(2)}` : ""}</div>
+          <div>{scoreValue != undefined ? `nota: ${scoreValue?.toFixed(2)}` : ""}</div>
         </div>
       ) : !hideProgress && (
         <div>Não iniciado</div>
