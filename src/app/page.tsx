@@ -25,7 +25,7 @@ export default function Home() {
                     <Introduction />
                     faça login para salvar seu progresso
                   </div> :
-                  coursesInProgress?.length ?
+                  coursesInProgress?.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide && prgDat.progress < 100)?.length ?
                     "cursos em andamento" :
                     <div>
                       <Introduction />
