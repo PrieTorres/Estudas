@@ -3,7 +3,7 @@ export default async function handler(req, res) {
     const { token } = req.body;
 
     try {
-      const verificationUrl = `https://recaptchaenterprise.googleapis.com/v1/projects/${process.env.GCLOUD_CLIENT_ID}/assessments?key=${process.env.RECAPTCHA_SECRET_KEY}`;
+      const verificationUrl = `https://recaptchaenterprise.googleapis.com/v1/projects/${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}/assessments?key=${process.env.NEXT_PUBLIC_FIREBASE_API_KEY}`;
 
       const response = await fetch(verificationUrl, {
         method: 'POST',
