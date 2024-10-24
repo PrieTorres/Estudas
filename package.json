@@ -11,7 +11,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "next build && firebase deploy"
+    "deploy": "next build && firebase deploy",
+    "deploy-test": "firebase hosting:channel:deploy new-awesome-feature --expires 2d"
   },
   "dependencies": {
     "@google-cloud/recaptcha-enterprise": "^5.11.0",

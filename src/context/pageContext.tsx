@@ -1,4 +1,4 @@
-import { fetchTk, getApiURL, getTokenRecaptcha, getUserByFirebaseUserId, updateCourseProgress } from "@/lib/helper";
+import { fetchTk, getApiURL, getUserByFirebaseUserId, updateCourseProgress } from "@/lib/helper";
 import { LoadedDataCourse } from "@/types/course";
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -21,6 +21,7 @@ interface PageContextProps {
   coursesInProgress?: ProgressCourse[];
   courseList?: LoadedDataCourse[];
   loadedCourse?: LoadedDataCourse;
+  sessionRestored?: boolean;
   openCourse?: (courseData: LoadedDataCourse) => void;
   updateCourse?: (courseData: LoadedDataCourse, fetch?: boolean) => void;
   fetchProgress?: () => void;
@@ -29,16 +30,57 @@ interface PageContextProps {
   refreshCourses?: () => void;
 }
 
+const SESSION_TIMEOUT_HOURS = 2;
+
+const getHoursDifference = (oldTimestamp: number, newTimestamp: number) => {
+  return (newTimestamp - oldTimestamp) / (1000 * 60 * 60);
+};
+
+const checkSessionExpiration = () => {
+  const sessionTimestamp = sessionStorage.getItem("sessionTimestamp");
+
+  if (sessionTimestamp) {
+    const currentTime = new Date().getTime();
+    const sessionTime = parseInt(sessionTimestamp);
+
+    const hoursDifference = getHoursDifference(sessionTime, currentTime);
+
+    if (hoursDifference >= SESSION_TIMEOUT_HOURS) {
+      sessionStorage.clear();
+      sessionStorage.setItem("sessionTimestamp", currentTime.toString());
+    }
+  } else {
+    sessionStorage.setItem("sessionTimestamp", new Date().getTime().toString());
+  }
+};
+
 export const PageContext = createContext<PageContextProps>({});
 
 export const PageProvider = ({ children }: { children: ReactNode; }) => {
   const [user, loadingAuth] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
-  const [pageState, setPageState] = useState<PageContextProps>({
-    user,
-    loading: { loadingAuth, loadingProgress: false, loadingCourses: false },
-    coursesInProgress: [],
-    courseList: [],
-  });
+  const [pageState, setPageState] = useState<PageContextProps>({});
+
+  useEffect(() => {
+    if (!pageState.sessionRestored) {
+      const sessionData = sessionStorage.getItem('pageState');
+
+      const sessionState = sessionData ? { ...JSON.parse(sessionData), sessionRestored: true } : {
+        user,
+        loading: { loadingAuth, loadingProgress: false, loadingCourses: false },
+        coursesInProgress: [],
+        courseList: [],
+        sessionRestored: true,
+        ...pageState
+      };
+
+      setPageState(sessionState);
+    }
+  }, []);
+
+  useEffect(() => {
+    checkSessionExpiration();
+    sessionStorage.setItem('pageState', JSON.stringify(pageState));
+  }, [pageState]);
 
   const setCourses = (courseList: any[]) => setPageState((prev) => ({ ...prev, courseList }));
   const setCoursesInProgress = (coursesInProgress: any[]) => setPageState((prev) => ({ ...prev, coursesInProgress }));
@@ -59,13 +101,13 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
     setPageState((prev) => ({ ...prev, loadedCourse: courseData }));
     const coursesInProgress = pageState.coursesInProgress?.map((course) => (course.courseId === courseData._id ? courseData : course));
 
-    if(!coursesInProgress?.find((course: any) => (course._id === courseData._id || course?.courseId === courseData._id || course?.courseId?._id === courseData._id))) {
+    if (!coursesInProgress?.find((course: any) => (course._id === courseData._id || course?.courseId === courseData._id || course?.courseId?._id === courseData._id))) {
       coursesInProgress?.push({
         ...courseData,
         courseId: courseData,
       });
     }
-    
+
     setCoursesInProgress(coursesInProgress ?? []);
   };
 
@@ -139,11 +181,9 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
     }
   }, [user?.uid]);
 
-
   useEffect(() => {
     setLoading(loadingAuth, "loadingAuth");
   }, [loadingAuth]);
-
 
   function refreshProgress() {
     setLoading(true, "loadingProgress");

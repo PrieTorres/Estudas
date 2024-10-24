@@ -6,7 +6,7 @@ import { ActivityStepCourse as ActivityStepCourseType } from "@/types/activitySt
 import ActivityStepCourse from "@/models/ActivityStepCourse";
 import { User } from "firebase/auth";
 import { ActivitiesDone } from "@/types/progressCourse";
-import {RecaptchaEnterpriseServiceClient} from '@google-cloud/recaptcha-enterprise';
+//import {RecaptchaEnterpriseServiceClient} from '@google-cloud/recaptcha-enterprise';
 
 type keyType = string | number | symbol;
 export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K): Record<T[K] & (keyType), T> {
@@ -33,7 +33,7 @@ export async function getTokenRecaptcha() {
   try {
     if (typeof grecaptcha?.enterprise?.execute != "function") throw new Error("grecaptcha not loaded");
     const token = await grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "", { action: 'LOGIN' });
-    createAssessment({ token, recaptchaAction: 'LOGIN' });
+    //createAssessment({ token, recaptchaAction: 'LOGIN' });
     return token;
   } catch (error) {
     console.error("unable to get recaptcha token", error);
@@ -51,7 +51,7 @@ export async function getTokenRecaptcha() {
   * token: O token gerado obtido do cliente.
   * recaptchaAction: Nome da ação correspondente ao token.
   */
-async function createAssessment({
+/*async function createAssessment({
   // O que fazer: substitua o token e as variáveis de ação reCAPTCHA antes de executar a amostra.
   projectID = "estudas-e527b",
   recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "",
@@ -98,10 +98,11 @@ async function createAssessment({
     console.log("The action attribute in your reCAPTCHA tag does not match the action you are expecting to score");
     return null;
   }
-}
+}*/
 
 export async function fetchTk(url: string, options?: object) {
-  const recapcha = await getTokenRecaptcha();
+  //const recapcha = await getTokenRecaptcha();
+  let recapcha = "";
 
   const headers = {
     ...(options ?? {}),

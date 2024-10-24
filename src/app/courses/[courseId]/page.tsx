@@ -19,7 +19,7 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
     _id: ""
   });
   const [step, setStep] = useState<number>(0);
-  const { userId, openCourse, loading, coursesInProgress } = useContext(PageContext);
+  const { userId, openCourse, loading, coursesInProgress, updateCourse } = useContext(PageContext);
 
   function updateProgress(course: LoadedDataCourse, indexStep: number) {
     const idStep = `${course?.steps[indexStep]?._id}`;
@@ -33,16 +33,12 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
       }
 
       courseData.progress = (courseData.stepsDone.length / courseData.steps.length) * 100;
-      updateCourseProgress({
-        userId: userId,
-        courseId: courseData._id,
-        progress: courseData.progress,
-        stepsDone: courseData.stepsDone
-      });
+      if(updateCourse) updateCourse(courseData, true);
 
       setCourse(courseData);
-      if (openCourse) openCourse(courseData);
     }
+    
+    if (openCourse) openCourse(courseData);
   }
 
   useEffect(() => {

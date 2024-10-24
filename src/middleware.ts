@@ -22,7 +22,7 @@ async function validateRecaptcha(token: string): Promise<boolean> {
 }
 
 export async function middleware(request: NextRequest) {
-  const recaptchaToken = request.headers.get('recaptcha-token');
+  /*const recaptchaToken = request.headers.get('recaptcha-token');
 
   if (!recaptchaToken) {
     return NextResponse.json({ message: 'reCAPTCHA token is missing' }, { status: 400 });
@@ -32,7 +32,7 @@ export async function middleware(request: NextRequest) {
 
   if (!isRecaptchaValid) {
     return NextResponse.json({ message: 'Invalid reCAPTCHA' }, { status: 400 });
-  }
+  }*/
 
   return authMiddleware(request, {
     loginPath: "/api/login",
