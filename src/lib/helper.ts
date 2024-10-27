@@ -22,11 +22,13 @@ export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K)
 };
 
 export function isProd() {
+  console.log("isProd", process.env.NEXT_PUBLIC_ENVIRONMENT);
   return process.env.NEXT_PUBLIC_ENVIRONMENT == "production";
 };
 
 export function getApiURL() {
-  return (isProd() ? process.env.NEXT_PUBLIC_PROD_URL : process.env.NEXT_PUBLIC_DEV_URL) ?? "https://estudas-e527b.web.app";
+  console.log("getApiURL", process.env.NEXT_PUBLIC_PROD_URL, process.env.NEXT_PUBLIC_DEV_URL);
+  return (isProd() ? process.env.NEXT_PUBLIC_PROD_URL : process.env.NEXT_PUBLIC_DEV_URL) ?? "http://localhost:3000";
 };
 
 export async function getTokenRecaptcha() {
@@ -102,17 +104,22 @@ export async function getTokenRecaptcha() {
 
 export async function fetchTk(url: string, options?: object) {
   //const recapcha = await getTokenRecaptcha();
-  let recapcha = "";
+  try {
+    let recapcha = "";
 
-  const headers = {
-    ...(options ?? {}),
-    'recaptcha-token': recapcha,
-  };
+    const headers = {
+      ...(options ?? {}),
+      'recaptcha-token': recapcha,
+    };
 
-  return fetch(url, {
-    headers,
-    ...options
-  });
+    return fetch(url, {
+      headers,
+      ...options
+    });
+  } catch (error) {
+    console.error("unable to fetch token", error);
+    throw error;
+  }
 }
 
 export async function createUserDb({ firebaseUserId, email, image, name }: { firebaseUserId: string, email: string, image: string, name: string; }) {

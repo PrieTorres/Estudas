@@ -100,12 +100,15 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
   const openCourse = (courseData: LoadedDataCourse) => {
     setPageState((prev) => ({ ...prev, loadedCourse: courseData }));
     const coursesInProgress = pageState.coursesInProgress?.map((course) => (course.courseId === courseData._id ? courseData : course));
+    const index = coursesInProgress?.findIndex((course: any) => (course._id === courseData._id || course?.courseId === courseData._id || course?.courseId?._id === courseData._id));
 
-    if (!coursesInProgress?.find((course: any) => (course._id === courseData._id || course?.courseId === courseData._id || course?.courseId?._id === courseData._id))) {
+    if (index == -1 || index == undefined || !coursesInProgress?.[index]) {
       coursesInProgress?.push({
         ...courseData,
         courseId: courseData,
       });
+    } else {
+      coursesInProgress[index] = courseData;
     }
 
     setCoursesInProgress(coursesInProgress ?? []);
@@ -172,14 +175,14 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
 
   useEffect(() => {
     getCourses();
-  }, []);
+  }, [pageState?.sessionRestored]);
 
   useEffect(() => {
     if (user?.uid) {
       setPageState((prev) => ({ ...prev, user, userId: "" }));
       refreshProgress();
     }
-  }, [user?.uid]);
+  }, [user?.uid, pageState?.sessionRestored]);
 
   useEffect(() => {
     setLoading(loadingAuth, "loadingAuth");
