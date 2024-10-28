@@ -9,7 +9,7 @@ import { PageContext } from "@/context/pageContext";
 import { Introduction } from "@/components/Introduction";
 
 export default function Home() {
-  const { loading, coursesInProgress, user } = useContext(PageContext);
+  const { loading, coursesInProgress, userId } = useContext(PageContext);
 
   return (
     <div>
@@ -20,17 +20,11 @@ export default function Home() {
           <Section type="flex-list">
             <div style={{ width: "100%" }}>
               {
-                !user ?
+                coursesInProgress?.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide && prgDat.progress < 100)?.length ?
+                  "cursos em andamento" :
                   <div>
                     <Introduction />
-                    faça login para salvar seu progresso
-                  </div> :
-                  coursesInProgress?.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide && prgDat.progress < 100)?.length ?
-                    "cursos em andamento" :
-                    <div>
-                      <Introduction />
-                      nenhum curso em andamento ;(
-                    </div>
+                  </div>
               }
             </div>
             {
@@ -53,6 +47,9 @@ export default function Home() {
                     )}
                   </div>
                 ))
+            }
+            {
+              !userId && "Faça login para salvar seu progresso"
             }
           </Section>
       }

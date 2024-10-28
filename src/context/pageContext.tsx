@@ -89,7 +89,8 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
   };
 
   const updateSessionId = (userId?: string) => {
-    setPageState((prev) => ({ ...prev, userId }));
+    setPageState((prev) => ({ ...prev, userId, coursesInProgress: [] }));
+
     if (userId) {
       fetchProgress(userId);
     } else {
@@ -108,7 +109,10 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
         courseId: courseData,
       });
     } else {
-      coursesInProgress[index] = courseData;
+      coursesInProgress[index] = {
+        ...courseData,
+        courseId: courseData,
+      };
     }
 
     setCoursesInProgress(coursesInProgress ?? []);
@@ -118,7 +122,7 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
     let course = { ...pageState.loadedCourse, ...courseData };
     course.stepsDone = course.stepsDone?.filter((step) => course.steps?.find((s) => s._id === step));
 
-    if (fetch) {
+    if (fetch && pageState.userId) {
       updateCourseProgress({
         userId: pageState.userId,
         courseId: course._id,

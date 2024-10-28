@@ -1,6 +1,6 @@
 "use client";
 
-import { getDataCourse, updateCourseProgress } from '@/lib/helper';
+import { getDataCourse } from '@/lib/helper';
 import { Container } from './styles';
 import { LoadedDataCourse } from "@/types/course";
 import { useContext, useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import { QuestionsContainer } from '@/components/QuestionsContainer';
 import { FillingDiv } from "@/components/FillingDiv";
 import { PageContext } from '@/context/pageContext';
 import { LoadingSection } from '@/components/LoadingSection';
+import { ProgressCourse } from '@/types/progressCourse';
 
 const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => {
   const [course, setCourse] = useState<LoadedDataCourse>({
@@ -25,7 +26,7 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
     const idStep = `${course?.steps[indexStep]?._id}`;
     const courseData = course;
 
-    if (!course.stepsDone?.includes(idStep) && userId) {
+    if (!course.stepsDone?.includes(idStep)) {
       if (Array.isArray(courseData.stepsDone)) {
         courseData.stepsDone.push(idStep);
       } else {
@@ -43,8 +44,11 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
 
   useEffect(() => {
     async function loadCourse() {
-      let data: any = coursesInProgress?.find((course) => course._id === params.courseId)?.courseId;
-      
+      let data: any = coursesInProgress?.find((course: ProgressCourse | any) => (course.courseId?._id ?? course.courseId ?? course?._id) === params.courseId);
+
+      if(typeof data?.courseId === "object") data = data.courseId;
+
+      console.log("A DATA AQY --> ", data, coursesInProgress);
       if(!data?.steps?.length) data = await getDataCourse({ courseId: params?.courseId, userId });
 
       setCourse(data);
