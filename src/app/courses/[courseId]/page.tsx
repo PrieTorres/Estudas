@@ -47,8 +47,6 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
       let data: any = coursesInProgress?.find((course: ProgressCourse | any) => (course.courseId?._id ?? course.courseId ?? course?._id) === params.courseId);
 
       if(typeof data?.courseId === "object") data = data.courseId;
-
-      console.log("A DATA AQY --> ", data, coursesInProgress);
       if(!data?.steps?.length) data = await getDataCourse({ courseId: params?.courseId, userId });
 
       setCourse(data);

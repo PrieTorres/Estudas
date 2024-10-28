@@ -100,7 +100,7 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
 
   const openCourse = (courseData: LoadedDataCourse) => {
     setPageState((prev) => ({ ...prev, loadedCourse: courseData }));
-    const coursesInProgress = pageState.coursesInProgress?.map((course) => (course.courseId === courseData._id ? courseData : course));
+    const coursesInProgress = pageState.coursesInProgress?.map((course) => (course.courseId === courseData._id ? courseData : course)) ?? [];
     const index = coursesInProgress?.findIndex((course: any) => (course._id === courseData._id || course?.courseId === courseData._id || course?.courseId?._id === courseData._id));
 
     if (index == -1 || index == undefined || !coursesInProgress?.[index]) {
