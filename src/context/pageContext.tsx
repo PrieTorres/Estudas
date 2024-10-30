@@ -77,11 +77,6 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
     }
   }, []);
 
-  useEffect(() => {
-    checkSessionExpiration();
-    sessionStorage.setItem('pageState', JSON.stringify(pageState));
-  }, [pageState]);
-
   const setCourses = (courseList: any[]) => setPageState((prev) => ({ ...prev, courseList }));
   const setCoursesInProgress = (coursesInProgress: any[]) => setPageState((prev) => ({ ...prev, coursesInProgress }));
   const setLoading = (loading: boolean, loadKey: "loadingAuth" | "loadingProgress" | "loadingCourses") => {
@@ -212,6 +207,13 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
   function refreshCourses() {
     getCourses();
   }
+
+  useEffect(() => {
+    if (pageState.sessionRestored && pageState.courseList?.length) {
+      checkSessionExpiration();
+      sessionStorage.setItem('pageState', JSON.stringify(pageState));
+    }
+  }, [pageState]);
 
   const contextValue = useMemo(() => ({ ...pageState, updateSessionId, openCourse, updateCourse, user, refreshProgress, refreshCourses }), [pageState, updateSessionId, openCourse, updateCourse]);
 
