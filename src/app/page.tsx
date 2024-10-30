@@ -63,18 +63,18 @@ export default function Home() {
           <LoadingSection />
           :
           <Section type="flex-list">
-            <div style={{ width: "100%" }}>
+            <div style={{ width: "100%"}}>
               {
                 !user ?
                   <div>
-                    <Introduction />
+                    <Introduction></Introduction>
                     faça login para salvar seu progresso
                   </div> :
                   coursesInProgress?.length > 0 ?
                     "cursos em andamento" :
                     <div>
                       <Introduction />
-                      nenhum curso em andamento ;(
+                      nenhum curso em andamento 
                     </div>
               }
             </div>
