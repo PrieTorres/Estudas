@@ -22,12 +22,10 @@ export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K)
 };
 
 export function isProd() {
-  console.log("isProd", process.env.NEXT_PUBLIC_ENVIRONMENT);
   return process.env.NEXT_PUBLIC_ENVIRONMENT == "production";
 };
 
 export function getApiURL() {
-  console.log("getApiURL", process.env.NEXT_PUBLIC_PROD_URL, process.env.NEXT_PUBLIC_DEV_URL);
   return (isProd() ? process.env.NEXT_PUBLIC_PROD_URL : process.env.NEXT_PUBLIC_DEV_URL) ?? "http://localhost:3000";
 };
 
