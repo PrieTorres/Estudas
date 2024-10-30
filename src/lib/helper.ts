@@ -6,7 +6,6 @@ import { ActivityStepCourse as ActivityStepCourseType } from "@/types/activitySt
 import ActivityStepCourse from "@/models/ActivityStepCourse";
 import { User } from "firebase/auth";
 import { ActivitiesDone } from "@/types/progressCourse";
-//import {RecaptchaEnterpriseServiceClient} from '@google-cloud/recaptcha-enterprise';
 
 type keyType = string | number | symbol;
 export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K): Record<T[K] & (keyType), T> {
@@ -33,72 +32,12 @@ export async function getTokenRecaptcha() {
   try {
     if (typeof grecaptcha?.enterprise?.execute != "function") throw new Error("grecaptcha not loaded");
     const token = await grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "", { action: 'LOGIN' });
-    //createAssessment({ token, recaptchaAction: 'LOGIN' });
     return token;
   } catch (error) {
     console.error("unable to get recaptcha token", error);
     throw error;
   }
 }
-
-
-
-/**
-  * Crie uma avaliação para analisar o risco de uma ação da interface.
-  *
-  * projectID: O ID do seu projeto do Google Cloud.
-  * recaptchaSiteKey: A chave reCAPTCHA associada ao site/app
-  * token: O token gerado obtido do cliente.
-  * recaptchaAction: Nome da ação correspondente ao token.
-  */
-/*async function createAssessment({
-  // O que fazer: substitua o token e as variáveis de ação reCAPTCHA antes de executar a amostra.
-  projectID = "estudas-e527b",
-  recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "",
-  token = "action-token",
-  recaptchaAction = "action-name",
-}) {
-  // Crie o cliente reCAPTCHA.
-  // TODO: armazena em cache o código de geração do cliente (recomendado) ou a chamada client.close() antes de sair do método.
-  const client = new RecaptchaEnterpriseServiceClient();
-  const projectPath = client.projectPath(projectID);
-
-  // Crie a solicitação de avaliação.
-  const request = ({
-    assessment: {
-      event: {
-        token: token,
-        siteKey: recaptchaKey,
-      },
-    },
-    parent: projectPath,
-  });
-
-  const [ response ] = await client.createAssessment(request);
-
-  // Verifique se o token é válido.
-  if (!response?.tokenProperties?.valid) {
-    console.log(`The CreateAssessment call failed because the token was: ${response?.tokenProperties?.invalidReason}`);
-    return null;
-  }
-
-  // Verifique se a ação esperada foi executada.
-  // The `action` property is set by user client in the grecaptcha.enterprise.execute() method.
-  if (response.tokenProperties.action === recaptchaAction) {
-    // Consulte a pontuação de risco e os motivos.
-    // Para mais informações sobre como interpretar a avaliação, acesse:
-    // https://cloud.google.com/recaptcha-enterprise/docs/interpret-assessment
-    console.log(`The reCAPTCHA score is: ${response?.riskAnalysis?.score}`);
-    response?.riskAnalysis?.reasons?.forEach((reason) => {
-      console.log(reason);
-    });
-
-    return response?.riskAnalysis?.score;
-  } else {
-    console.log("The action attribute in your reCAPTCHA tag does not match the action you are expecting to score");
-    return null;
-  }
-}*/
 
 export async function fetchTk(url: string, options?: object) {
   //const recapcha = await getTokenRecaptcha();
