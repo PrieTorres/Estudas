@@ -1,6 +1,6 @@
 "use client";
 
-import { getDataCourse, updateCourseProgress } from '@/lib/helper';
+import { getDataCourse } from '@/lib/helper';
 import { Container } from './styles';
 import { LoadedDataCourse } from "@/types/course";
 import { useContext, useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import { QuestionsContainer } from '@/components/QuestionsContainer';
 import { FillingDiv } from "@/components/FillingDiv";
 import { PageContext } from '@/context/pageContext';
 import { LoadingSection } from '@/components/LoadingSection';
+import { ProgressCourse } from '@/types/progressCourse';
 
 const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => {
   const [course, setCourse] = useState<LoadedDataCourse>({
@@ -19,13 +20,13 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
     _id: ""
   });
   const [step, setStep] = useState<number>(0);
-  const { userId, openCourse } = useContext(PageContext);
+  const { userId, openCourse, loading, coursesInProgress, updateCourse } = useContext(PageContext);
 
   function updateProgress(course: LoadedDataCourse, indexStep: number) {
     const idStep = `${course?.steps[indexStep]?._id}`;
     const courseData = course;
 
-    if (!course.stepsDone?.includes(idStep) && userId) {
+    if (!course.stepsDone?.includes(idStep)) {
       if (Array.isArray(courseData.stepsDone)) {
         courseData.stepsDone.push(idStep);
       } else {
@@ -33,21 +34,21 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
       }
 
       courseData.progress = (courseData.stepsDone.length / courseData.steps.length) * 100;
-      updateCourseProgress({
-        userId: userId,
-        courseId: courseData._id,
-        progress: courseData.progress,
-        stepsDone: courseData.stepsDone
-      });
+      if(updateCourse) updateCourse(courseData, true);
 
       setCourse(courseData);
-      if (openCourse) openCourse(courseData);
     }
+    
+    if (openCourse) openCourse(courseData);
   }
 
   useEffect(() => {
     async function loadCourse() {
-      const data: LoadedDataCourse = await getDataCourse({ courseId: params?.courseId, userId });
+      let data: any = coursesInProgress?.find((course: ProgressCourse | any) => (course.courseId?._id ?? course.courseId ?? course?._id) === params.courseId);
+
+      if(typeof data?.courseId === "object") data = data.courseId;
+      if(!data?.steps?.length) data = await getDataCourse({ courseId: params?.courseId, userId });
+
       setCourse(data);
       if (openCourse) openCourse(data);
       updateProgress(data, 0);
@@ -57,8 +58,11 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
 
   }, [params.courseId]);
 
+  useEffect(() => {
+    if(course._id) updateProgress(course, step);
+  }, [step]);
+
   const handleClickStep = (i: number) => {
-    updateProgress(course, i);
     setStep(i);
   };
 
@@ -67,7 +71,7 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
   return (
     <div style={{ padding: 10 }}>
       <Section>
-        {!course._id &&
+        {(!course._id || loading?.loadingAuth) &&
           <LoadingSection />
         }
         {steps.length > 1 ?

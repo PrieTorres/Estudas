@@ -22,10 +22,7 @@ export default function RootLayout({
 
   return (
     <LanguageContextProvider>
-      <html lang="en">
-        <head>
-          <script src="https://www.google.com/recaptcha/enterprise.js?render=6LeWoGUqAAAAAM8f-CcxgiG6CYIyesTt4_k2l7aF"></script>
-        </head>
+      <html lang="pt-br">
         <body>
           <Provider>
             <Header />

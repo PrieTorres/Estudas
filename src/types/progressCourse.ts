@@ -1,4 +1,4 @@
-import { Course } from "./course";
+import { Course, LoadedDataCourse } from "./course";
 
 export interface ActivitiesDone {
   activityId: string;
@@ -7,7 +7,7 @@ export interface ActivitiesDone {
 
 export interface ProgressCourse {
   _id: string | number;
-  courseId: Course | number | string;
+  courseId: Course | LoadedDataCourse | number | string;
   userId: number | string;
   progress: number;
   score?: number;

@@ -25,13 +25,43 @@ export function isProd() {
 };
 
 export function getApiURL() {
-  return (isProd() ? process.env.NEXT_PUBLIC_PROD_URL : process.env.NEXT_PUBLIC_DEV_URL) ?? "https://estudas-e527b.web.app";
+  return (isProd() ? process.env.NEXT_PUBLIC_PROD_URL : process.env.NEXT_PUBLIC_DEV_URL) ?? "http://localhost:3000";
+};
+
+export async function getTokenRecaptcha() {
+  try {
+    if (typeof grecaptcha?.enterprise?.execute != "function") throw new Error("grecaptcha not loaded");
+    const token = await grecaptcha.enterprise.execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? "", { action: 'LOGIN' });
+    return token;
+  } catch (error) {
+    console.error("unable to get recaptcha token", error);
+    throw error;
+  }
 }
 
+export async function fetchTk(url: string, options?: object) {
+  //const recapcha = await getTokenRecaptcha();
+  try {
+    let recapcha = "";
+
+    const headers = {
+      ...(options ?? {}),
+      'recaptcha-token': recapcha,
+    };
+
+    return fetch(url, {
+      headers,
+      ...options
+    });
+  } catch (error) {
+    console.error("unable to fetch token", error);
+    throw error;
+  }
+}
 
 export async function createUserDb({ firebaseUserId, email, image, name }: { firebaseUserId: string, email: string, image: string, name: string; }) {
   try {
-    const res = await fetch(`${getApiURL()}/api/user/`, {
+    const res = await fetchTk(`${getApiURL()}/api/user/`, {
       body: JSON.stringify({ firebaseUserId, email, image, name }),
       method: "POST"
     });
@@ -62,12 +92,12 @@ export async function getUserByFirebaseUserId({ firebaseUserId, createUser, user
 }
 
 async function fetchUserByFirebaseUserId(firebaseUserId: string) {
-  const data = await fetch(`${getApiURL()}/api/user/${firebaseUserId}`);
+  const data = await fetchTk(`${getApiURL()}/api/user/${firebaseUserId}`);
   return await data.json();
 }
 
 async function fetchUserByEmail(email: string) {
-  const data = await fetch(`${getApiURL()}/api/user/${email}`);
+  const data = await fetchTk(`${getApiURL()}/api/user/${email}`);
   return await data.json();
 }
 
@@ -97,7 +127,7 @@ export async function saveCourseProgress({ userId, courseId, progress }: { userI
       userId, courseId, progress
     };
 
-    const res = await fetch(`${getApiURL()}/api/progressCourse`, {
+    const res = await fetchTk(`${getApiURL()}/api/progressCourse`, {
       body: JSON.stringify(courseProgress),
       method: "POST"
     });
@@ -123,12 +153,12 @@ export async function updateCourseProgress({ id, progress, stepsDone, activities
     let res;
 
     if (id) {
-      res = await fetch(`${getApiURL()}/api/progressCourse`, {
+      res = await fetchTk(`${getApiURL()}/api/progressCourse`, {
         body: JSON.stringify({ id, progress, stepsDone, activitiesDone, score }),
         method: "PATCH"
       });
     } else if (courseId && userId) {
-      res = await fetch(`${getApiURL()}/api/progressCourse/${userId}/${courseId}`, {
+      res = await fetchTk(`${getApiURL()}/api/progressCourse/${userId}/${courseId}`, {
         body: JSON.stringify({ progress, stepsDone, activitiesDone, score }),
         method: "PATCH"
       });
@@ -151,7 +181,7 @@ export async function saveUpdateCourseProgress({ userId, courseId, progress }: {
   );
 
   try {
-    const data = await fetch(`${getApiURL()}/api/progressCourse/${userId}/${courseId}`);
+    const data = await fetchTk(`${getApiURL()}/api/progressCourse/${userId}/${courseId}`);
     const savedProgress = await data?.json();
     if (!savedProgress?._id) {
       return await saveCourseProgress({ userId, courseId, progress });
@@ -166,14 +196,14 @@ export async function saveUpdateCourseProgress({ userId, courseId, progress }: {
   }
 }
 
-export async function getDataCourse({ courseId, userId }: { courseId: number | string; userId?: number | string }): Promise<LoadedDataCourse> {
+export async function getDataCourse({ courseId, userId }: { courseId: number | string; userId?: number | string; }): Promise<LoadedDataCourse> {
   try {
-    const courseResponse = await fetch(`${getApiURL()}/api/courses/${courseId}`);
+    const courseResponse = await fetchTk(`${getApiURL()}/api/courses/${courseId}`);
     const course: LoadedDataCourse = await courseResponse.json();
 
     const [courseStepsResponse, progressResponse] = await Promise.all([
-      fetch(`${getApiURL()}/api/stepCourse/${courseId}`),
-      userId ? fetch(`${getApiURL()}/api/progressCourse/${userId}/${courseId}`) : Promise.resolve(null)
+      fetchTk(`${getApiURL()}/api/stepCourse/${courseId}`),
+      userId ? fetchTk(`${getApiURL()}/api/progressCourse/${userId}/${courseId}`) : Promise.resolve(null)
     ]);
 
     const courseSteps = await courseStepsResponse.json();

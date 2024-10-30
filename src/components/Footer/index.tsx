@@ -7,11 +7,6 @@ export const Footer = (): ReactElement => {
   return (
     <Container>
       <div style={{ display: 'flex', flexDirection: "column", alignItems: "center", gap: 4 }}>
-        {/*<TranslatedSpan>contact_me</TranslatedSpan>
-        <div>
-          <div style={{ display: "flex" }}><TranslatedSpan>email</TranslatedSpan>: priscilatorresbdepaula@gmail.com</div>
-          <div style={{ display: "flex" }}><TranslatedSpan>cellphone</TranslatedSpan>: +55 (47) 99227-1283</div>
-        </div>*/}
       </div>
       <div style={{ display: "flex", gap: 8 }}>
         <div>&copy; </div>
