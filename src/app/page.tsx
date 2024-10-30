@@ -20,7 +20,7 @@ export default function Home() {
           <Section type="flex-list">
             <div style={{ width: "100%" }}>
               {
-                coursesInProgress?.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide && prgDat.progress < 100)?.length ?
+                coursesInProgress?.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide)?.length ?
                   "cursos em andamento" :
                   <div>
                     <Introduction />
@@ -28,7 +28,7 @@ export default function Home() {
               }
             </div>
             {
-              coursesInProgress?.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide && prgDat.progress < 100)
+              coursesInProgress?.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide && (prgDat.progress < 100 || !userId))
                 .sort((a, b) => {
                   if (typeof a.courseId === 'object' && typeof b.courseId === 'object') {
                     return a.courseId.title < b.courseId.title ? -1 : 1;
@@ -49,7 +49,7 @@ export default function Home() {
                 ))
             }
             {
-              !userId && "Faça login para salvar seu progresso"
+              !userId && <div style={{ width: "100%" }}>Faça login para salvar seu progresso</div>
             }
           </Section>
       }
