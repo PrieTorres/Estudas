@@ -12,22 +12,24 @@ const CoursesPage = () => {
     const { loading, courseList: courses } = useContext(PageContext);
 
     return (
-      <div>
-        <Section type="flex-list">
-          {
-            !courses?.length && loading?.loadingCourses &&
-            <LoadingSection />
-          }
-          {courses?.filter(course => !course.hide).sort((a, b) => a.title < b.title ? -1 : 1).map((courseMetadata: LoadedDataCourse, i: number) =>
-            <div key={`${courseMetadata._id}_${i}`} >
-              <CourseCard
-                course={courseMetadata}
-                title={courseMetadata.title}
-                hideProgress={true}
-              />
-            </div>)
-          }
-        </Section>
+      <div className="w-full flex justify-center">
+        <div className="w-[85%]">
+          <Section type="flex-list">
+            {
+              !courses?.length && loading?.loadingCourses &&
+              <LoadingSection />
+            }
+            {courses?.filter(course => !course.hide).sort((a, b) => a.title < b.title ? -1 : 1).map((courseMetadata: LoadedDataCourse, i: number) =>
+              <div key={`${courseMetadata._id}_${i}`} >
+                <CourseCard
+                  course={courseMetadata}
+                  title={courseMetadata.title}
+                  hideProgress={true}
+                />
+              </div>)
+            }
+          </Section>
+        </div>
       </div>
     );
   } catch (error) {
