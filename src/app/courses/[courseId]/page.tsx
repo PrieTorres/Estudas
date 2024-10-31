@@ -85,7 +85,7 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
         {
           course?.steps[step]?.content ? <Section>
             <div className='flex justify-center'>
-              <Container className='w-[60%]'
+              <Container className='w-[56%]'
                 dangerouslySetInnerHTML={{ __html: (course?.steps[step]?.content ?? "loading...") }}
               />
             </div>
@@ -94,11 +94,15 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
         {
           Array.isArray(course?.steps[step]?.questions) && course?.steps[step]?.questions?.length ?
             <Section>
-              <h1>Hora de praticar!</h1>
-              <QuestionsContainer
-                activitiesDone={course?.activitiesDone}
-                questions={course?.steps[step]?.questions}
-              />
+              <div className='flex justify-center'>
+                <div>
+                  <h1>Hora de praticar!</h1>
+                  <QuestionsContainer
+                    activitiesDone={course?.activitiesDone}
+                    questions={course?.steps[step]?.questions}
+                  />
+                </div>
+              </div>
             </Section>
             : undefined
         }

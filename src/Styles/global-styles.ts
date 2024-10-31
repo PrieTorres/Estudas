@@ -25,6 +25,7 @@ export const GlobalStyles = createGlobalStyle`
   body{
     ${({ theme }) => css`
       font-family: "Montserrat", sans-serif;
+      font-size: 1.8rem !important;
       background: #222;
       background: ${theme.colors.mainBg};
       color: ${theme.colors.secondaryColor}

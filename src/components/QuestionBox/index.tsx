@@ -38,10 +38,10 @@ export const QuestionBox = ({ question, response, options, onClickOpt, answeredM
   }
 
   return (
-    <Container>
+    <Container >
       {type == "quiz_html" ?
         <div dangerouslySetInnerHTML={{ __html: question }} /> :
-        <h2>{question}</h2>
+        <h2 className='!font-montserrat py-16'>{question}</h2>
       }
       <div>
         {options.map((opt, i) => (
