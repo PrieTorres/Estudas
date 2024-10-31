@@ -66,7 +66,7 @@ export default function Home() {
             <div style={{ width: "100%"}}>
               {
                 !user ?
-                  <div>
+                  <div >
                     <Introduction></Introduction>
                     faça login para salvar seu progresso
                   </div> :

@@ -14,6 +14,7 @@ module.exports = {
       fontFamily: {
         satoshi: ['Satoshi', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
+        montserrat:['Montserrat', 'sans-serif']
       },
       colors: {
         'primary-orange': '#FF5722',
