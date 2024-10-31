@@ -9,4 +9,5 @@ export interface ActivityStepCourse {
   question: string;
   answer: string;
   options: Array<string>;
+  explanation?: string;
 }
