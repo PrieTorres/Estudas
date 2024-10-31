@@ -4,7 +4,14 @@ const UserSchema = new Schema({
   email: {
     type: String,
     unique: [true, 'Email already exists!'],
-    required: [true, 'Email is required!'],
+    // required: [true, 'Email is required!'],
+  },
+  username: {
+    type: String,
+    unique: [true, 'username already exists!'],
+  },
+  password: {
+    type: String,
   },
   firebaseUserId: {
     type: String,
