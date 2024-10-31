@@ -11,7 +11,7 @@ export const Introduction = ({ }): ReactElement => {
         <SafeImage src={nice_duck} text='boas vindas!' />
         <div style={{width:"55%"}}>
           <h1 id="title">Boas vindas ao Estudas!</h1>
-          <h3>
+          <h3 className='!font-montserrat'>
             Seja bem-vindo (a) ao Estudas, o seu portal definitivo para aprender os fundamentos da programação usando a linguagem de programação C.
             Nosso objetivo é fornecer a você as ferramentas e o conhecimento necessários para dominar uma das linguagens de programação mais poderosas e influentes da história.
             Nossos cursos são projetados para todos os níveis, desde iniciantes até programadores experientes que desejam aprimorar suas habilidades.
