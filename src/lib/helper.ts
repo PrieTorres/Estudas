@@ -275,10 +275,10 @@ export async function createSteps(steps: StepCourseType[], courseId: string | nu
   return await Promise.all(stepsPromises);
 }
 
-export async function createQuestion(quest: ActivityStepCourseType, stepId: number | string, courseId: string | number) {
+export async function createQuestion(quest: ActivityStepCourseType, stepId: number | string, courseId: string | number, explanation?: string | undefined) {
   try {
-    const { type, question, answer, options } = quest;
-    const savedQuestion = new ActivityStepCourse({ courseId, stepId, type, question, answer, options });
+    const { type, question, answer, options, explanation } = quest;
+    const savedQuestion = new ActivityStepCourse({ courseId, stepId, type, question, answer, options, explanation });
     await savedQuestion.save();
 
     return savedQuestion.toObject();
