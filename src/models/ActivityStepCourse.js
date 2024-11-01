@@ -23,6 +23,9 @@ const ActivityStepCourseSchema = new Schema({
     type: Schema.Types.String,
     required: [true, "answer is required"]
   },
+  explanation: {
+    type: Schema.Types.String,
+  },
   options: {
     type: Schema.Types.Array,
   },
