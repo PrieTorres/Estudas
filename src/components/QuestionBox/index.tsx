@@ -16,7 +16,7 @@ export interface QuestionBoxProps {
   onClickOpt: CallableFunction;
   answeredMetadata?: AnsweredMetadata | null | undefined;
   disabled?: boolean;
-  explanation: string;
+  explanation: string | undefined;
 }
 
 export const QuestionBox = ({ question, response, options, onClickOpt, answeredMetadata = {}, disabled, type,explanation }: QuestionBoxProps): ReactElement => {
