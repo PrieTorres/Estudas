@@ -170,7 +170,6 @@ export async function updateCourseProgress({ id, progress, stepsDone, activities
 
   } catch (error) {
     console.error("unable to update progress", error);
-    // throw error;
   }
 }
 
