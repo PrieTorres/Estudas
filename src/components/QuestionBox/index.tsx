@@ -16,9 +16,10 @@ export interface QuestionBoxProps {
   onClickOpt: CallableFunction;
   answeredMetadata?: AnsweredMetadata | null | undefined;
   disabled?: boolean;
+  explanation: string;
 }
 
-export const QuestionBox = ({ question, response, options, onClickOpt, answeredMetadata = {}, disabled, type }: QuestionBoxProps): ReactElement => {
+export const QuestionBox = ({ question, response, options, onClickOpt, answeredMetadata = {}, disabled, type,explanation }: QuestionBoxProps): ReactElement => {
   function answerClassNames(opt: string, answeredMetadata: AnsweredMetadata) {
     const { clicked, answer } = answeredMetadata;
 
@@ -54,6 +55,17 @@ export const QuestionBox = ({ question, response, options, onClickOpt, answeredM
             />
           </div>
         ))}
+        {
+          answeredMetadata?.clicked!=answeredMetadata?.answer ?
+          // !answeredMetadata?.isCorrect ? 
+          <div>
+            <div>A resposta é:</div>
+            {explanation}
+            {/* A resposta esta aqui */}
+          </div> 
+            : <></>
+        }
+        
       </div>
     </Container>
   );
