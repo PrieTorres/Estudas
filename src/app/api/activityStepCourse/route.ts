@@ -4,6 +4,24 @@ import { ActivityStepCourse as ActivityStepCourseType } from "@/types/activitySt
 import { connectToDB } from "@/utils/database";
 import { updateActivityStepCourse } from "../helper";
 
+interface StepCourseItem {
+  id?: string,
+  _id?: string,
+  courseId?: string,
+  stepId?: string,
+  type?: string,
+  question?: string,
+  answer?: string,
+  options?: string[],
+  explanation?: string;
+}
+
+interface PostParams {
+  courseId?: string, stepId?: string, type?: string,
+  question?: string, answer?: string,
+  options?: string[], explanation?: string, array?: StepCourseItem[];
+}
+
 export async function POST(req: Request) {
   const TOKEN = process.env.AUTH_TOKEN;
 
@@ -19,7 +37,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const { courseId, stepId, type, question, answer, options, explanation, array } = await req.json();
+    const { courseId, stepId, type, question, answer, options, explanation, array }: PostParams = await req.json();
 
     if (!courseId || !stepId || !type || !question || !answer) {
       return new Response("Missing required params", { status: 400 });
@@ -28,7 +46,7 @@ export async function POST(req: Request) {
     await connectToDB();
 
     if (array) {
-      const promises = array.map(async (item: unknown) => {
+      const promises = array.map(async (item: StepCourseItem) => {
         const { type, question, answer, options, explanation } = item;
         return await createQuestion({ type, question, answer, options, explanation } as ActivityStepCourseType, stepId, courseId);
       });
@@ -85,7 +103,7 @@ export async function PATCH(req: Request) {
     const { id, _id, courseId, stepId, type, question, answer, options, explanation, array } = await req.json();
 
     if (!array) {
-      const update = await updateActivityStepCourse({ id, courseId, stepId, type, question, answer, options, explanation });
+      const update = await updateActivityStepCourse({ id, _id, courseId, stepId, type, question, answer, options, explanation });
 
       if (!update.activity) {
         return new Response(update.message, { status: update.status });
@@ -93,7 +111,7 @@ export async function PATCH(req: Request) {
 
       return new Response(JSON.stringify(update.activity), { status: update.status });
     } else {
-      const promises = array.map(async (item: unknown) => {
+      const promises = array.map(async (item: StepCourseItem) => {
         const { id, _id, courseId, stepId, type, question, answer, options, explanation } = item;
         return await updateActivityStepCourse({ id, _id, courseId, stepId, type, question, answer, options, explanation });
       });
