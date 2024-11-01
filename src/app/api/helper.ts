@@ -1,6 +1,6 @@
 import ActivityStepCourse from "@/models/ActivityStepCourse";
 import { ActivityStepCourse as ActivityStepCourseType } from "@/types/activityStepCourse";
-import { Request } from "express";
+import { Request as RequestExp } from "express";
 import { Document } from "mongoose";
 
 interface ResponseReq {
@@ -9,14 +9,14 @@ interface ResponseReq {
   [key: string]: string | number | boolean | object;
 }
 
-export function checkAuth(req: Request): ResponseReq | undefined {
+export function checkAuth(req: RequestExp | Request): ResponseReq | undefined {
   const TOKEN = process.env.AUTH_TOKEN;
 
   if (!TOKEN) {
     return { message: "Server configuration error: AUTH_TOKEN is not set", status: 500 };
   }
 
-  const authHeader = req.headers['authorization'] as string | undefined;
+  const authHeader = (req.headers as { authorization?: string }).authorization;
   const token = authHeader?.split(" ")[1];
 
   if (token !== TOKEN) {
