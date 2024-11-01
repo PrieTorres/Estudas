@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Container } from "./styles";
 import Image, { StaticImageData } from "next/image";
 import { TranslatedSpan } from "../TranslatedSpan";
+import { ThemeProvider } from "styled-components";
 
 export interface SafeImageProps {
   src: string | StaticImageData,
@@ -21,6 +22,7 @@ export const SafeImage = ({
     <Container style={{ height }}>
       {!imageError ?
         <Image
+          className="invert"
           unoptimized
           src={src}
           alt={text}
