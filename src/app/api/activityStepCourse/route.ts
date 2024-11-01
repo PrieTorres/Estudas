@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     await connectToDB();
 
     if (array) {
-      const promises = array.map(async (item: any) => {
+      const promises = array.map(async (item: unknown) => {
         const { type, question, answer, options, explanation } = item;
         return await createQuestion({ type, question, answer, options, explanation } as ActivityStepCourseType, stepId, courseId);
       });
@@ -87,13 +87,13 @@ export async function PATCH(req: Request) {
     if (!array) {
       const update = await updateActivityStepCourse({ id, courseId, stepId, type, question, answer, options, explanation });
 
-      if (!update?.activity) {
+      if (!update.activity) {
         return new Response(update.message, { status: update.status });
       }
 
-      return new Response(JSON.stringify(update?.activity), { status: update.status });
+      return new Response(JSON.stringify(update.activity), { status: update.status });
     } else {
-      const promises = array.map(async (item: any) => {
+      const promises = array.map(async (item: unknown) => {
         const { id, _id, courseId, stepId, type, question, answer, options, explanation } = item;
         return await updateActivityStepCourse({ id, _id, courseId, stepId, type, question, answer, options, explanation });
       });
