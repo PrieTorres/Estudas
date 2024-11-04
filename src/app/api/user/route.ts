@@ -8,12 +8,25 @@ export async function POST(req: Request) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
+  /*console.log({
+    firebaseUserId, email, image, name, username, password
+  });*/
+
   try {
     await connectToDB();
-    const generateUser = () => ((name?.replace(/\s/g, "")?.toLowerCase() ?? "") + `${Math.floor(Math.random() * 10000000000000000)}`).substring(0, 20);
-    let userName = username ?? generateUser();
+    const generateUser = (_name=name) => ((_name?.replace(/\s/g, "")?.toLowerCase() ?? "") + `${Math.floor(Math.random() * 10000000000000000)}`).substring(0, 20);
+    let userName = generateUser(username);
 
-    const existingUser = await User.findOne({ $or: [{ email }, { firebaseUserId }] });
+    console.log("userName", userName);
+
+    const existingUser = await User.findOne({
+      $or: [
+        { email: { $eq: email, $ne: null } },
+        { firebaseUserId: { $eq: firebaseUserId, $ne: null } },
+        { username: { $eq: username, $ne: null } }
+      ]
+    });
+
     if (existingUser) return new Response(JSON.stringify(existingUser), { status: 200 });
 
     let existingUserWithSameName = await User.findOne({ name: userName });
@@ -24,7 +37,7 @@ export async function POST(req: Request) {
       existingUserWithSameName = await User.findOne({ name: userName });
     }
 
-    const user = await new User({ firebaseUserId, email, image, name: userName, username: userName, password: hashedPassword }).save();
+    const user = await new User({ firebaseUserId, email, image, name: userName, username: username, password: hashedPassword }).save();
     user.save();
 
     cookies().set('userId', user._id, { httpOnly: false });

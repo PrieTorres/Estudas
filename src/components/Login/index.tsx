@@ -1,4 +1,5 @@
 import Image from "next/image"
+import googleImage from "@/assets/google.svg"
 
 export const Login=()=>{
   return <>
@@ -30,7 +31,7 @@ export const Login=()=>{
 
         <section className="flex place-content-center mt-6 gap-12">
             <a href="">
-                <Image className="rounded-full w-14 h-14" src={"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1024px-Google_%22G%22_logo.svg.png"} alt="" />
+                <Image className="rounded-full w-14 h-14" width={40} height={40} src={googleImage} alt="" />
             </a>
 
         </section>
