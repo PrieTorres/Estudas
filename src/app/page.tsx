@@ -10,9 +10,15 @@ import { Introduction } from "@/components/Introduction";
 
 export default function Home() {
   const { loading, coursesInProgress, userId } = useContext(PageContext);
-
+  //  let {is}=useContext(SingButton)
   return (
     <div>
+        {
+          
+          
+        }
+      
+
       {
         loading?.loadingProgress || loading?.loadingAuth ?
           <LoadingSection />
