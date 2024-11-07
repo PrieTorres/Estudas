@@ -84,12 +84,10 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
   };
 
   const updateSessionId = (userId?: string) => {
-    setPageState((prev) => ({ ...prev, userId, coursesInProgress: [] }));
+    setPageState((prev) => ({ ...prev, userId: userId, coursesInProgress: [], user }));
 
     if (userId) {
       fetchProgress(userId);
-    } else {
-      setCoursesInProgress([]);
     }
   };
 
