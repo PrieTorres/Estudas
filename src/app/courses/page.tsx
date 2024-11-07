@@ -10,7 +10,7 @@ import { PageContext } from "@/context/pageContext";
 const CoursesPage = () => {
   try {
     const { loading, courseList: courses } = useContext(PageContext);
-
+    
     return (
       <div>
         <Section>
@@ -28,11 +28,11 @@ const CoursesPage = () => {
                   hideProgress={false}
                 />
                 {/* Spacer to create roadmap effect */}
-                {i < courses.length - 1 && (
+                {i < courses.length - 1 && !courses[i + 1].hide && (
                   <div
                     style={{
                       height: "60px",
-                      borderLeft: "20px solid white",
+                      borderLeft:courseMetadata.progress === 100 ? "30px solid #4CAF50" : "30px solid #E0E0E0",
                       margin: "0 auto",
                       width: "2px",
                     }}
