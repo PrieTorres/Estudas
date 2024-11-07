@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Section } from "@/components/Section";
 import { CourseCard } from "@/components/Course";
@@ -13,26 +13,39 @@ const CoursesPage = () => {
 
     return (
       <div>
-        <Section type="flex-list">
-          {
-            !courses?.length && loading?.loadingCourses &&
-            <LoadingSection />
-          }
-          {courses?.filter(course => !course.hide).sort((a, b) => a.title < b.title ? -1 : 1).map((courseMetadata: LoadedDataCourse, i: number) =>
-            <div key={`${courseMetadata._id}_${i}`} >
-              <CourseCard
-                course={courseMetadata}
-                title={courseMetadata.title}
-                hideProgress={true}
-              />
-            </div>)
-          }
+        <Section>
+          {/* Show loading indicator if courses are still loading */}
+          {!courses?.length && loading?.loadingCourses && <LoadingSection />}
+
+          {/* Display courses in the order they appear in the list */}
+          {courses
+            ?.filter((course) => !course.hide)
+            .map((courseMetadata: LoadedDataCourse, i: number) => (
+              <div key={`${courseMetadata._id}_${i}`} style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+                <CourseCard
+                  course={courseMetadata}
+                  title={courseMetadata.title}
+                  hideProgress={false}
+                />
+                {/* Spacer to create roadmap effect */}
+                {i < courses.length - 1 && (
+                  <div
+                    style={{
+                      height: "60px",
+                      borderLeft: "20px solid white",
+                      margin: "0 auto",
+                      width: "2px",
+                    }}
+                  />
+                )}
+              </div>
+            ))}
         </Section>
       </div>
     );
   } catch (error) {
-    console.error("unable to fetch courses", error);
-    return (<div>some error happened while trying to list courses</div>);
+    console.error("Unable to fetch courses", error);
+    return <div>Some error happened while trying to list courses</div>;
   }
 };
 
