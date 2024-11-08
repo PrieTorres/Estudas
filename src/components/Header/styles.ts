@@ -10,7 +10,7 @@ export const Container = styled.header`
     height: ${theme.height.headerheight};
     min-width: fit-content;
     overflow: hidden;
-    color: ${theme.colors.secondaryColor};
+    color: ${theme.colors.mainColor};
     padding: ${theme.spacings.medium};
     background: ${theme.colors.black};
     background: ${theme.gradient.darkGreyGradient};
@@ -22,7 +22,7 @@ export const Container = styled.header`
 
     @media ${theme.media.lteMedium} {
       height: auto;
-      align-items: flex-start;
+      align-items: center;
       ${responsiveFontSize(theme, "xlarge")}
     }
 
@@ -31,5 +31,11 @@ export const Container = styled.header`
       padding: ${theme.spacings.small};
       flex-wrap: wrap;
     }
+    button{
+      background: ${theme.colors.mainBg};
+      padding: 8px;
+      border-radius: 8px;
+    }
+   
   `}
 `;

@@ -1,7 +1,8 @@
+import { DefaultTheme } from "styled-components/dist/types";
 import { ColorsDark } from "./COLORS";
 import { ColorsClaro } from "./COLORS";
 
-export const theme = {
+export const theme :DefaultTheme = {
   colors: {
     ...ColorsDark,
   },

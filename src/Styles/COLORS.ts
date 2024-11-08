@@ -25,7 +25,7 @@ export enum ColorsDark {
 export enum ColorsClaro {
   mainBg = "#f0f0f0",           // Fundo principal claro
   mainColor = "#222222",         // Cor principal (texto) escura
-  secondaryBg = "#f0f0f0",       // Fundo secundário claro
+  secondaryBg = "#e0e0e0",       // Fundo secundário claro
   secondaryBgDarker = "#e0e0e0", // Fundo secundário mais escuro
   secondaryColor = "#333333",    // Cor secundária mais escura
   white = "#FFFFFF",

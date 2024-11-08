@@ -26,7 +26,7 @@ export const Container = styled.section<ContainerProps>`
         justify-content: center;
         gap: 12px;
         flex-wrap: wrap;
-        align-content: center;
+        align-content: start;
       ` : ""}
 
       ${type == "flex-list-stretch" ? css`

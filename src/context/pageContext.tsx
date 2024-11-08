@@ -28,6 +28,7 @@ interface PageContextProps {
   updateSessionId?: (userId: string) => void;
   refreshProgress?: () => void;
   refreshCourses?: () => void;
+  
 }
 
 const SESSION_TIMEOUT_HOURS = 2;

@@ -24,6 +24,7 @@ export default function Home() {
                   "cursos em andamento" :
                   <div>
                     <Introduction />
+
                   </div>
               }
             </div>
@@ -50,9 +51,7 @@ export default function Home() {
                   ))
               }
             </div>
-            {
-              !userId && <div style={{ width: "100%" }}>Faça login para salvar seu progresso</div>
-            }
+            
           </Section>
       }
     </div>
