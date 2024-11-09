@@ -18,6 +18,7 @@
   "dependencies": {
     "@google-cloud/recaptcha-enterprise": "^5.11.0",
     "@next-auth/firebase-adapter": "^2.0.1",
+    "bcrypt": "^5.1.1",
     "firebase": "^10.13.2",
     "firebase-admin": "^11.4.1",
     "firebase-tools": "^13.23.0",
@@ -38,6 +39,7 @@
     "styled-components": "^6.1.11"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -3,12 +3,18 @@ import { Schema, model, models } from 'mongoose';
 const UserSchema = new Schema({
   email: {
     type: String,
-    unique: [true, 'Email already exists!'],
-    required: [true, 'Email is required!'],
+    sparse: true,
+  },
+  username: {
+    type: String,
+    sparse: true,
+  },
+  password: {
+    type: String,
   },
   firebaseUserId: {
     type: String,
-    unique: [true, 'Firebase User Id already exists!'],
+    sparse: true
   },
   name: {
     type: String,

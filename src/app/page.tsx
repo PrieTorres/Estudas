@@ -10,7 +10,7 @@ import { Introduction } from "@/components/Introduction";
 
 export default function Home() {
   const { loading, coursesInProgress, userId } = useContext(PageContext);
-
+  
   return (
     <div>
       {

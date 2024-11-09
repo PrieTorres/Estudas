@@ -5,8 +5,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { User } from "firebase/auth";
 import { auth } from "@/firebase";
 import { ProgressCourse } from "@/types/progressCourse";
-
-interface UserAuth extends User {
+import { useRouter } from 'next/navigation';
+interface UserAuth extends Partial<User> {
   _id: string;
 }
 
@@ -59,6 +59,7 @@ export const PageContext = createContext<PageContextProps>({});
 export const PageProvider = ({ children }: { children: ReactNode; }) => {
   const [user, loadingAuth] = useAuthState(auth) as [UserAuth | null, boolean, Error | undefined];
   const [pageState, setPageState] = useState<PageContextProps>({});
+  const router = useRouter();
 
   useEffect(() => {
     if (!pageState.sessionRestored) {
@@ -84,10 +85,14 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
   };
 
   const updateSessionId = (userId?: string) => {
-    setPageState((prev) => ({ ...prev, userId: userId, coursesInProgress: [], user }));
+    setPageState((prev) => ({ ...prev, userId, coursesInProgress: [], user: userId ? { ...(user ?? {}), _id: userId } : null }));
 
     if (userId) {
-      fetchProgress(userId);
+      fetchProgress(userId).then(() => {
+        router.push('/');
+      });
+    } else {
+      setCoursesInProgress([]);
     }
   };
 
