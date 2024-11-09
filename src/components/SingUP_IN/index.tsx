@@ -1,12 +1,19 @@
+"use client";
+
+import { useContext } from "react";
+import { PageContext } from "@/context/pageContext";
 import { fetchTk } from '@/lib/helper';
 import React, { FormEvent, useState } from 'react';
 import { Container } from './styles';
+import { LoadingSpin } from "../LoadingSpin";
 
 export const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { updateSessionId } = useContext(PageContext);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -35,11 +42,19 @@ export const SignUp = () => {
   };
 
   const createUser = (username: string, email: string, password: string) => {
+    setLoading(true);
     fetchTk('/api/user', {
       method: 'POST',
       body: JSON.stringify({ username, email, password }),
-    }).then((userResponse) => {
-      console.log(userResponse);
+    }).then((userResponse: Response) => {
+      userResponse.json().then((user) => {
+        if (updateSessionId) updateSessionId(user?._id ?? "");
+      }).catch((error) => {
+        console.error('An error occurred while parsing the user response', error);
+        setLoading(false);
+      });
+    }).finally(() => {
+      setLoading(false);
     });
   };
 
@@ -75,6 +90,9 @@ export const SignUp = () => {
           </div>
         }
       </form>
+      {
+        loading && <LoadingSpin />
+      }
     </Container>
   );
 };
