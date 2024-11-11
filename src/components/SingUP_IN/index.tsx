@@ -6,6 +6,7 @@ import { fetchTk } from '@/lib/helper';
 import React, { FormEvent, useState } from 'react';
 import { Container } from './styles';
 import { LoadingSpin } from "../LoadingSpin";
+import Link from "next/link";
 
 export const SignUp = () => {
   const [username, setUsername] = useState('');
@@ -90,6 +91,10 @@ export const SignUp = () => {
           </div>
         }
       </form>
+      <div style={{ display: "flex", gap: 5 }}>
+        <p>Already have an account?</p>
+        <Link href="/login"><strong>Log In</strong></Link>
+      </div>
       {
         loading && <LoadingSpin />
       }

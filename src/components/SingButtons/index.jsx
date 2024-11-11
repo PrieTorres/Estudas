@@ -2,23 +2,19 @@
 import { Container } from './styles';
 import Link from "next/link";
 import Image from "next/image";
-import { createContext, useContext, useState } from "react";
-import { signInWithGoogle, auth } from '@/firebase';
+import { useContext, useState } from "react";
+import { auth } from '@/firebase';
 import { signOut as firebaseSignOut } from 'firebase/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { PageContext } from '@/context/pageContext';
+import defaultIcon from "@/assets/img/default_user_photo.png";
+import { useRouter } from 'next/navigation';
 
 
 export const SignButtons = () => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
-  const [user] = useAuthState(auth);
-  const { updateSessionId } = useContext(PageContext);
+  const { updateSessionId, userId, user } = useContext(PageContext);
+  const router = useRouter();
 
-  // const SignButton=createContext()
-
-  //login out gmail
-  const [isPopUpSingUpIn,setIsPopUpSingUpIn] =useState(false);
-  //login out gmail
 
   function handleSignOut() {
     firebaseSignOut(auth);
@@ -28,25 +24,14 @@ export const SignButtons = () => {
   }
 
   function handleSignIn() {
-    setIsPopUpSingUpIn(true);
-    
-    // signInWithGoogle();
-
-    // if (typeof updateSessionId === 'function') {
-    //   if (user) {
-    //     getUserByFirebaseUserId({ firebaseUserId: user?.uid ?? "", createUser: true, userData: user }).then((response) => {
-    //       updateSessionId(response?._id ?? response?.id ?? "");
-    //     });
-    //   }
-    // }
+    router.push('/signIn');
   }
 
   return (
     <Container>
-      
       {/* Desktop Navigation */}
       <div className='text-[1.9rem] sm:flex hidden' style={{ alignContent: "center", alignItems: "center" }}>
-        {user ? (
+        {userId ? (
           <div className='flex gap-3 md:gap-5'>
             <button
               type='button'
@@ -58,7 +43,7 @@ export const SignButtons = () => {
 
             <Link href='/profile' className='sm:flex hidden' style={{ alignContent: "center", alignItems: "center" }} >
               <Image
-                src={user.photoURL}
+                src={user?.photoURL ?? defaultIcon}
                 width={37}
                 height={37}
                 className='rounded-full'
@@ -79,10 +64,10 @@ export const SignButtons = () => {
 
       {/* Mobile Navigation */}
       <div className='sm:hidden flex relative'>
-        {user ? (
+        {userId ? (
           <div className='flex flex-col items-end'>
             <Image
-              src={user.photoURL}
+              src={user?.photoURL ?? defaultIcon}
               width={37}
               height={37}
               className='rounded-full'
