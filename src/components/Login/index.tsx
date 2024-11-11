@@ -16,7 +16,6 @@ export const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { updateSessionId } = useContext(PageContext);
-  const [isPopUpSingUpIn, setIsPopUpSingUpIn] = useState(false);
   const [user] = useAuthState(auth);
 
 
@@ -60,8 +59,6 @@ export const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    setIsPopUpSingUpIn(true);
-
     signInWithGoogle();
     if (typeof updateSessionId === 'function') {
       if (user) {
