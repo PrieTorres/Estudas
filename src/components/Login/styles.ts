@@ -13,5 +13,9 @@ export const Container = styled.div`
       border-radius: 8px;
       color: ${theme.colors.mainColor};
     }
+
+    & > div {
+      background: ${theme.colors.mainBg};
+    }
   `}
 `;

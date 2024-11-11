@@ -71,7 +71,7 @@ export const Login = () => {
 
   return (
     <Container>
-      <div className="h-screen bg-slate-100 flex justify-center items-center">
+      <div className="h-screen flex justify-center items-center">
         <main className="w-[475px]  p-16 bg-slate-400 shadow-lg rounded-md">
 
           <h1 className="mb-12 text-center font-bold text-4xl">Login</h1>
@@ -145,7 +145,6 @@ export const Login = () => {
         </main>
 
       </div>
-
     </Container>
   );
 };
