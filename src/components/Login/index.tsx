@@ -9,6 +9,7 @@ import { getUserByFirebaseUserId } from "@/lib/helper";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { LoadingSpin } from "../LoadingSpin";
 import { Container } from "./styles";
+import Link from "next/link";
 
 export const Login = () => {
   const [username, setUsername] = useState('');
@@ -140,6 +141,11 @@ export const Login = () => {
             </button>
 
           </section>
+
+          <div style={{ display: "flex", gap: 5 }}>
+            <p>Ainda não possui uma conta?</p>
+            <Link href="/signIn"><strong>Cadastro</strong></Link>
+          </div>
 
           {loading && <LoadingSpin />}
         </main>
