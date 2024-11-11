@@ -5,7 +5,7 @@ import { responsiveFontSize } from "./helperStyles";
 export const GlobalStyles = createGlobalStyle`
 
   @font-face {
-    font-family: 'VT323';
+    font-family: 'Montserrat';
     src: url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
     font-style: normal;
     font-weight: 400;
@@ -24,7 +24,8 @@ export const GlobalStyles = createGlobalStyle`
 
   body{
     ${({ theme }) => css`
-      font-family: "VT323", monospace;
+      font-family: "Montserrat", sans-serif;
+      font-size: 1.8rem !important;
       background: #222;
       background: ${theme.colors.mainBg};
       color: ${theme.colors.secondaryColor}

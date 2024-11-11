@@ -10,8 +10,9 @@ export const Container = styled.span`
 
     @media ${theme.media.lteBig} {
       display: flex;
+      justify-content: center;
       align-items: center;
-      align-content: center;
+      
 
       & div:has(img) {
         min-width: 400px;
