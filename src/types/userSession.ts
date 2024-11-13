@@ -12,5 +12,5 @@ export interface UserSession extends Session {
 }
 
 export interface UserAuth extends Partial<User> {
-  _id: string;
+  _id?: string;
 }
