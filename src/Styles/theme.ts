@@ -51,9 +51,9 @@ export const theme :DefaultTheme = {
     lteSmallMed: "(max-width: 620px)",
   },
   height: {
-    headerheight: "64px",
-    sectionHeight: "90vh",
-    footerHeight: "44px",
+    headerheight: "8vh",
+    sectionHeight: "84vh",
+    footerHeight: "8vh",
     dropDownDefaultHeight: "50px"
   },
   width: {
