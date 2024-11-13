@@ -26,7 +26,7 @@ export const POST = async (req: Request) => {
 
     return new Response(JSON.stringify(existingUser), { status: 200 });
 
-  } catch (error) {
+  } catch (error: Error | any) {
     console.error("error by trying to log in", error);
     return new Response("Failed to log in: " + error?.message, { status: 500 });
   }

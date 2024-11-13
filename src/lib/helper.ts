@@ -6,6 +6,7 @@ import { ActivityStepCourse as ActivityStepCourseType } from "@/types/activitySt
 import ActivityStepCourse from "@/models/ActivityStepCourse";
 import { User } from "firebase/auth";
 import { ActivitiesDone } from "@/types/progressCourse";
+import { UserAuth } from "@/types/userSession";
 
 type keyType = string | number | symbol;
 export function transformArrayToObject<T, K extends keyof T>(array: T[], key: K): Record<T[K] & (keyType), T> {
@@ -73,8 +74,9 @@ export async function createUserDb({ firebaseUserId, email, image, name }: { fir
   }
 }
 
-export async function getUserByFirebaseUserId({ firebaseUserId, createUser, userData }: { firebaseUserId: string, createUser?: boolean, userData?: User | null; }) {
+export async function getUserByFirebaseUserId({ firebaseUserId, createUser, userData }: { firebaseUserId: string, createUser?: boolean, userData?: UserAuth | null; }) {
   try {
+    if (!firebaseUserId && !userData?.email) return console.error("missing firebaseUserId or email to get user");
     const user = userData?.email ? await fetchUserByEmail(userData?.email ?? firebaseUserId) : await fetchUserByFirebaseUserId(firebaseUserId);
 
     if (!user._id) {
@@ -101,8 +103,9 @@ async function fetchUserByEmail(email: string) {
   return await data.json();
 }
 
-async function handleUserCreation(firebaseUserId: string, userData?: User | null) {
+async function handleUserCreation(firebaseUserId: string, userData?: UserAuth | null) {
   if (!userData) throw new Error("missing user data to create user");
+  if (!userData?.email && !userData?.displayName) return console.error("missing userInfos to create user");
 
   return await createUserDb({
     firebaseUserId,
@@ -112,7 +115,7 @@ async function handleUserCreation(firebaseUserId: string, userData?: User | null
   });
 }
 
-async function handleUserFetchError(error: any, createUser?: boolean, firebaseUserId?: string, userData?: User | null) {
+async function handleUserFetchError(error: any, createUser?: boolean, firebaseUserId?: string, userData?: UserAuth | null) {
   console.error("unable to get user by firebase id", error);
   if (createUser) {
     return await handleUserCreation(firebaseUserId!, userData);
