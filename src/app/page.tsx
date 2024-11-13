@@ -10,7 +10,7 @@ import { Introduction } from "@/components/Introduction";
 
 export default function Home() {
   const { loading, coursesInProgress, userId } = useContext(PageContext);
-  
+
   return (
     <div>
       {
@@ -18,7 +18,7 @@ export default function Home() {
           <LoadingSection />
           :
           <Section type="flex-list">
-            <div style={{ width: "100%"}}>
+            <div style={{ width: "100%" }}>
               {
                 coursesInProgress?.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide)?.length ?
                   "cursos em andamento" :
@@ -28,7 +28,7 @@ export default function Home() {
                   </div>
               }
             </div>
-            <div className="w-full flex justify-start">
+            <div className="w-full flex justify-start flex-wrap" style={{ gap: 8 }}>
               {
                 coursesInProgress?.filter(prgDat => typeof prgDat.courseId === 'object' && !prgDat.courseId.hide && (prgDat.progress < 100 || !userId))
                   .sort((a, b) => {
@@ -51,7 +51,7 @@ export default function Home() {
                   ))
               }
             </div>
-            
+
           </Section>
       }
     </div>
