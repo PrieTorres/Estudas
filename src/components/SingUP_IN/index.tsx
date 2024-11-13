@@ -1,12 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import { useContext } from "react";
 import { PageContext } from "@/context/pageContext";
 import { fetchTk } from '@/lib/helper';
 import React, { FormEvent, useState } from 'react';
 import { Container } from './styles';
 import { LoadingSpin } from "../LoadingSpin";
+import googleImage from "@/assets/google.svg";
 import Link from "next/link";
+import { signInWithGoogle, auth } from '@/firebase';
+import { getUserByFirebaseUserId } from "@/lib/helper";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export const SignUp = () => {
   const [username, setUsername] = useState('');
@@ -15,6 +20,7 @@ export const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { updateSessionId } = useContext(PageContext);
+  const [user] = useAuthState(auth);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -57,13 +63,24 @@ export const SignUp = () => {
     });
   };
 
+  const handleGoogleLogin = () => {
+    signInWithGoogle();
+    if (typeof updateSessionId === 'function') {
+      if (user) {
+        getUserByFirebaseUserId({ firebaseUserId: user?.uid ?? "", createUser: true, userData: user }).then((response) => {
+          updateSessionId(response?._id ?? response?.id ?? "");
+        });
+      }
+    }
+  };
+
   const isPasswordCorrect = password === confirmPassword;
 
   return (
     <Container>
       <div className="h-screen flex justify-center items-center">
         <main className="w-[475px]  p-16 bg-slate-400 shadow-lg rounded-md">
-        <h1 className="mb-12 text-center font-bold text-4xl">Cadastro</h1>
+          <h1 className="mb-12 text-center font-bold text-4xl">Cadastro</h1>
 
           <form onSubmit={handleSignUp}>
 
@@ -129,9 +146,9 @@ export const SignUp = () => {
             </div>
 
 
-            <button 
-            className="block mx-auto p-4 mt-6 rounded-full w-1/2 text-white font-bold bg-[#9caccb] hover:bg-[#8895ac] cursor-pointer" 
-            type="submit" 
+            <button
+              className="block mx-auto p-4 mt-6 rounded-full w-1/2 text-white font-bold bg-[#9caccb] hover:bg-[#8895ac] cursor-pointer"
+              type="submit"
             >Cadastrar</button>
 
             {password.length > 0 &&
@@ -140,6 +157,14 @@ export const SignUp = () => {
               </div>
             }
           </form>
+          <p className="text-center mt-6"><small>Ou faça seu cadastro usando</small></p>
+
+          <section className="flex place-content-center mt-6 gap-12" style={{ paddingBottom: 16 }}>
+            <button onClick={handleGoogleLogin} >
+              <Image className="rounded-full w-14 h-14" width={40} height={40} src={googleImage} alt="" />
+            </button>
+
+          </section>
           <div style={{ display: "flex", gap: 5 }}>
             <p>Já possui uma conta?</p>
             <Link href="/login"><strong>LogIn</strong></Link>

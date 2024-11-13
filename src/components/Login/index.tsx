@@ -135,7 +135,7 @@ export const Login = () => {
 
           <p className="text-center mt-6"><small>Ou faça login usando</small></p>
 
-          <section className="flex place-content-center mt-6 gap-12">
+          <section className="flex place-content-center mt-6 gap-12" style={{ paddingBottom: 16 }}>
             <button onClick={handleGoogleLogin} >
               <Image className="rounded-full w-14 h-14" width={40} height={40} src={googleImage} alt="" />
             </button>
