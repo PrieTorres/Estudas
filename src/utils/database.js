@@ -1,7 +1,7 @@
+import User from '@/models/user';
 import mongoose from 'mongoose';
 
-let isConnected = false; // track the connection
-
+let isConnected = false;
 export const connectToDB = async () => {
   mongoose.set('strictQuery', true);
 
@@ -16,6 +16,7 @@ export const connectToDB = async () => {
       useUnifiedTopology: true,
     })
 
+    await User.syncIndexes();
     isConnected = true;
 
     console.info('MongoDB connected');

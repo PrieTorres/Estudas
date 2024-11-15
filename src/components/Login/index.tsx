@@ -44,7 +44,7 @@ export const Login = () => {
 
   const login = (username: string, email: string, password: string) => {
     setLoading(true);
-    fetch('/api/user', {
+    fetch('/api/user/login', {
       method: 'POST',
       body: JSON.stringify({ username, email, password }),
     }).then((userResponse: Response) => {

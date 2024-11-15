@@ -23,7 +23,9 @@ const UserSchema = new Schema({
   },
   image: {
     type: String,
-  }
+  },
+}, {
+  autoIndex: true,
 });
 
 const User = models?.User || model("User", UserSchema);

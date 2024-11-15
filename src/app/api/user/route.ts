@@ -8,16 +8,10 @@ export async function POST(req: Request) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  /*console.log({
-    firebaseUserId, email, image, name, username, password
-  });*/
-
   try {
     await connectToDB();
     const generateUser = (_name=name) => ((_name?.replace(/\s/g, "")?.toLowerCase() ?? "") + `${Math.floor(Math.random() * 10000000000000000)}`).substring(0, 20);
     let userName = generateUser(username);
-
-    console.log("userName", userName);
 
     const existingUser = await User.findOne({
       $or: [
