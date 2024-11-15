@@ -147,7 +147,9 @@ export const Login = () => {
             <Link href="/signIn"><strong>Cadastro</strong></Link>
           </div>
 
-          {loading && <LoadingSpin />}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            {loading && <LoadingSpin />}
+          </div>
         </main>
 
       </div>

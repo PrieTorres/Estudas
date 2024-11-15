@@ -169,9 +169,9 @@ export const SignUp = () => {
             <p>Já possui uma conta?</p>
             <Link href="/login"><strong>LogIn</strong></Link>
           </div>
-          {
-            loading && <LoadingSpin />
-          }
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            {loading && <LoadingSpin />}
+          </div>
         </main>
       </div>
     </Container>
