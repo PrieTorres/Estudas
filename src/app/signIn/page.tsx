@@ -8,9 +8,9 @@ export default function SignInPage() {
 
   return (
     <Container>
-      <Section>
+     
         <SignUp />
-      </Section>
+      
     </Container>
   );
 }
