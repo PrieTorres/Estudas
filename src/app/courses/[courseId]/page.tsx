@@ -85,7 +85,7 @@ const CoursePage = ({ params }: { params: { courseId: string | number; }; }) => 
         {
           course?.steps[step]?.content ? <Section>
             <div className='flex justify-center'>
-              <Container className='w-[56%] min-w-[648px] [&:not(h1,h2)]:text-[1.6rem]'
+              <Container
                 dangerouslySetInnerHTML={{ __html: (course?.steps[step]?.content ?? "loading...") }}
               />
             </div>
