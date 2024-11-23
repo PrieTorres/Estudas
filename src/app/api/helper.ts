@@ -18,7 +18,7 @@ export function checkAuth(req: RequestExp | Request): ResponseReq | undefined {
     return { message: "Server configuration error: AUTH_TOKEN is not set", status: 500 };
   }
 
-  const authHeader = (req.headers as { authorization?: string; }).authorization;
+  const authHeader = (req.headers as any)?.get?.("Authorization");
   const token = authHeader?.split(" ")[1];
 
   if (token !== TOKEN) {
