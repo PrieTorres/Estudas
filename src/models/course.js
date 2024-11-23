@@ -8,6 +8,10 @@ const CourseSchema = new Schema({
   html: {
     type: String,
     //required: [true, 'HTML is required.'],
+  },
+  deleted: {
+    type: Schema.Types.Boolean,
+    default: false
   }
 });
 

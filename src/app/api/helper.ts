@@ -55,22 +55,15 @@ export async function updateActivityStepCourse({ id, _id, courseId, type, questi
   }
 
   if (typeof activity === "object") {
-    if (deleted) {
-      try {
-        await ActivityStepCourse.deleteOne({ _id: id ?? _id });
-      } catch (error: any) {
-        return { message: "Error deleting activity", status: 500, error };
-      }
-    } else {
-      activity.type = (type ?? activity.type) as ActivityStepCourseType['type'];
-      activity.question = question ?? activity.question;
-      activity.answer = answer ?? activity.answer;
-      activity.options = options ?? activity.options;
-      activity.explanation = explanation ?? activity.explanation;
-      activity.courseId = courseId ?? activity.courseId;
+    activity.type = (type ?? activity.type) as ActivityStepCourseType['type'];
+    activity.question = question ?? activity.question;
+    activity.answer = answer ?? activity.answer;
+    activity.options = options ?? activity.options;
+    activity.explanation = explanation ?? activity.explanation;
+    activity.courseId = courseId ?? activity.courseId;
+    activity.deleted = deleted ?? activity.deleted ?? false;
 
-      await activity.save();
-    }
+    await activity.save();
   } else {
     return { message: "Error updating activity, unexpected activity type: " + typeof activity, status: 500 };
   }
@@ -171,9 +164,37 @@ export async function deleteStep({ id }: { id: string; }): Promise<ResponseReq> 
   }
 
   try {
-    const res = await StepCourse.deleteOne({ _id: id });
+    step.deleted = true;
+    step.markModified('deleted');
+    const res = await step.save();
     return { message: "Step deleted", status: 200, res };
   } catch (error: any) {
-    return { message: "Error deleting step", status: 500, error };
+    return { message: "Error deleting step " + error?.message, status: 500, error };
+  }
+}
+
+export async function deleteActivity({ id }: { id: string; }): Promise<ResponseReq> {
+  if (!id) {
+    return { message: "Missing required params", status: 400 };
+  }
+
+  let activity: (Document<unknown, {}, ActivityStepCourseType> & ActivityStepCourseType) | null = null;
+  try {
+    activity = await ActivityStepCourse.findById(id);
+  } catch (error: any) {
+    return { message: "Error finding activity", status: 500, error };
+  }
+
+  if (!activity) {
+    return { message: "Activity not found", status: 404 };
+  }
+
+  try {
+    activity.deleted = true;
+    activity.markModified('deleted');
+    const res = await activity.save();
+    return { message: "Activity deleted", status: 200, res };
+  } catch (error: any) {
+    return { message: "Error deleting activity", status: 500, error };
   }
 }

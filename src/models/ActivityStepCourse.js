@@ -29,6 +29,10 @@ const ActivityStepCourseSchema = new Schema({
   options: {
     type: Schema.Types.Array,
   },
+  deleted: {
+    type: Schema.Types.Boolean,
+    default: false
+  }
 });
 
 const ActivityStepCourse = models?.ActivityStepCourse || model('ActivityStepCourse', ActivityStepCourseSchema);

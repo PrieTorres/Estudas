@@ -16,3 +16,5 @@ export async function GET(req: Request, { params }: { params: { id: number | str
     return new Response("Unable to get course", { status: 500 })
   }
 }
+
+export const revalidate = 0;

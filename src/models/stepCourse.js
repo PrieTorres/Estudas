@@ -15,6 +15,10 @@ const StepCourseSchema = new Schema({
   order: {
     type: Schema.Types.Number,
     required: [true, 'Order is required.'],
+  },
+  deleted: {
+    type: Schema.Types.Boolean,
+    default: false
   }
 });
 

@@ -16,4 +16,5 @@ export interface LoadedDataCourse {
     hide?: boolean;
     stepsDone?: Array<string>;
     activitiesDone?: Array<ActivitiesDone>;
+    deleted?: boolean;
 }

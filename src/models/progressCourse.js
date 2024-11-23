@@ -25,7 +25,11 @@ const ProgressCourseSchema = new Schema({
   activitiesDone: [{
     activityId: { type: String, required: true },
     answer: { type: String, required: true }
-  }]
+  }],
+  deleted: {
+    type: Schema.Types.Boolean,
+    default: false
+  }
 });
 
 const ProgressCourse = models?.ProgressCourse || model('ProgressCourse', ProgressCourseSchema);

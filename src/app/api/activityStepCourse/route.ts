@@ -2,7 +2,7 @@ import { createQuestion } from "@/lib/helper";
 import ActivityStepCourse from "@/models/ActivityStepCourse";
 import { ActivityStepCourse as ActivityStepCourseType } from "@/types/activityStepCourse";
 import { connectToDB } from "@/utils/database";
-import { updateActivityStepCourse } from "../helper";
+import { deleteActivity, updateActivityStepCourse } from "../helper";
 
 interface StepCourseItem {
   id?: string,
@@ -80,7 +80,7 @@ export async function GET(req: Request) {
   try {
     await connectToDB();
 
-    const activity = await ActivityStepCourse.find({});
+    const activity = (await ActivityStepCourse.find({})).filter(act => !act.deleted);
     return new Response(JSON.stringify(activity), { status: 200 });
 
   } catch (error) {
@@ -148,10 +148,12 @@ export async function DELETE(req: Request) {
 
     await connectToDB();
 
-    const activity = await ActivityStepCourse.deleteOne({ _id: id || _id });
+    const activity = await deleteActivity({ id: id || _id });
     return new Response(JSON.stringify(activity), { status: 200 });
 
   } catch (error) {
     return new Response("Failed to delete the activity", { status: 500 });
   }
 }
+
+export const revalidate = 0;

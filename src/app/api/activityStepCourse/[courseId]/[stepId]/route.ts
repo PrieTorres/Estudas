@@ -1,3 +1,4 @@
+import { deleteActivity } from "@/app/api/helper";
 import ActivityStepCourse from "@/models/ActivityStepCourse";
 import { connectToDB } from "@/utils/database";
 
@@ -19,7 +20,7 @@ export async function GET(req: Request, { params }: { params: { courseId: number
 
     await connectToDB();
 
-    const activity = await ActivityStepCourse.find({ courseId, stepId });
+    const activity = (await ActivityStepCourse.find({ courseId, stepId })).filter(act => !act.deleted);
     return new Response(JSON.stringify(activity), { status: 200 });
 
   } catch (error) {
@@ -46,11 +47,17 @@ export async function DELETE(req: Request, { params }: { params: { courseId: num
 
     await connectToDB();
 
-    const activity = await ActivityStepCourse.deleteOne({ courseId, stepId });
-    return new Response(JSON.stringify(activity), { status: 200 });
+    const activities = await ActivityStepCourse.find({ courseId, stepId });
+    const result = await Promise.all(activities.map(async (activity) => {
+      const res = await deleteActivity({ id: activity._id });
+      return res;
+    }));
 
+    return new Response(JSON.stringify(result), { status: 200 });
   } catch (error) {
     console.error(error);
     return new Response("Failed to delete the activity", { status: 500 });
   }
 }
+
+export const revalidate = 0;

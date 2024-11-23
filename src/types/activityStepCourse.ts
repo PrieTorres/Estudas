@@ -12,4 +12,5 @@ export interface ActivityStepCourse {
   answer: string;
   options: Array<string>;
   explanation?: string;
+  deleted?: boolean;
 }

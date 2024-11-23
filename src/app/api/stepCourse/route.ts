@@ -106,3 +106,5 @@ export async function DELETE(req: Request) {
     return new Response("Failed to delete step " + error?.message, { status: 500 });
   }
 }
+
+export const revalidate = 0;
