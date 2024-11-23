@@ -124,3 +124,34 @@ export async function PATCH(req: Request) {
     return new Response("Failed to update the activity", { status: 500 });
   }
 }
+
+export async function DELETE(req: Request) {
+  const TOKEN = process.env.AUTH_TOKEN;
+
+  if (!TOKEN) {
+    return new Response("Server configuration error: AUTH_TOKEN is not set", { status: 500 });
+  }
+
+  const authHeader = req.headers.get("Authorization");
+  const token = authHeader?.split(" ")[1];
+
+  if (token !== TOKEN) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  try {
+    const { id, _id } = await req.json();
+
+    if (!id && !_id) {
+      return new Response("Missing required params activity id", { status: 400 });
+    }
+
+    await connectToDB();
+
+    const activity = await ActivityStepCourse.deleteOne({ _id: id || _id });
+    return new Response(JSON.stringify(activity), { status: 200 });
+
+  } catch (error) {
+    return new Response("Failed to delete the activity", { status: 500 });
+  }
+}

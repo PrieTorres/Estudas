@@ -30,3 +30,29 @@ export async function GET(req: Request, { params }: { params: { courseId: number
     return new Response("Internal Server Error", { status: 500 });
   }
 };
+
+export async function POST(req: Request, { params, body }: { params: { courseId: number | string; }; body: StepCourseType; }) {
+  const TOKEN = process.env.AUTH_TOKEN;
+
+  if (!TOKEN) {
+    return new Response("Server configuration error: AUTH_TOKEN is not set", { status: 500 });
+  }
+
+  const authHeader = req.headers.get("Authorization");
+  const token = authHeader?.split(" ")[1];
+
+  if (token !== TOKEN) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+  
+  try {
+    await connectToDB();
+
+    const step = await StepCourse.create({ ...body, courseId: params.courseId });
+    return new Response(JSON.stringify(step), { status: 200 });
+
+  } catch (error) {
+    console.error("Internal Server Error:", error);
+    return new Response("Internal Server Error", { status: 500 });
+  }
+}

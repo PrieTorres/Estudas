@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "6aaba6e9-c702-4711-8d1e-c011d6c9b961",
+		"_postman_id": "841eec7c-cade-468f-bf6e-658ebc11b23b",
 		"name": "Estudas",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "38042289"
+		"_exporter_id": "39617244"
 	},
 	"item": [
 		{
@@ -17,7 +17,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": " ",
+									"value": " 1",
 									"type": "string"
 								}
 							]
@@ -26,7 +26,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Fundamentos C parte 2\"\r\n}",
+							"raw": "{\r\n    \"title\": \"teste\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -49,14 +49,14 @@
 					"response": []
 				},
 				{
-					"name": "addCourseCompleteData",
+					"name": "addUser",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": " ",
+									"value": " 1",
 									"type": "string"
 								}
 							]
@@ -65,7 +65,86 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Fundamentos C parte 3\",\r\n    \"steps\": [\r\n        {\r\n            \"content\": \"<h1>Funções avançadas e Recursividade</h1><p>Agora que você já entende o básico de funções em C, vamos explorar funções mais avançadas, como funções recursivas e a passagem de parâmetros por referência.</p><h2>Funções Recursivas</h2><p>Uma função recursiva é uma função que chama a si mesma. Elas são úteis quando uma tarefa pode ser dividida em subtarefas semelhantes. Um exemplo clássico de recursividade é o cálculo do fatorial de um número.</p><pre><code>#include &lt;stdio.h&gt;<br>int fatorial(int n) {<br>  if (n == 0) {<br>    return 1;<br>  } else {<br>    return n * fatorial(n - 1);<br>  }<br>}<br>int main() {<br>  int num = 5;<br>  printf(\\\"Fatorial de %d é %d\\\", num, fatorial(num));<br>  return 0;<br>}</code></pre><p>No exemplo acima, a função <code>fatorial</code> chama a si mesma até que a condição base seja atingida (<code>n == 0</code>), parando a recursão. A recursividade é poderosa, mas pode causar problemas se não houver uma condição de parada bem definida.</p><h2>Passagem de parâmetros por referência</h2><p>Em C, você pode passar parâmetros por valor ou por referência. Passar por valor significa que o valor da variável é copiado para a função, enquanto passar por referência significa que a função manipula o endereço da variável original. Para passar por referência, usamos ponteiros.</p><pre><code>#include &lt;stdio.h&gt;<br>void dobrarValor(int *n) {<br>  *n = *n * 2;<br>}<br>int main() {<br>  int num = 10;<br>  dobrarValor(&num);<br>  printf(\\\"Valor dobrado: %d\\\", num);<br>  return 0;<br>}</code></pre><p>No exemplo acima, o valor de <code>num</code> é dobrado diretamente dentro da função, pois estamos passando o endereço de <code>num</code> e manipulando seu valor com o operador de deferência (<code>*</code>).</p>\",\r\n            \"type\": \"blog\",\r\n            \"order\": 0\r\n        },\r\n        {\r\n            \"content\": \"<iframe width=\\\"1280\\\" height=\\\"720\\\" src=\\\"https://www.youtube.com/embed/hEHAKk-bs54\\\" title=\\\"Curso de Programação C | Funções e procedimentos recursivos com a linguagem C | Aula 153\\\" frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\\\" referrerpolicy=\\\"strict-origin-when-cross-origin\\\" allowfullscreen></iframe>\", \r\n            \"type\": \"video\", \r\n            \"order\": 1\r\n        },\r\n        {\r\n            \"content\": \"\", \r\n            \"type\": \"quiz\", \r\n            \"order\": 2,\r\n            \"questions\": [\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"O que é uma função recursiva em C?\",\r\n                    \"answer\": \"Uma função que chama a si mesma.\",\r\n                    \"options\": [\r\n                        \"Uma função que é chamada dentro de um loop.\",\r\n                        \"Uma função que chama a si mesma.\",\r\n                        \"Uma função que recebe um ponteiro como argumento.\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"Qual a condição necessária para evitar uma recursão infinita?\",\r\n                    \"answer\": \"Uma condição de parada bem definida.\",\r\n                    \"options\": [\r\n                        \"O uso de ponteiros.\",\r\n                        \"Uma condição de parada bem definida.\",\r\n                        \"A utilização de variáveis globais.\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"Como passamos um parâmetro por referência em C?\",\r\n                    \"answer\": \"Usando ponteiros.\",\r\n                    \"options\": [\r\n                        \"Usando variáveis globais.\",\r\n                        \"Usando ponteiros.\",\r\n                        \"Usando funções recursivas.\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"Qual operador é usado para acessar o valor de um ponteiro?\",\r\n                    \"answer\": \"O operador * (asterisco).\",\r\n                    \"options\": [\r\n                        \"O operador & (e comercial).\",\r\n                        \"O operador * (asterisco).\",\r\n                        \"O operador % (porcentagem).\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"O que acontece quando passamos uma variável por valor para uma função?\",\r\n                    \"answer\": \"A função recebe uma cópia do valor da variável.\",\r\n                    \"options\": [\r\n                        \"A função recebe uma cópia do valor da variável.\",\r\n                        \"A função recebe o endereço de memória da variável.\",\r\n                        \"A função altera diretamente o valor original da variável.\"\r\n                    ]\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}\r\n",
+							"raw": "{\r\n    \"name\": \"teste\",\r\n    \"username\": \"teste\",\r\n    \"password\": \"senha123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": " 1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"teste2\",\r\n    \"username\": \"teste2\",\r\n    \"password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addCourseCompleteData",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Linguagem de Programação C\",\r\n    \"steps\": [\r\n        {\r\n            \"content\": \"<header>\\n        <h1 id=\\\"MainTitle\\\">Linguagem de Programação C</h1>\\n    </header>\\n    \\n    <section id=\\\"section linguagens\\\">\\n        <h2 class=\\\"SubTitle1\\\">O que é uma linguagem de programação?</h2>\\n        <p>É a forma com que o programador e a máquina vão se comunicar, utilizando instruções com regras e símbolos que são escritas pelo desenvolvedor e lidas pelo computador. Funciona como um diálogo, onde para a pessoa entender o que está sendo pedido, esse pedido deve ser feito em uma linguagem no qual ela entenda.</p>\\n        <p>E como o computador é uma máquina, ele teria dificuldades em interpretar e se confundiria se usássemos a língua comum para nos comunicarmos. Por isso que foram criadas diversas linguagens de programação, para que nós humanos pudéssemos pedir de uma forma precisa o que queremos, sem ambiguidades, para garantir que o computador entenda e execute exatamente o que queremos, sem erro.</p>\\n        <p>Um exemplo dessas linguagens, é a linguagem de programação chamada de C! No qual vamos nos aprofundar mais nos conteúdos a seguir.</p>\\n    </section>\\n    \\n    <section id=\\\"section introducao\\\">\\n        <h2 class=\\\"SubTitle2\\\">Introdução ao C!</h2>\\n        <p>Foi criada em 1972, por Dennis Ritchie, com o objetivo inicial de ser uma linguagem usada no desenvolvimento de sistemas operacionais, mas é usada até hoje em dia para diversos campos do desenvolvimento de software, como em drivers, automação, micro controladores, etc.</p>\\n        <p>Algumas das características principais da linguagem C são:</p>\\n        <ul>\\n            <li><strong>Baixo nível:</strong> Por ser próxima ao hardware, permite manipulações diretas de memória, possibilitando de forma efetiva mudar os dados e as estruturas.</li>\\n            <li><strong>Portabilidade:</strong> Os códigos escritos em C podem ser compilados e executados em diferentes plataformas.</li>\\n            <li><strong>Bibliotecas Padrão:</strong> A linguagem vem com uma rica biblioteca padrão que fornece funções úteis para manipulação de strings, entrada/saída, alocação de memória, entre outras.</li>\\n            <li><strong>Simplicidade:</strong> Os códigos em C são considerados simples e diretos.</li>\\n            <li><strong>Eficiência:</strong> C é conhecida por sua eficiência em termos de uso de recursos.</li>\\n        </ul>\\n    </section>\\n    \\n<img src=\\\"images/infograficoc.png\\\" height=\\\"400px\\\" width=\\\"500px\\\">\\n\\n    <section id=\\\"section pratica\\\">\\n        <h2 class=\\\"SubTitle3\\\">Onde começar a praticar?</h2>\\n        <p>Para começar na prática, você vai precisar escrever um <strong>código-fonte</strong> em um <strong>editor de texto</strong> e salvar ele com o formato <strong>“.C”</strong>, e quando quiser enviar esse código para o computador <strong>ler e executar</strong>, antes ele vai precisar passar por um <strong>compilador</strong>, que vai fazer esse serviço e transformar o <strong>código-fonte</strong> em um <strong>programa executável.</strong></p>\\n        <p>O jeito mais fácil de começar a trabalhar em C, é usando uma <strong>IDE</strong> (Ambiente integrado de desenvolvimento), que consiste em um <strong>editor</strong>, um <strong>compilador</strong> e um <strong>depurador</strong>. O <strong>compilador</strong> irá transformar o código em linguagem de máquina. O <strong>depurador</strong> tem a função de encontrar erros, abortando a execução e mostrando a posição do erro no código-fonte.</p>\\n        <p>Para trabalhar com essa linguagem, existem várias IDE, as mais populares são o <a href=\\\"https://www.codeblocks.org/\\\" target=\\\"_blank\\\">Codeblock</a> e o <a href=\\\"https://www.youtube.com/watch?v=00cTn4-xxrY\\\" target=\\\"_blank\\\">DEV C++</a>.</p>\\n        <p>Aqui vai um exemplo prático de código-fonte escrito na IDE DEV C++. O nosso objetivo é fazer o computador <strong>ler e executar</strong> um código que pede para ele <strong>imprimir</strong> a frase: <strong>“Sou aluno no Estudas!”</strong>.</p>\\n    </section>\\n\\n    <section id=\\\"section exemplo\\\"></section>\\n    <h2 class=\\\"SubTitle4\\\">Exemplo de Código</h2>\\n<img src=\\\"images/codigo.png\\\" alt=\\\"codigoc\\\">\\n    \\n        <p>Vamos detalhar linha por linha o que esse código faz:</p>\\n        <h4>#include &lt;stdio.h&gt;:</h4>\\n        <p>Resumindo e traduzindo, ele diz “Incluir biblioteca de entrada e saída padrão”. Para podermos usarmos as funções.</p>\\n        <h4>int main(void) {</h4>\\n        <p>Esta linha diz que vamos começar o nosso programa principal <strong>(main)</strong>, e quando ele acabar, vai retornar um número inteiro <strong>(int)</strong> para dizer se deu tudo certo ou não. O <strong>(void)</strong> significa que a função main não precisa de nenhuma informação extra.</p>\\n        <h4>printf (\\\"Sou aluno no Estudas!\\\"); :</h4>\\n        <p>Esta linha chama a função <strong>printf</strong> da biblioteca stdio.h para <strong>imprimir</strong> a string \\\"Sou aluno no Estudas!\\\" Na tela.</p>\\n        <h4>return 0; :</h4>\\n        <p>Esta linha faz com que a função main retorne o valor 0. Em C, retornar 0 geralmente significa que o <strong>programa terminou</strong> com sucesso.</p>\\n    </section>\",\r\n            \"type\": \"blog\",\r\n            \"order\": 0\r\n        },\r\n        {\r\n            \"content\": \"\",\r\n            \"type\": \"quiz\",\r\n            \"order\": 10,\r\n            \"questions\": [\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"Qual das seguintes linguagens é considerada uma linguagem de programação de baixo nível?\",\r\n                    \"answer\": \"C\",\r\n                    \"options\": [\r\n                        \"Python\",\r\n                        \"C\",\r\n                        \"JavaScript\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"Para que serve a funcao #include &lt;stdio.h&gt;?\",\r\n                    \"answer\": \"importar uma biblioteca de entrada e saída padrão..\",\r\n                    \"options\": [\r\n                        \"Importar um estúdio de entrada e saída padrão..\",\r\n                        \"Importar uma biblioteca de entrada e saída padrão.\",\r\n                        \"Nenhuma das alternativas.\"\r\n                    ]\r\n                },\r\n                {\r\n                    \"type\": \"quiz\",\r\n                    \"question\": \"Qual dessas ferramentas tem a função de encontrar erros, abortando a execução e mostrando a posição do erro no código-fonte\",\r\n                    \"answer\": \"Depurador\",\r\n                    \"options\": [\r\n                        \"Compilador\",\r\n                        \"Checador\",\r\n                        \"Depurador\"\r\n                    ]\r\n                }\r\n            ]\r\n        },\r\n        {\r\n            \"type\": \"blog\",\r\n            \"order\": 9,\r\n            \"content\": \"<section id=\\\"section-conclusao\\\">\\n        <h2 class=\\\"SubTitle5\\\">Conclusão do curso!</h2>\\n        <p>Esperamos que você tenha absorvido o máximo possível que explicamos aqui, pois aprender a linguagem C vai facilitar e muito a sua jornada no mundo da programação, pois a linguagem C é conhecida como a mãe de várias outras linguagens, como C++, C#, Java e até Python.</p>\\n        <p>Agora é hora de algum conhecimento extra (que nunca é demais), e um desafio final para você nos provar que adquiriu todo conhecimento necessário para continuar a sua jornada como desenvolvedor (a)!</p>\\n        <p><a href=\\\"https://www.youtube.com/watch?v=6mUCcsnCn08\\\">VIDEO PRA COLOCAR AI</a></p>\\n    </section>\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -90,21 +169,11 @@
 				{
 					"name": "addCouseSteps",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": " ",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"courseId\": \"66eafd59003c294edf8872e0\",\r\n    \"content\": \"a\",\r\n    \"type\": \"questions\",\r\n    \"order\": 2\r\n}\r\n\r\n",
+							"raw": "{\r\n    \"_id\": \"66dba299556c042bcd439954\",\r\n    \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n    \"content\": \"\",\r\n    \"order\": 3,\r\n    \"type\": \"questions\",\r\n    \"questions\": [\r\n        {\r\n            \"_id\": \"66db9d98556c042bcd43994d\",\r\n            \"question\": \"Qual das seguinte opções tem uma sintaxe correta de uma função em C?\",\r\n            \"answer\": \"void myFunction(){}\",\r\n            \"options\": [\r\n                \"void myFunction(){}\",\r\n                \"function myFunction(){}\",\r\n                \"const myFunction(){}\",\r\n                \"let myFunction = (){}\",\r\n                \"const myFunction = () => {}\"\r\n            ],\r\n            \"type\": \"quiz\",\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"Em C, as funções são declaradas usando um tipo de retorno (como 'void' para funções que não retornam valores), o nome da função e parênteses para indicar que é uma função. O corpo da função vai entre chaves '{}'. Na opção correta, 'void myFunction(){}', temos uma função em C que não retorna valor e está corretamente estruturada.\",\r\n            \"__v\": 5\r\n        },\r\n        {\r\n            \"_id\": \"66dba080556c042bcd439950\",\r\n            \"question\": \"Qual das seguintes opções é uma estrutura de controle de repetição em C?\",\r\n            \"answer\": \"while\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \"if\",\r\n                \"while\",\r\n                \"switch\",\r\n                \"goto\",\r\n                \"struct\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"A estrutura 'while' em C é usada para repetir um bloco de código enquanto uma condição for verdadeira. Ela é uma das estruturas de controle de repetição, que permitem que um programa execute certas instruções várias vezes. 'if' e 'switch' são usados para fazer escolhas, enquanto 'struct' é para organizar dados e 'goto' é um comando de salto, não uma estrutura de repetição.\"\r\n        },\r\n        {\r\n            \"_id\": \"66dba0e4556c042bcd439951\",\r\n            \"question\": \"Qual é o cabeçalho necessário para usar funções de entrada e saída padrão em C?\",\r\n            \"answer\": \"#include <stdio.h>\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \"#include <stdlib.h>\",\r\n                \"#include <string.h>\",\r\n                \"#include <stdio.h>\",\r\n                \"#include <math.h>\",\r\n                \"#include <ctype.h>\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"Em C, o cabeçalho '#include <stdio.h>' permite o uso de funções padrão de entrada e saída, como 'printf' e 'scanf'. Esse cabeçalho é essencial para operações de escrita na tela e leitura de dados do usuário. Outros cabeçalhos, como 'stdlib.h' e 'math.h', fornecem funções adicionais, mas não para entrada e saída padrão.\"\r\n        },\r\n        {\r\n            \"_id\": \"66dba13d556c042bcd439952\",\r\n            \"question\": \"Qual é o operador usado para comparar se dois valores são iguais em C?\",\r\n            \"answer\": \"==\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \">=\",\r\n                \"<>\",\r\n                \"!=\",\r\n                \"=\",\r\n                \"==\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"Em C, o operador '==' é usado para comparar se dois valores são iguais. Por exemplo, 'a == b' verifica se 'a' e 'b' têm o mesmo valor. Diferente disso, '=' é um operador de atribuição, usado para dar um valor a uma variável. Os outros operadores (como '!=') são usados para outras comparações, como se os valores são diferentes.\"\r\n        },\r\n        {\r\n            \"_id\": \"66dba146556c042bcd439953\",\r\n            \"question\": \"O que faz a função printf em C?\",\r\n            \"answer\": \"Imprime dados na tela\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \"Lê dados da entrada padrão\",\r\n                \"Imprime dados na tela\",\r\n                \"Aloca memória dinâmica\",\r\n                \"Cria uma nova variável\",\r\n                \"Calcula a raiz quadrada de um número\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"A função 'printf' em C é usada para imprimir texto e variáveis na tela, permitindo que o programa exiba informações para o usuário. Essa função pertence ao cabeçalho 'stdio.h' e é muito usada para mostrar resultados e mensagens enquanto o programa é executado.\"\r\n        }\r\n    ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -164,6 +233,193 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "addStepActivity list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": " ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseId\": \"66eafd59003c294edf8872e0\", \r\n    \"stepId\": \"66eb026af09cc8aefb3c3d62\", \r\n    \"type\": \"quiz\", \r\n    \"question\": \"Qual das opções a seguir descreve corretamente um ponteiro?\", \r\n    \"answer\": \"Uma variável que armazena o endereço de memória de outra variável.\", \r\n    \"options\": [\r\n        \"Um tipo de variável que armazena caracteres.\",\r\n        \"Um tipo de função que faz a soma de dois números.\",\r\n        \"Uma variável que armazena o endereço de memória de outra variável.\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/activityStepCourse",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"activityStepCourse"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PATCH",
+			"item": [
+				{
+					"name": "update lista atividades",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"array\": [\r\n        {\r\n            \"_id\": \"66db9d98556c042bcd43994d\",\r\n            \"question\": \"Qual das seguinte opções tem uma sintaxe correta de uma função em C?\",\r\n            \"answer\": \"void myFunction(){}\",\r\n            \"options\": [\r\n                \"void myFunction(){}\",\r\n                \"function myFunction(){}\",\r\n                \"const myFunction(){}\",\r\n                \"let myFunction = (){}\",\r\n                \"const myFunction = () => {}\"\r\n            ],\r\n            \"type\": \"quiz\",\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"Em C, as funções são declaradas usando um tipo de retorno (como 'void' para funções que não retornam valores), o nome da função e parênteses para indicar que é uma função. O corpo da função vai entre chaves '{}'. Na opção correta, 'void myFunction(){}', temos uma função em C que não retorna valor e está corretamente estruturada.\"\r\n        },\r\n        {\r\n            \"_id\": \"66dba080556c042bcd439950\",\r\n            \"question\": \"Qual das seguintes opções é uma estrutura de controle de repetição em C?\",\r\n            \"answer\": \"while\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \"if\",\r\n                \"while\",\r\n                \"switch\",\r\n                \"goto\",\r\n                \"struct\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"A estrutura 'while' em C é usada para repetir um bloco de código enquanto uma condição for verdadeira. Ela é uma das estruturas de controle de repetição, que permitem que um programa execute certas instruções várias vezes. 'if' e 'switch' são usados para fazer escolhas, enquanto 'struct' é para organizar dados e 'goto' é um comando de salto, não uma estrutura de repetição.\"\r\n        },\r\n        {\r\n            \"_id\": \"66dba0e4556c042bcd439951\",\r\n            \"question\": \"Qual é o cabeçalho necessário para usar funções de entrada e saída padrão em C?\",\r\n            \"answer\": \"#include <stdio.h>\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \"#include <stdlib.h>\",\r\n                \"#include <string.h>\",\r\n                \"#include <stdio.h>\",\r\n                \"#include <math.h>\",\r\n                \"#include <ctype.h>\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"Em C, o cabeçalho '#include <stdio.h>' permite o uso de funções padrão de entrada e saída, como 'printf' e 'scanf'. Esse cabeçalho é essencial para operações de escrita na tela e leitura de dados do usuário. Outros cabeçalhos, como 'stdlib.h' e 'math.h', fornecem funções adicionais, mas não para entrada e saída padrão.\"\r\n        },\r\n        {\r\n            \"_id\": \"66dba13d556c042bcd439952\",\r\n            \"question\": \"Qual é o operador usado para comparar se dois valores são iguais em C?\",\r\n            \"answer\": \"==\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \">=\",\r\n                \"<>\",\r\n                \"!=\",\r\n                \"=\",\r\n                \"==\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"Em C, o operador '==' é usado para comparar se dois valores são iguais. Por exemplo, 'a == b' verifica se 'a' e 'b' têm o mesmo valor. Diferente disso, '=' é um operador de atribuição, usado para dar um valor a uma variável. Os outros operadores (como '!=') são usados para outras comparações, como se os valores são diferentes.\"\r\n        },\r\n        {\r\n            \"_id\": \"66dba146556c042bcd439953\",\r\n            \"question\": \"O que faz a função printf em C?\",\r\n            \"answer\": \"Imprime dados na tela\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \"Lê dados da entrada padrão\",\r\n                \"Imprime dados na tela\",\r\n                \"Aloca memória dinâmica\",\r\n                \"Cria uma nova variável\",\r\n                \"Calcula a raiz quadrada de um número\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"A função 'printf' em C é usada para imprimir texto e variáveis na tela, permitindo que o programa exiba informações para o usuário. Essa função pertence ao cabeçalho 'stdio.h' e é muito usada para mostrar resultados e mensagens enquanto o programa é executado.\"\r\n        }\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/activityStepCourse",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"activityStepCourse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update step course",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"_id\": \"66dba299556c042bcd439954\",\r\n    \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n    \"content\": \"\",\r\n    \"order\": 3,\r\n    \"type\": \"questions\",\r\n    \"questions\": [\r\n        {\r\n            \"_id\": \"66db9d98556c042bcd43994d\",\r\n            \"question\": \"Qual das seguinte opções tem uma sintaxe correta de uma função em C?\",\r\n            \"answer\": \"void myFunction(){}\",\r\n            \"options\": [\r\n                \"void myFunction(){}\",\r\n                \"function myFunction(){}\",\r\n                \"const myFunction(){}\",\r\n                \"let myFunction = (){}\",\r\n                \"const myFunction = () => {}\"\r\n            ],\r\n            \"type\": \"quiz\",\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"Em C, as funções são declaradas usando um tipo de retorno (como 'void' para funções que não retornam valores), o nome da função e parênteses para indicar que é uma função. O corpo da função vai entre chaves '{}'. Na opção correta, 'void myFunction(){}', temos uma função em C que não retorna valor e está corretamente estruturada.\",\r\n            \"__v\": 5\r\n        },\r\n        {\r\n            \"_id\": \"66dba080556c042bcd439950\",\r\n            \"question\": \"Qual das seguintes opções é uma estrutura de controle de repetição em C?\",\r\n            \"answer\": \"while\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \"if\",\r\n                \"while\",\r\n                \"switch\",\r\n                \"goto\",\r\n                \"struct\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"A estrutura 'while' em C é usada para repetir um bloco de código enquanto uma condição for verdadeira. Ela é uma das estruturas de controle de repetição, que permitem que um programa execute certas instruções várias vezes. 'if' e 'switch' são usados para fazer escolhas, enquanto 'struct' é para organizar dados e 'goto' é um comando de salto, não uma estrutura de repetição.\"\r\n        },\r\n        {\r\n            \"_id\": \"66dba0e4556c042bcd439951\",\r\n            \"question\": \"Qual é o cabeçalho necessário para usar funções de entrada e saída padrão em C?\",\r\n            \"answer\": \"#include <stdio.h>\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \"#include <stdlib.h>\",\r\n                \"#include <string.h>\",\r\n                \"#include <stdio.h>\",\r\n                \"#include <math.h>\",\r\n                \"#include <ctype.h>\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"Em C, o cabeçalho '#include <stdio.h>' permite o uso de funções padrão de entrada e saída, como 'printf' e 'scanf'. Esse cabeçalho é essencial para operações de escrita na tela e leitura de dados do usuário. Outros cabeçalhos, como 'stdlib.h' e 'math.h', fornecem funções adicionais, mas não para entrada e saída padrão.\"\r\n        },\r\n        {\r\n            \"_id\": \"66dba13d556c042bcd439952\",\r\n            \"question\": \"Qual é o operador usado para comparar se dois valores são iguais em C?\",\r\n            \"answer\": \"==\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \">=\",\r\n                \"<>\",\r\n                \"!=\",\r\n                \"=\",\r\n                \"==\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"Em C, o operador '==' é usado para comparar se dois valores são iguais. Por exemplo, 'a == b' verifica se 'a' e 'b' têm o mesmo valor. Diferente disso, '=' é um operador de atribuição, usado para dar um valor a uma variável. Os outros operadores (como '!=') são usados para outras comparações, como se os valores são diferentes.\"\r\n        },\r\n        {\r\n            \"_id\": \"66dba146556c042bcd439953\",\r\n            \"question\": \"O que faz a função printf em C?\",\r\n            \"answer\": \"Imprime dados na tela\",\r\n            \"type\": \"quiz\",\r\n            \"options\": [\r\n                \"Lê dados da entrada padrão\",\r\n                \"Imprime dados na tela\",\r\n                \"Aloca memória dinâmica\",\r\n                \"Cria uma nova variável\",\r\n                \"Calcula a raiz quadrada de um número\"\r\n            ],\r\n            \"stepId\": \"66dba299556c042bcd439954\",\r\n            \"courseId\": \"66d8efad20d70e8e540010b3\",\r\n            \"explanation\": \"A função 'printf' em C é usada para imprimir texto e variáveis na tela, permitindo que o programa exiba informações para o usuário. Essa função pertence ao cabeçalho 'stdio.h' e é muito usada para mostrar resultados e mensagens enquanto o programa é executado.\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/stepCourse",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stepCourse"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETE",
+			"item": [
+				{
+					"name": "delete question by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"6741c9b045e3733f7de4c994\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/activityStepCourse",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"activityStepCourse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete question by course and step",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/activityStepCourse/66d8efad20d70e8e540010b3/66dba299556c042bcd439954",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"activityStepCourse",
+								"66d8efad20d70e8e540010b3",
+								"66dba299556c042bcd439954"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete step by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"66dba299556c042bcd439954\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/stepCourse",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"stepCourse"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -188,12 +444,53 @@
 			"response": []
 		},
 		{
+			"name": "get all activities",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/activityStepCourse",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"activityStepCourse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all activities course",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/activityStepCourse/66d8efad20d70e8e540010b3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"activityStepCourse",
+						"66d8efad20d70e8e540010b3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "get course id",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/api/courses/66d8efad20d70e8e540010b3",
+					"raw": "http://localhost:3000/api/courses/66eb665ee8e9bf063005faf8",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -202,7 +499,7 @@
 					"path": [
 						"api",
 						"courses",
-						"66d8efad20d70e8e540010b3"
+						"66eb665ee8e9bf063005faf8"
 					]
 				}
 			},
@@ -212,7 +509,20 @@
 			"name": "get course progress",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/progressCourse/672f5cff6bbfdae27fa0be2c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"progressCourse",
+						"672f5cff6bbfdae27fa0be2c"
+					]
+				}
 			},
 			"response": []
 		},
@@ -236,6 +546,45 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "insira o token do env aqui",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "insira o token do env aqui",
+			"type": "string"
 		}
 	]
 }
