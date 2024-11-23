@@ -231,8 +231,8 @@ export async function getDataCourse({ courseId, userId }: { courseId: number | s
 
 export async function createCourse(course: LoadedDataCourse) {
   try {
-    const { title, steps } = course;
-    const saveCourse = new Course({ title });
+    const { title, steps, hide } = course;
+    const saveCourse = new Course({ title, hide });
     await saveCourse.save();
 
     const savedSteps = await createSteps(steps, saveCourse._id);
