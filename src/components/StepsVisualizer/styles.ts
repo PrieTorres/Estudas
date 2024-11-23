@@ -7,6 +7,7 @@ export const Container = styled.div`
     padding: ${theme.spacings.small};
     width: 60%;
     margin: 0 auto;
+    flex-wrap: wrap;
 
     & .line {
       flex-grow: 1;
