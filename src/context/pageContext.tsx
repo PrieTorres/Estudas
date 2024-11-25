@@ -2,13 +2,10 @@ import { fetchTk, getApiURL, getUserByFirebaseUserId, updateCourseProgress } fro
 import { LoadedDataCourse } from "@/types/course";
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { User } from "firebase/auth";
 import { auth } from "@/firebase";
 import { ProgressCourse } from "@/types/progressCourse";
 import { useRouter } from 'next/navigation';
-interface UserAuth extends Partial<User> {
-  _id: string;
-}
+import { UserAuth } from "@/types/userSession";
 
 interface PageContextProps {
   user?: UserAuth | null;
@@ -28,6 +25,7 @@ interface PageContextProps {
   updateSessionId?: (userId: string) => void;
   refreshProgress?: () => void;
   refreshCourses?: () => void;
+  
 }
 
 const SESSION_TIMEOUT_HOURS = 2;
@@ -141,7 +139,7 @@ export const PageProvider = ({ children }: { children: ReactNode; }) => {
 
     try {
       if (!userId && user?.uid) {
-        userMongo = await getUserByFirebaseUserId({ firebaseUserId: user?.uid, createUser: true, userData: user });
+        userMongo = await getUserByFirebaseUserId({ firebaseUserId: user?.uid, createUser: true, userData: {...user} });
       }
 
       if (userId || userMongo?._id || userId) {

@@ -10,13 +10,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { LoadingSpin } from "../LoadingSpin";
 import { Container } from "./style";
 
+
 export const Login = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { updateSessionId } = useContext(PageContext);
-  const [isPopUpSingUpIn, setIsPopUpSingUpIn] = useState(false);
   const [user] = useAuthState(auth);
 
 
@@ -44,7 +44,7 @@ export const Login = () => {
 
   const login = (username: string, email: string, password: string) => {
     setLoading(true);
-    fetch('/api/user', {
+    fetch('/api/user/login', {
       method: 'POST',
       body: JSON.stringify({ username, email, password }),
     }).then((userResponse: Response) => {
@@ -60,8 +60,6 @@ export const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    setIsPopUpSingUpIn(true);
-
     signInWithGoogle();
     if (typeof updateSessionId === 'function') {
       if (user) {
@@ -117,6 +115,7 @@ export const Login = () => {
                 placeholder="Insira sua senha" type="password" name="password" id="password"
               />
               <a href="#"><small className="block text-black text-left">Esqueceu sua senha?</small></a>
+
             </div>
 
             <input className="block mx-auto p-4 mt-6 rounded-full w-1/2 text-white font-bold bg-[#9caccb] hover:bg-[#8895ac] cursor-pointer" type="submit" value="Sign Up" />
@@ -133,9 +132,11 @@ export const Login = () => {
           </section>
 
           {loading && <LoadingSpin />}
+
         </main>
 
       </div>
     </Container>
   </>);
+
 };

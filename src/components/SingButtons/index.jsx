@@ -30,7 +30,7 @@ export const SignButtons = () => {
   return (
     <Container>
       {/* Desktop Navigation */}
-      <div className='sm:flex hidden' style={{ alignContent: "center", alignItems: "center" }}>
+      <div className='text-[1.9rem] sm:flex hidden' style={{ alignContent: "center", alignItems: "center" }}>
         {userId ? (
           <div className='flex gap-3 md:gap-5'>
             <button

@@ -23,9 +23,16 @@ const ActivityStepCourseSchema = new Schema({
     type: Schema.Types.String,
     required: [true, "answer is required"]
   },
+  explanation: {
+    type: Schema.Types.String,
+  },
   options: {
     type: Schema.Types.Array,
   },
+  deleted: {
+    type: Schema.Types.Boolean,
+    default: false
+  }
 });
 
 const ActivityStepCourse = models?.ActivityStepCourse || model('ActivityStepCourse', ActivityStepCourseSchema);

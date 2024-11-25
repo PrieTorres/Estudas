@@ -101,6 +101,7 @@ export const QuestionsContainer = ({ questions, activitiesDone }: QuestionsConta
       <h1>Questão {questionIndex + 1} de {questions.length}</h1>
       <QuestionBox
         question={questions[questionIndex].question}
+        explanation={questions[questionIndex].explanation}
         response={questions[questionIndex].answer}
         options={questions[questionIndex].options}
         type={questions[questionIndex].type}

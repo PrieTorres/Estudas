@@ -5,8 +5,8 @@ import styled, { DefaultTheme, css } from 'styled-components';
 
 export const Container = styled.article`
   ${({ theme }: { theme: DefaultTheme; }) => css`
-    border: 1px solid ${theme.colors.secondaryBg};
-    box-shadow: 0px 0px 4px ${theme.colors.secondaryBg};
+    border: 1px solid ${theme.colors.secondaryColor};
+    box-shadow: 0px 0px 4px ${theme.colors.secondaryColor};
     width: 320px;
     padding: ${theme.spacings.small};
     text-align: center;

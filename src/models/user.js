@@ -23,7 +23,13 @@ const UserSchema = new Schema({
   },
   image: {
     type: String,
+  },
+  deleted: {
+    type: Schema.Types.Boolean,
+    default: false
   }
+}, {
+  autoIndex: true,
 });
 
 const User = models?.User || model("User", UserSchema);

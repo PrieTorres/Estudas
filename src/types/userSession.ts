@@ -1,3 +1,4 @@
+import { User } from "firebase/auth";
 import { Session } from "next-auth";
 
 export interface UserSession extends Session {
@@ -8,4 +9,8 @@ export interface UserSession extends Session {
     email?: string | null;
     image?: string | null;
   }
+}
+
+export interface UserAuth extends Partial<User> {
+  _id?: string;
 }

@@ -10,6 +10,7 @@ export const Container = styled.nav`
     gap: 8px;
     height: 100%;
     max-width: 100%;
+    font-size: 1.8rem;
     align-items: center;
 
     @media ${theme.media.lteMedium} {

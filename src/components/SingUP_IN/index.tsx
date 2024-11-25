@@ -1,13 +1,16 @@
 "use client";
 
+import Image from "next/image";
 import { useContext } from "react";
 import { PageContext } from "@/context/pageContext";
 import { fetchTk } from '@/lib/helper';
 import React, { FormEvent, useState } from 'react';
 import { Container } from './styles';
 import { LoadingSpin } from "../LoadingSpin";
+import googleImage from "@/assets/google.svg";
 import Link from "next/link";
 import { Register } from "../Register";
+
 
 export const SignUp = () => {
   const [username, setUsername] = useState('');
@@ -16,6 +19,7 @@ export const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { updateSessionId } = useContext(PageContext);
+  const [user] = useAuthState(auth);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -38,8 +42,6 @@ export const SignUp = () => {
 
     if (password === confirmPassword) {
       createUser(username, email, password);
-    } else {
-      alert('Passwords do not match');
     }
   };
 
@@ -60,6 +62,17 @@ export const SignUp = () => {
     });
   };
 
+  const handleGoogleLogin = () => {
+    signInWithGoogle();
+    if (typeof updateSessionId === 'function') {
+      if (user) {
+        getUserByFirebaseUserId({ firebaseUserId: user?.uid ?? "", createUser: true, userData: user }).then((response) => {
+          updateSessionId(response?._id ?? response?.id ?? "");
+        });
+      }
+    }
+  };
+
   const isPasswordCorrect = password === confirmPassword;
 
   return (
@@ -67,44 +80,7 @@ export const SignUp = () => {
     <Container>
       <Register></Register>
     </Container>
-    //   <div className="w-full  flex-col">
-    //     <form onSubmit={handleSignUp}>
-    //       <label>
-    //         Username:
-    //         <input type="text" value={username} onChange={handleUsernameChange} />
-    //       </label>
 
-    //       <label>
-    //         Email (optional):
-    //         <input type="email" value={email} onChange={handleEmailChange} />
-    //       </label>
-
-    //       <label>
-    //         Password:
-    //         <input required={true} type="password" value={password} onChange={handlePasswordChange} />
-    //       </label>
-
-    //       <label>
-    //         Confirm Password:
-    //         <input required={true} type="password" value={confirmPassword} onChange={handleConfirmPasswordChange} />
-    //       </label>
-
-    //       <button type='submit'>Sign Up</button>
-    //       {password.length > 0 &&
-    //         <div style={{ width: "100%" }}>
-    //           {isPasswordCorrect ? <p>Passwords match</p> : <p>Passwords do not match</p>}
-    //         </div>
-    //       }
-    //     </form>
-    //     <div style={{ display: "flex", gap: 5 }}>
-    //       <p>Already have an account?</p>
-    //       <Link href="/login"><strong>Log In</strong></Link>
-    //     </div>
-    //   </div>
-    //   {
-    //     loading && <LoadingSpin />
-    //   }
-    // </Container>
   );
 };
 

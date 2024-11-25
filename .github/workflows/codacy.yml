@@ -1,0 +1,24 @@
+engines:
+  eslint:
+    enabled: true
+    configuration:
+      rules:
+        # Desabilitar regras específicas ou ajustar severidade
+        no-console: off
+        no-debugger: off
+        # Ajustar severidade de regras específicas
+        eqeqeq: warn
+        curly: error
+  pylint:
+    enabled: true
+    configuration:
+      disable:
+        - C0111  # Missing docstring
+        - C0103  # Variable name doesn't conform to snake_case naming style
+      max-line-length: 120
+  bandit:
+    enabled: true
+    configuration:
+      skips:
+        - B101  # Use of assert detected
+        - B110  # Try, Except, Continue detected

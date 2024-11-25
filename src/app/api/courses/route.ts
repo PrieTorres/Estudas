@@ -8,12 +8,12 @@ export async function GET(req: Request) {
   try {
     await connectToDB();
 
-    const courses = await Course.find({ "hide": { "$ne": 'true' } }).sort({ title: "asc" });
+    const courses = (await Course.find({ "hide": { "$ne": 'true' } }).sort({ title: "asc" })).filter(course => !course.deleted);
     if (!courses?.length) {
       return new Response("No courses data", { status: 200 });
     }
 
-    return new Response(JSON.stringify(courses.filter(course => !course.hide)), { status: 200 });
+    return new Response(JSON.stringify(courses), { status: 200 });
   } catch (err) {
     console.error("unable to get courses", err);
     return new Response("Unable to get courses", { status: 500 });
@@ -47,3 +47,5 @@ export async function POST(req: Request) {
     return new Response("Failed to create a new course", { status: 500 });
   }
 }
+
+export const revalidate = 0;
