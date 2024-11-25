@@ -30,22 +30,16 @@ export const Register = () => {
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
-  //TODO
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (numbers.some(e => event.target.value.includes(e))) {
-      console.log("Nivel 1");
       setLevels("Nivel 1");
       if (lowercaseLetters.some(e => event.target.value.includes(e))) {
-        console.log("Nivel 2");
         setLevels("Nivel 2");
         if (uppercaseLetters.some(e => event.target.value.includes(e))) {
-          console.log("Nivel 3");
           setLevels("Nivel 3");
           if (specialCharters.some(e => event.target.value.includes(e))) {
-            console.log("Nivel 4");
             setLevels("Nivel 4");
             if (event.target.value.length > 8) {
-              console.log("Nivel 5");
               setLevels("Nivel 5");
             }
           }
@@ -96,7 +90,7 @@ export const Register = () => {
 
             <form onSubmit={handleSignUp}>
 
-              <label className="block mt-6 text-black" htmlFor="username">Nome</label>
+              <label className="block mt-6 text-black" htmlFor="username">Username</label>
               <div className="relative w-full">
                 <input className=" text-slate-500 block w-full h-12 border-b-[2px] border-[#9caccb] " placeholder="Insira seu username" type="text" name="username" id="username" value={username} onChange={handleUsernameChange} />
               </div>
@@ -110,7 +104,6 @@ export const Register = () => {
                     <><input className="block text-slate-500 w-full h-12 border-b-[2px] border-[#9caccb] " placeholder="Insira sua senha" type="text" name="password" id="password" required={true} value={password} onChange={handlePasswordChange} />
                       <Image src={visibilityOff} alt="icone para visualizar a senha" className="size-10" onClick={() => setIsVisibility(!isVisibility)} /></>
                 }
-                {/* <SafeImage src={visibilityOn} text={"icone para visualizar a senha"}  /> */}
               </div>
 
               <label className="block mt-6 text-black" htmlFor="password_confirm">Confirme a senha</label>
@@ -162,6 +155,4 @@ export const Register = () => {
       </div>
     </Container>
   </>
-
-
 }
