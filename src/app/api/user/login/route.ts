@@ -13,12 +13,17 @@ export const POST = async (req: Request) => {
 
     await connectToDB();
 
-    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
-    if(!existingUser) {
-      return new Response("User not found", { status: 404 });
-    }
+    const existingUser = await User.findOne({
+      $or: [
+        { email: { $eq: email, $nin: [null, ''] } },
+        { username: { $eq: username, $nin: [null, ''] } }
+      ]
+    });
 
-    const isPasswordCorrect = await bcrypt.compare(password, existingUser?.password);
+    const userPassword = existingUser?.password ?? "2";
+    const correctPassword = password ?? "1";
+    
+    const isPasswordCorrect = await bcrypt.compare(correctPassword, userPassword);
 
     if (!existingUser || !isPasswordCorrect) {
       return new Response("Invalid email/username or password", { status: 400 });
