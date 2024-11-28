@@ -76,7 +76,7 @@ export const Login = () => {
       <div className="h-screen   flex justify-center items-center">
         <main className="w-[475px] p-16 bg-white shadow-lg rounded-md">
 
-          <h1 className="mb-12 text-center text-black font-bold ">Login</h1>
+          <h1 className="mb-12 text-center text-black font-bold text-6xl ">Login</h1>
 
           <form onSubmit={handleLogin}>
 
@@ -114,7 +114,6 @@ export const Login = () => {
                 className="block w-full h-12 text-slate-500 border-b-[2px] border-[#9caccb]"
                 placeholder="Insira sua senha" type="password" name="password" id="password"
               />
-              <a href="#"><small className="block text-black text-left">Esqueceu sua senha?</small></a>
 
             </div>
 

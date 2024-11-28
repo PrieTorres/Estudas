@@ -16,6 +16,7 @@ export const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isVisibility, setIsVisibility] = useState(false);
+  const [isErrorRegister, setIsErrorRegister] = useState(false);
   const { updateSessionId } = useContext(PageContext);
   const [levels, setLevels] = useState("");
 
@@ -58,9 +59,10 @@ export const Register = () => {
   const handleSignUp = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (password === confirmPassword) {
+    if (password === confirmPassword && levels=="Nivel 5") {
       createUser(username, email, password);
     } else {
+      setIsErrorRegister(true);
       alert('Passwords do not match');
     }
   };
@@ -85,9 +87,9 @@ export const Register = () => {
 
   return <Container>
     <div className="h-screen  flex justify-center items-center">
-      <main className="w-[875px] flex divide-x-2 gap-6  p-16 placeholder:text-[#9caccb] bg-white shadow-lg rounded-md">
-        <div>
-          <h1 className="mb-12 text-center text-black font-bold ">Sign Up</h1>
+      <main className="lg:w-[875px] sm:w-[654px] flex lg:flex-nowrap sm:flex-wrap-reverse lg:divide-x-2 gap-6  p-16 placeholder:text-[#9caccb] bg-white shadow-lg rounded-md">
+        <div className="p-10 lg:w-1/2">
+          <h1 className="mb-12 text-center text-black font-bold text-6xl ">Sign Up</h1>
 
           <form onSubmit={handleSignUp}>
 
@@ -120,6 +122,12 @@ export const Register = () => {
                     <Image src={visibilityOff} alt="icone para visualizar a senha" className="size-10" onClick={() => setIsVisibility(!isVisibility)} /></>
               }
             </div>
+              {
+                isErrorRegister?
+                <>
+                  <div className="text-red-500">Senhas divergentes ou não cumprindo todas as regras</div>
+                </>:<></>
+              }
             <div className={`mt-4 w-full h-2 flex justify-start gap-2 
               ${levels == "Nivel 1" ? '[&>*:nth-child(-n+1)]:bg-red-400' :
                 levels == "Nivel 2" ? '[&>*:nth-child(-n+2)]:bg-orange-400' :
@@ -143,13 +151,13 @@ export const Register = () => {
             <small><strong><Link className="text-black" href="/login">Log In</Link></strong></small>
           </div>
         </div>
-        <div className="">
+        <div className="lg:w-1/2">
           <div className="text-black pt-10  pl-4">
-            Regras
-            <div className="text-black text-3xl">Precisa ser composta de pelo menos 4 grupos de caracteres: números, letras em
+            <div className="text-black font-bold text-3xl pb-2">Regras</div>
+            <div className="text-black text-2xl">Precisa ser composta de pelo menos 4 grupos de caracteres: números, letras em
               minúsculo, letras em maiúsculo e caracteres especiais (!@?+-).
             </div>
-            <div className="text-black text-3xl">Ter no mínimo 8 caracteres.</div>
+            <div className="text-black text-2xl">Ter no mínimo 8 caracteres.</div>
           </div>
         </div>
       </main>
