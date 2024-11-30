@@ -10,18 +10,18 @@ export async function POST(req: Request) {
 
   try {
     await connectToDB();
-    const generateUser = (_name=name) => ((_name?.replace(/\s/g, "")?.toLowerCase() ?? "") + `${Math.floor(Math.random() * 10000000000000000)}`).substring(0, 20);
+    const generateUser = (_name = name) => ((_name?.replace(/\s/g, "")?.toLowerCase() ?? "") + `${Math.floor(Math.random() * 10000000000000000)}`).substring(0, 20);
     let userName = generateUser(username);
 
     const existingUser = await User.findOne({
       $or: [
-        { email: { $eq: email, $ne: null } },
-        { firebaseUserId: { $eq: firebaseUserId, $ne: null } },
-        { username: { $eq: username, $ne: null } }
+        { email: { $eq: email, $nin: [null, ''] } },
+        { firebaseUserId: { $eq: firebaseUserId, $nin: [null, ''] } },
+        { username: { $eq: username, $nin: [null, ''] } }
       ]
     });
-
-    if (existingUser) return new Response(JSON.stringify(existingUser), { status: 200 });
+    
+    if (existingUser) return new Response("Username already exists", { status: 500 });
 
     let existingUserWithSameName = await User.findOne({ name: userName });
     while (existingUserWithSameName?._id) {
