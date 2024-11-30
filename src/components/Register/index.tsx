@@ -125,10 +125,10 @@ export const Register = () => {
 
 
   return <Container>
-    <div className="h-screen  flex justify-center items-center">
-      <main className="lg:w-[875px] sm:w-[654px] flex lg:flex-nowrap sm:flex-wrap-reverse lg:divide-x-2 p-16 placeholder:text-[#9caccb] bg-white shadow-lg rounded-md">
-        <div className="p-10 pt-6 lg:w-1/2 sm:w-full">
-          <h1 className="mb-12 text-center sm:hidden lg:block text-black font-bold text-6xl ">Sign Up</h1>
+    <div className="h-screen flex justify-center items-center">
+      <main className="w-full max-w-[875px] sm:w-full flex flex-wrap sm:flex-wrap lg:flex-nowrap lg:divide-x-2 p-6 sm:p-4 placeholder:text-[#9caccb] bg-white shadow-lg rounded-md">
+        <div className="p-6 pt-4 sm:w-full lg:w-1/2">
+          <h1 className="mb-12 text-center sm:hidden lg:block text-black font-bold text-4xl sm:text-3xl">Sign Up</h1>
 
           <form onSubmit={handleSignUp}>
 
@@ -222,7 +222,6 @@ export const Register = () => {
             <div className="text-black text-2xl">Ter no mínimo 8 caracteres.</div>
           </div>
         </div>
-        <h1 className="pl-10 pb-4 text-center text-black lg:hidden sm:visible font-bold text-6xl ">Sign Up</h1>
       </main>
     </div>
   </Container>;
