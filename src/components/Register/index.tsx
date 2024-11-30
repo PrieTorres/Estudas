@@ -32,7 +32,7 @@ export const Register = () => {
   const specialCharters = ["!", "@", "?", "+", "-", "="];
 
   useEffect(() => {
-    window.addEventListener("resize", () => setWindowSize(window.innerWidth))
+    window.addEventListener("resize", () => setWindowSize(window.innerWidth));
 
   }, []);
 
@@ -43,37 +43,33 @@ export const Register = () => {
     setUsername(event.target.value);
   };
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
-    if (!firstLaw && 
-        event.target.value.length >= 8) {
+    if (!firstLaw &&
+      event.target.value.length >= 8) {
       setLevels(levels + 1);
       setFirstLaw((value) => !value);
     }
-    if (!secondLaw && 
-        specialCharters.some(e => event.target.value.includes(e))) {
+    if (!secondLaw &&
+      specialCharters.some(e => event.target.value.includes(e))) {
       setLevels(levels + 1);
       setSecondLaw((value) => !value);
     }
-    if (!thirdLaw && 
-        uppercaseLetters.some(e => event.target.value.includes(e))) {
+    if (!thirdLaw &&
+      uppercaseLetters.some(e => event.target.value.includes(e))) {
       setLevels(levels + 1);
       setThirdLaw((value) => !value);
     }
 
-    if (!fourthLaw && 
-        lowercaseLetters.some(e => event.target.value.includes(e))) {
+    if (!fourthLaw &&
+      lowercaseLetters.some(e => event.target.value.includes(e))) {
 
       setLevels(levels + 1);
       setFourthtLaw((value) => !value);
     }
 
-    if (!fifthLaw && 
-        numbers.some(e => event.target.value.includes(e))) {
+    if (!fifthLaw &&
+      numbers.some(e => event.target.value.includes(e))) {
       setLevels(levels + 1);
       setFifthLaw((value) => !value);
     }
@@ -96,7 +92,13 @@ export const Register = () => {
   const handleSignUp = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (password === confirmPassword && levels == 5) {
+    if(levels < 3){
+      setIsErrorRegister(true);
+      alert('Password must have at least 3 levels');
+      return;
+    }
+
+    if (password === confirmPassword) {
       createUser(username, email, password);
     } else {
       setIsErrorRegister(true);
@@ -132,87 +134,52 @@ export const Register = () => {
 
             <label className="block mt-6 text-black" htmlFor="username">Username</label>
             <div className="relative w-full">
-              <input 
-              className=" text-slate-500 block w-full h-12 border-b-[2px] border-[#9caccb] " 
-              placeholder="Insira seu username" 
-              type="text" 
-              name="username" 
-              id="username" 
-              value={username} 
-              onChange={handleUsernameChange} />
+              <input
+                className=" text-slate-500 block w-full h-12 border-b-[2px] border-[#9caccb] "
+                placeholder="Insira seu username"
+                type="text"
+                name="username"
+                id="username"
+                value={username}
+                onChange={handleUsernameChange} />
             </div>
 
             <label className="block mt-6 text-black" htmlFor="password">Senha</label>
             <div className="relative flex gap-4 w-full">
-              {
-                isVisibility ?
-                  <><input 
-                  className="block text-slate-500 w-full h-12 border-b-[2px] border-[#9caccb] " 
-                  placeholder="Insira sua senha" 
-                  type="text" 
-                  name="password" 
-                  id="password" 
-                  required={true} 
-                  value={password} 
-                  onChange={handlePasswordChange} />
-                    <Image src={visibilityOff} 
-                    alt="icone para visualizar a senha" 
-                    className="size-10" 
-                    onClick={() => setIsVisibility(!isVisibility)} /></>
-                  :
-                  <><input 
-                  className="block text-slate-500 w-full h-12 border-b-[2px] border-[#9caccb] " 
-                  placeholder="Insira sua senha" 
-                  type="password" 
-                  name="password" 
-                  id="password" 
-                  required={true} 
-                  value={password} 
-                  onChange={handlePasswordChange} />
-                  <Image 
-                  src={visibilityOn} 
-                  alt="icone para visualizar a senha" 
-                  className="size-10" 
-                  onClick={() => setIsVisibility(!isVisibility)} /></>
-              }
+              <input
+                required
+                className="block text-slate-500 w-full h-12 border-b-[2px] border-[#9caccb] "
+                placeholder="Insira sua senha"
+                type={isVisibility ? "text" : "password"}
+                name="password"
+                id="password"
+                value={password}
+                onChange={handlePasswordChange}
+              />
+              <Image src={isVisibility ? visibilityOff : visibilityOn}
+                alt="icone para visualizar a senha"
+                className="size-10"
+                onClick={() => setIsVisibility(!isVisibility)}
+              />
             </div>
 
             <label className="block mt-6 text-black" htmlFor="password_confirm">Confirme a senha</label>
             <div className="relative flex gap-4 w-full">
-              {
-                isVisibility ?
-                  <>
-                    <input 
-                    className="block w-full text-slate-500 h-12 border-b-[2px] border-[#9caccb] " 
-                    placeholder="Insira sua senha novamente" 
-                    type="text" 
-                    name="password_confirm" 
-                    id="password_confirm" 
-                    required={true} 
-                    value={confirmPassword} 
-                    onChange={handleConfirmPasswordChange} />
-                    <Image 
-                    src={visibilityOff} 
-                    alt="icone para visualizar a senha" 
-                    className="size-10" 
-                    onClick={() => setIsVisibility(!isVisibility)} /></>
-                  :
-                  <><input 
-                  className="block w-full text-slate-500 h-12 border-b-[2px] border-[#9caccb] " 
-                  placeholder="Insira sua senha novamente" 
-                  type="password" 
-                  name="password_confirm" 
-                  id="password_confirm" 
-                  required={true} 
-                  value={confirmPassword} 
-                  onChange={handleConfirmPasswordChange} />
-                    <Image 
-                    src={visibilityOn} 
-                    alt="icone para visualizar a senha" 
-                    className="size-10" 
-                    onClick={() => setIsVisibility(!isVisibility)} />
-                  </>
-              }
+              <input
+                required
+                className="block w-full text-slate-500 h-12 border-b-[2px] border-[#9caccb] "
+                placeholder="Insira sua senha novamente"
+                type={isVisibility ? "text" : "password"}
+                name="password_confirm"
+                id="password_confirm"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange} />
+              <Image
+                src={isVisibility ? visibilityOff : visibilityOn}
+                alt="icone para visualizar a senha"
+                className="size-10"
+                onClick={() => setIsVisibility(!isVisibility)}
+              />
             </div>
             {
               isErrorRegister ?
@@ -234,10 +201,10 @@ export const Register = () => {
               }
 
             </div>
-            <input 
-            className="block mx-auto p-4 mt-6 rounded-full w-1/2 text-white font-bold bg-[#9caccb] hover:bg-[#8895ac] cursor-pointer" 
-            type="submit" 
-            value="Sign Up" />
+            <input
+              className="block mx-auto p-4 mt-6 rounded-full w-1/2 text-white font-bold bg-[#9caccb] hover:bg-[#8895ac] cursor-pointer"
+              type="submit"
+              value="Sign Up" />
 
           </form>
 
